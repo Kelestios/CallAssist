@@ -1,0 +1,17 @@
+diff --git a/index.html b/index.html
+index b140340..ef87479 100644
+--- a/index.html
++++ b/index.html
+@@ -315,0 +316 @@ body.dragging{user-select:none;cursor:col-resize}
++body:not(.co-open) #btnCompany{color:#fff}body:not(.co-open) #btnCompany .lbl{color:#fff}
+@@ -338,0 +340 @@ body.pf-open #profDrop{max-height:min(46vh,400px)}
++.cd-arow .tag .labIn{font-family:inherit;font-size:9.5px;font-weight:bold;letter-spacing:.1em;text-transform:uppercase;background:var(--paper);border:1px solid var(--line2);border-radius:6px;color:var(--forest);padding:2px 6px;width:138px;min-width:0}
+@@ -1010 +1012,3 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
+-        <button class="btn mini" id="btnPfJson">⬇ Full profile .json</button>
++        <button class="btn mini sun" id="btnPfJson">⬇ Full profile .json</button>
++        <button class="btn mini sun" id="btnPfImp">⬆ Import profile .json</button>
++        <input type="file" id="fileProf" accept=".json,application/json" hidden>
+@@ -1014 +1018 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
+-      <p class="note" style="margin-top:8px">Exported files round-trip: edit them, drop them back on the loader, and the desk rebuilds. Commit a profile beside your deployment to version your line.</p>
++      <p class="note" style="margin-top:8px">One file holds the whole campaign: **Full profile .json** carries your edited assembly line, the objections desk, qualifiers, gates and service addresses — **Import profile .json** puts all of it back on another machine. Commit a profile beside your deployment to version your line.</p>
+@@ -1028,5 +1032,3 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac

@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Call Assist — Script · Objections · Live Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Bodoni Moda, loaded WITHOUT blocking first paint: media=print keeps the request
+     non-render-blocking, then it is swapped to all. Offline the wordmark falls back to
+     Georgia. A render-blocking stylesheet here would delay the whole desk. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500..700&display=swap"
+      media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500..700&display=swap"></noscript>
 <style>
 /* ═══════════════════════════════════════════════════════════════
    GCeleste Solar Assist v24
@@ -38,6 +46,7 @@
   --shadow:0 12px 32px rgba(88,72,32,.16);--shadow2:0 18px 48px rgba(88,72,32,.24);
   --read:17px;--lead:1.62;--headH:66px;--deck:50%;--cfgW:300px;--rightW:372px;--rail:46px;
   --tok:.688em;--tok-empty:.576em;--tok-pad:1px 5px;
+  --fd:'Bodoni Moda',ui-serif,Georgia,'Times New Roman',serif;   /* wordmark face; Georgia when offline */
 }
 body[data-theme="dark"]{
   --bg0:#0e1512;--bg1:#141d18;--bg2:#1b2620;--surf:#18221c;--surf2:#1f2b24;--surf3:#26332b;--paper:#101915;
@@ -336,7 +345,7 @@ body.dragging{user-select:none;cursor:col-resize}
   color:#5a3a06;text-shadow:0 1px 0 rgba(255,255,255,.55)}
 @keyframes sunRays{to{transform:rotate(360deg)}}
 @keyframes sunPulse{0%,100%{box-shadow:0 0 11px rgba(232,182,76,.42)}50%{box-shadow:0 0 26px rgba(232,182,76,.82)}}
-.brand b{font-size:14px;letter-spacing:.045em;color:var(--forest);display:block}
+.brand b{font-family:var(--fd);font-size:16px;font-weight:600;letter-spacing:.012em;color:var(--forest);display:block;line-height:1.15}
 .brand small{display:block;color:var(--mut);font-size:9px;letter-spacing:.15em}
 .brand small a{color:var(--amber);text-decoration:none;border-radius:5px;padding:0 4px;margin:0 -4px;
   border-bottom:1px solid transparent;transition:background .18s,color .18s,border-color .18s}
@@ -366,6 +375,7 @@ body.dragging{user-select:none;cursor:col-resize}
 #profPill.on{background:linear-gradient(135deg,var(--teal),var(--violet2) 45%,var(--honey));
   box-shadow:0 0 0 3px var(--tint-violet),0 7px 20px rgba(96,78,140,.4)}
 #profPill #workDot{color:var(--honey);margin-left:1px;animation:pulse 1.2s infinite}
+#profPill,#profPill #profName2{font-family:var(--fd);font-weight:600;letter-spacing:.02em;font-size:12.5px}
 @keyframes pulse{50%{opacity:.42}}
 #timerMini{font-variant-numeric:tabular-nums;letter-spacing:.11em;color:var(--teal)}
 #verdictMini{font-weight:bold}
@@ -949,13 +959,31 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 #kofiDock iframe.floatingchat-container{position:static!important;width:190px;height:65px;border:0}
 #kofiDock .floatingchat-container-wrap-mobi,#kofiDock .floating-chat-kofi-popup-iframe-mobi{display:none!important}
 #kofiDock .floating-chat-kofi-popup-iframe{position:absolute!important;left:auto!important;right:0!important;bottom:82px!important;z-index:2}
+/* The call timer and verdict describe the live desk: hidden until live transcription is on. */
+#timerMini,#verdictMini{display:none}
+body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
+#liveGuide{position:fixed;inset:0;z-index:362;display:grid;place-items:center;padding:20px;
+  background:rgba(14,17,19,.62);backdrop-filter:blur(2px);animation:inFade .18s ease}
+#liveGuide[hidden]{display:none}
+#liveGuide .lgCard{width:min(940px,95vw);height:min(88vh,860px);display:flex;flex-direction:column;gap:9px;
+  background:var(--bg1);border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow2);padding:12px 14px}
+#liveGuide .lgTop{display:flex;align-items:center;gap:10px;flex:none}
+#liveGuide .lgTop b{font-family:var(--fd);font-size:16px;color:var(--forest)}
+#liveGuide iframe{flex:1;min-height:0;width:100%;border:1px solid var(--line);border-radius:12px;background:#0e1113}
 #keys{display:flex;gap:13px;align-items:center;padding:5px 14px;font-size:9.5px;color:var(--faint);
   border-top:1px solid var(--line);background:var(--footbg);letter-spacing:.055em;flex-wrap:wrap}
 #keys b{color:var(--mut)}
 #credit{margin-left:13px;display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:inherit;cursor:pointer;
   font-size:9.5px;font-weight:bold;letter-spacing:.07em;color:var(--forest);
   background:linear-gradient(135deg,var(--block),var(--warnbg));border:1px solid var(--honey);border-radius:999px;padding:3px 11px;transition:.16s}
-#credit:hover{background:var(--g-sun);color:var(--on-warm);transform:translateY(-1px)}
+#credit{background:var(--g-sun);color:var(--on-warm);border-color:var(--honey2);position:relative;overflow:hidden}
+#credit::after{content:"";position:absolute;top:0;left:0;width:45%;height:100%;transform:translateX(-150%);
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);pointer-events:none}
+#credit:hover{color:var(--on-warm);transform:translateY(-2px);filter:brightness(1.07) saturate(1.12);
+  box-shadow:0 5px 18px rgba(214,148,32,.45)}
+#credit:hover::after{animation:goldSheen .85s cubic-bezier(.2,.8,.25,1)}
+#credit:focus-visible{outline:2px solid var(--honey2);outline-offset:2px}
+@keyframes goldSheen{from{transform:translateX(-150%)}to{transform:translateX(260%)}}
 #credit:focus-visible{outline:2px solid var(--honey);outline-offset:2px}
 #credit.on{background:var(--g-sun);color:var(--on-warm);box-shadow:0 0 0 3px var(--tint-honey);transform:translateY(-1px)}
 #credit i{font-style:normal;font-size:8px;opacity:.6;transition:transform .2s ease}
@@ -1058,7 +1086,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 
 <div id="head">
 <header id="topbar">
-  <div class="brand"><div class="ring" aria-hidden="true"><span>G</span></div><div><b>Call Assist</b><small>by <a id="byline" href="https://ko-fi.com/Gio_Celeste" target="_blank" rel="noopener noreferrer">@Kelestios.</a></small></div></div>
+  <div class="brand"><div class="ring" aria-hidden="true"><span>G</span></div><div><b>Call Assist</b><small>by <a id="byline" href="https://ko-fi.com/Gio_Celeste" target="_blank" rel="noopener noreferrer">@Kelestios</a></small></div></div>
   <div class="clock" id="clock">
     <div class="ct"><b id="clockTime">--:--:--</b>
       <small><span class="dd" id="dialDot"></span><span id="clockDate">—</span> · <span id="clockLocal">--:--</span> yours</small></div>
@@ -1245,6 +1273,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
         <h3>🎙 LIVE TRANSCRIPTION · OPTIONAL <span class="st" id="aiSt">OFF</span></h3>
         <div class="body">
           <label class="tgl"><input type="checkbox" id="tAI"><span></span>Enable live transcription</label>
+          <div class="row" style="margin-top:7px"><button class="btn mini" id="btnAiGuide">🧭 How to set this up — the ear, the brain, what each source hears</button></div>
           <p class="note">The desk is fully usable offline. Turn this on only to have the browser listen and surface spiels automatically. Use <b>System audio</b> in the Live deck to capture a tab, window or the entire screen.</p>
           <div class="fld"><span class="lbl">AUDIO SOURCE</span>
             <select id="srcSelect"><option value="browser">Browser mic (Web Speech)</option><option value="mic">Mic → Local Whisper</option><option value="system">System audio → Local Whisper</option></select></div>
@@ -1356,6 +1385,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
         <div class="deck-head"><div class="r1"><h3>🎙 LIVE TRANSCRIPTION</h3>
           <span class="pill" id="liveStatus" style="padding:3px 9px;font-size:9px"><span class="dot"></span><span>IDLE</span></span>
           <div class="sp">
+            <button class="btn tiny ghost" id="btnLiveGuide" title="Open the live transcription setup guide">🧭 How to set this up</button>
             <button class="btn tiny" id="btnLiveHalf">▣ 50/50</button>
             <button class="btn tiny" id="btnLiveFocus">◨ Focus</button>
             <button class="btn tiny" id="btnLiveCollapse">▸ Collapse</button>
@@ -1376,6 +1406,15 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
   <button id="credit" title="Show or hide the Ko-fi support widget" aria-expanded="false" aria-controls="kofiDock">☕ Support us!<i>▾</i></button>
 </footer>
 </div>
+</div>
+
+<div id="liveGuide" hidden>
+  <div class="lgCard" role="dialog" aria-modal="true" aria-labelledby="lgTitle">
+    <div class="lgTop"><b id="lgTitle">🧭 Live Transcription — how to set this up</b>
+      <span class="note" style="font-size:10px">Opens in a new tab; this is the fallback view.</span>
+      <button class="btn mini" id="btnLiveGuideClose" style="margin-left:auto">✕ Close</button></div>
+    <iframe id="liveGuideFrame" title="Live transcription setup guide"></iframe>
+  </div>
 </div>
 
 <div id="intro" hidden>
@@ -2077,8 +2116,41 @@ const AGENCY_SCRIPT=[{
     branches:[]
   }]
 }];
+// Agency Script objections — the 2nd-day Appointment Setter Objection Sheet, row for row.
+// Sheet wording verbatim; cues are contiguous windows of each title (nothing invented).
+// The built-in solar line (☀ Gio Script) keeps its own script and objections untouched.
+const AGENCY_CATS={early:{em:"🚪",name:"EARLY · A.I.R.",sub:"Agree, Ignore, Resume — smokescreens, not real objections"},install:{em:"🔧",name:"INSTALLATION",sub:"Real concerns — handle calmly, with clarity and confidence"},fin:{em:"💵",name:"FINANCIAL / ROI",sub:"Return, bills, rate comparison"},fin2:{em:"💸",name:"FINANCIAL DOUBTS",sub:"Catch, financing, credit, waiting"},own:{em:"🏠",name:"OWNERSHIP / MOVING",sub:"Renter, landlord, moving timeline"},time:{em:"🕒",name:"TIMING / LIFE",sub:"Renovations and life situation"},trust:{em:"🤨",name:"TRUST / REPUTATION",sub:"Bad experiences, scam suspicion"},delay:{em:"📧",name:"DELAY / INFO DEFLECTION",sub:"Send me information, think about it"}};
+const AGENCY_PURPOSE="These are SMOKESCREENS — not real objections. Just emotional reflexes at the start of the call. Don't argue. Don't sell. Just disarm, and continue the script.";
+const AGENCY_FRAMEWORK="Agree — this is a very common concern, answer it briefly, then ask: if that wasn't a problem, is solar something you'd do or is something else holding you back? Put a note down for the engineer so he can explain everything on site. Does that sound fair? Resume.";
+const AGENCY_OBJ=[
+O("ae1",'early',"🚫","I'm not interested.","i m not interested|m not interested|not interested",["Totally understand, sir. And just to clarify—I'm not trying to sell you anything.","All I'm doing is letting you know what's happening in your area so you're aware…"],AGENCY_PURPOSE),
+O("ae2",'early',"⏰","I'm busy.","i m busy|m busy",["Of course, I get that. I'll keep this super short.","You're probably seeing more solar panels pop up nearby, and that's what this is about…"],AGENCY_PURPOSE),
+O("ae3",'early',"📧","Send me an email.","send me an email|me an email|an email",["Sure… What's your email??—just to be sure it's relevant, let me ask you real quick…","Before I can get you that email I just need to qualify you here in the system…"],AGENCY_PURPOSE),
+O("ae4",'early',"📞","Call me back.","call me back|me back",["Of course, I can do that. Just before I let you go—super quick—do you still live at [address]?","This will only take 30 seconds and then I'll let you go, promise…"],AGENCY_PURPOSE),
+O("ae5",'early',"🔍","How did you get my number?","how did you get my number|did you get my number|you get my number|get my number|my number",["Totally fair question—we're only reaching out to homeowners in your zip code.","You actually weren't 'targeted' personally, this is just for homes that qualify…"],AGENCY_PURPOSE),
+O("ae6",'early',"😤","You're the 5th person to call me!","you re the 5th person to call me|you re the 5th person|re the 5th person to|the 5th person to call|5th person to call me|re the 5th person",["Yea we've been trying to reach you about some important updates regarding the electricity.","We're just doing a short info call to see if your property qualifies."],AGENCY_PURPOSE),
+O("ag1","install","🕳️","I don't want holes in my roof.","i don t want holes in my roof|i don t want holes|don t want holes in|don t want holes",["Got it, sir. Absolutely. That is exactly the reason why I'm calling you. We actually use a new way of installation with K2 racketing, which ensures proper installation with seals on both the top and bottom. You're also covered with a 10-year warranty on the roof. If anything were to happen, we'll replace it, and the finance company also assumes responsibility in that case."],AGENCY_FRAMEWORK),
+O("ag2","install","🧓","My roof is too old / I'm replacing my roof.","my roof is too old i m replacing my roof|too old i m replacing|old i m replacing my|i m replacing my roof|old i m replacing|i m replacing my",["Totally understand, sir. In that case, we can actually add a new roof into the project. You may even be able to get the roof done for free. I'm not promising that, but that's what we've seen happen for some of our clients."],AGENCY_FRAMEWORK),
+O("ag3","install","🧱","I have a flat/tile/special roof.","i have a flat tile special roof|have a flat tile special|a flat tile special roof|a flat tile special|flat tile special roof|flat tile special",["That's not a problem at all, sir. We can work with all roof types—flat, tile, shingle, anything. We've done it all before."],AGENCY_FRAMEWORK),
+O("ag4","install","💧","I'm worried about leaks from the installation.","i m worried about leaks from the installation|i m worried about leaks|m worried about leaks from|worried about leaks from the|about leaks from the installation|i m worried about",["Totally fair concern. That's why we include a workmanship warranty—so if anything goes wrong due to the installation, it's covered for up to 10 years."],AGENCY_FRAMEWORK),
+O("ag5","install","👀","I don't like how the panels will look.","i don t like how the panels will look",["Got it, sir. We can definitely explore placing them on a side of the home that's less visible, like the back. Also, the panels we use are completely black—they blend in with the roof and are barely noticeable. If we place them on the backside, you'll almost forget they're there. And to be honest, it blends in so well it ends up looking clean."],AGENCY_FRAMEWORK),
+O("ag6","fin","📉","I don't see the return on investment.","i don t see the return on investment|don t see the return",["Absolutely, sir. I agree—and that's because there actually is no investment. ROI means you're putting your own money in, but with this, you're not. What we're offering today doesn't require any upfront investment—you're just shifting where your money goes. Instead of paying the electric company, you'll save from month one."],AGENCY_FRAMEWORK),
+O("ag7","fin","🧾","I don't want another bill.","i don t want another bill|i don t want another|don t want another bill|don t want another",["Completely understand, sir. A lot of homeowners say the same thing—they don't want another stressor. That's why this isn't about adding a bill. We're aiming to eliminate your electric bill completely and replace it with one that's usually 30 to 50% cheaper."],AGENCY_FRAMEWORK),
+O("ag8","fin","💵","My electricity bills are already low.","my electricity bills are already low|my electricity bills are already|electricity bills are already low|my electricity bills are|electricity bills are already|bills are already low",["Got it. If you don't mind me asking—how much are you currently paying?"],AGENCY_FRAMEWORK,[{label:"🟠 IF >$150",say:["Perfect. We can probably reduce that significantly."]},{label:"🟠 IF <$60",say:["I'll be honest, sir, it might not be worth it for you, and we'd likely disqualify the property."]},{label:"🟠 IF $60–$150",say:["In that range, we can usually still help you save and lock in a fixed rate—so you're not at the mercy of rate hikes every month. Wouldn't it be nice to just know exactly what you're paying, no surprises?"]}]),
+O("ag9","fin2","🎣","What's the catch?","what s the catch|s the catch|the catch",["Sir, the only catch is—you need to qualify. That's what this whole call is about. If you qualify, you simply switch to a better energy provider at a locked-in, lower rate."],AGENCY_FRAMEWORK),
+O("ag10","fin2","🏦","I don't want to finance anything.","i don t want to finance anything|don t want to finance",["Absolutely, sir. And just to clarify—we're not getting you into any traditional loans. You're simply switching from one electric provider (that charges more) to another that charges less. Your payment just becomes more stable and more affordable. That's it."],AGENCY_FRAMEWORK),
+O("ag11","fin2","⏳","I want to wait until prices drop.","i want to wait until prices drop|i want to wait until|want to wait until prices|to wait until prices drop|want to wait until|to wait until prices",["I totally get that instinct, sir. The thing is—with inflation, nothing is actually getting cheaper. Even as tech improves, prices usually go up, not down. So waiting won't mean a better deal—it often means you miss the window to lock in lower rates now."],AGENCY_FRAMEWORK),
+O("ag12","fin2","📊","My credit isn't good.","my credit isn t good|my credit isn t|credit isn t good|credit isn t|isn t good",["Thanks for being honest, sir. We actually have a few options here. Is there anyone else on the home who has a credit score above 650?"],AGENCY_FRAMEWORK,[{label:"🟠 IF YES",say:["Perfect, we can likely use their credit to get you qualified."]},{label:"🟠 IF NO",say:["Is there anyone close to you who would be willing to co-sign or be included to help you qualify?"]},{label:"🟠 IF UNSURE",say:["Do you know your approximate credit score? I can check with my manager if it's something we can still work with."]}]),
+O("ag13","own","🔑","I rent / I'm not the homeowner.","i rent i m not the homeowner|i m not the homeowner|m not the homeowner|not the homeowner",["Got it—thank you for letting me know. Unfortunately, this program is only available to homeowners. If you have a landlord or know who owns the property, I'd be happy to speak with them to see if they'd be interested. They could benefit from solar while the tenant still pays the bill, which means they get the tax credit and increase the property value."],AGENCY_FRAMEWORK),
+O("ag14","own","🏘️","I have a tenant living there.","i have a tenant living there|i have a tenant living|have a tenant living there|i have a tenant|have a tenant living|a tenant living there",["That's totally fine, sir. We've helped many landlords install solar on rental properties. The best part is: your tenant continues to pay for power, but you get the financial benefit—like the tax credit and added property value. We'd just need to make sure it's set up correctly with ownership."],AGENCY_FRAMEWORK),
+O("ag15","own","📦","I'm planning to move.","i m planning to move|i m planning to|m planning to move|i m planning|m planning to|planning to move",["Thanks for sharing that, sir. Just so I'm clear—when exactly are you planning to move?"],AGENCY_FRAMEWORK,[{label:"🟠 IF LESS THAN 6 MONTHS",say:["Understood. In that case, it might make sense to wait until you're in your new home."]},{label:"🟠 IF MORE THAN 6 MONTHS",say:["Great. That still gives you time to benefit from the savings. And when you sell the home, the new owner will also benefit—making your property even more appealing. By the way—have you listed the home yet?"]},{label:"🟠 IF NOT LISTED",say:["Then it sounds like the move is still in the planning phase. This could be a way to reduce costs while you're still there."]}]),
+O("ag16","time","🍳","I'm planning to do home renovations (kitchen, roof, etc.).","i m planning to do home renovations kitchen roof etc|i m planning to do|m planning to do home|planning to do home renovations|to do home renovations kitchen|do home renovations kitchen roof",["Sir, I'm actually glad I caught you right now—because we might be able to get that kitchen you're planning to renovate completely for free. The government is currently incentivizing solar projects, and they allow home renovation work to be bundled into the solar financing. What that means is—we can add that renovation into the solar project and potentially get you covered for 30% of it through the federal tax credit. In some cases, we can even take a portion of our commission to help cover the cost upfront. So this might be the perfect timing."],AGENCY_FRAMEWORK),
+O("ag17","trust","🤝","My cousin/friend had a bad experience with solar.","my cousin friend had a bad experience with solar|my cousin friend had a|cousin friend had a bad|friend had a bad experience|had a bad experience with|a bad experience with solar",["Totally understand, sir. I honestly don't know what happened with other companies—but I can tell you we're not here scamming people. We're just booking appointments with homeowners in your area to see if solar would help them save. That's it."],("(Let them speak.) I'd love to make things right, even if it was a different company. How about this—we send the engineer out, and your cousin can be there too. We'll walk through everything and see if we can avoid the same issues or maybe even fix what happened before.")+AGENCY_FRAMEWORK,[{label:"🟠 IF THEY INSIST",say:["What was your cousin's name and what exactly happened?"]}]),
+O("ag18","delay","📨","Can you just send me an email?","can you just send me an email|just send me an email|send me an email|me an email|an email",["Yes, absolutely—what's your email, sir?"],("(Write it down) Perfect. So in order to send you the right information, I do need to ask you a couple of quick questions first—just to make sure your home actually qualifies. Then we can pass that along to the engineer so they can build a personalized report. Now, normally, the engineer does need to swing by to check your meter and some basic info about the home. If everything checks out, they can show you the report right there and then—and if you still want it by email, we can definitely send it after that.")+AGENCY_FRAMEWORK)
+];
+
 function agencyProfile(){return{id:'agency',name:'Agency Script',kind:'agency',em:'📜',
- script:clone(AGENCY_SCRIPT),obj:clone(SOLAR_OBJ),cats:colorCats(SOLAR_CATS),
+ script:clone(AGENCY_SCRIPT),obj:clone(AGENCY_OBJ),cats:colorCats(AGENCY_CATS),
  fields:clone(SOLAR_FIELDS),gates:clone(SOLAR_GATES),
  rules:{single:true,flat:true,owner:true,credit:true,unit:true}}}
 // Restores whichever shipped line is active, so Revert cannot load the wrong script.
@@ -2886,10 +2958,12 @@ function startSystemAudio(){SET.ai=true;SET.source='system';saveSet();applySetUI
 function renderLive(){liveBadges();const b=$('#liveBody');if(!b)return;
  if(!aiReady()){b.innerHTML='<div class="scroll"><div class="lv-gate"><div class="ic">🎙</div><b>Live transcription is optional</b>'+
   '<p>'+esc(aiWhy())+'</p><div class="row" style="justify-content:center"><button class="btn sun" id="btnAiSetup">⚡ Configure AI</button>'+
-  '<button class="btn grid" id="btnGateSystem">🖥 Listen to system audio</button></div>'+
+  '<button class="btn grid" id="btnGateSystem">🖥 Listen to system audio</button>'+
+  '<button class="btn mini" id="btnGateGuide">🧭 How to set this up</button></div>'+
   '<div class="offline">The script, objection dialpad, qualifiers, callbacks and alarms all work fully offline. Nothing leaves this browser unless you switch this on. System audio opens the browser picker — choose a tab, window or entire screen and tick <b>Share audio</b>.</div></div></div>';
   const g=$('#btnAiSetup');if(g)g.onclick=openAiSettings;
-  const gs=$('#btnGateSystem');if(gs)gs.onclick=startSystemAudio;return}
+  const gs=$('#btnGateSystem');if(gs)gs.onclick=startSystemAudio;
+  const gg=$('#btnGateGuide');if(gg)gg.onclick=liveGuide;return}
  b.innerHTML='<div class="lv-ctl"><button class="btn mini '+(AE.listening?'bad':'sun')+'" id="btnListen">'+(AE.listening?'■ Stop':'▶ Start listening')+'</button>'+
   '<button class="btn mini grid" id="btnSystemAudio" title="Pick a tab, window or entire screen — tick Share audio">🖥 System audio</button>'+
   '<button class="btn mini" id="btnLvClear">✕ Clear</button><span class="note" style="margin-left:auto">'+esc(SET.source==='browser'?'Browser mic':(SET.source==='system'?'System audio':'Mic'))+'</span></div>'+
@@ -3116,6 +3190,85 @@ function kofiDock(then){if(KOFI.ready){then(true);return}if(KOFI.failed){then(fa
 function setKofi(open){const d=$('#kofiDock'),b=$('#credit');if(!d||!b)return;
  d.hidden=!open;b.classList.toggle('on',open);b.setAttribute('aria-expanded',String(open));
  if(open)kofiDock(ok=>{if(!ok)toast('Ko-fi needs a connection — ko-fi.com/Gio_Celeste','warn')})}
+// Live-transcription setup guide: one HTML document, opened in a clean new tab
+// (popup blocked → the same document renders in an in-desk frame).
+const LIVE_GUIDE=['<!doctype html><html lang="en"><head><meta charset="utf-8">',
+'<meta name="viewport" content="width=device-width,initial-scale=1">',
+'<title>Call Assist \u2014 Live Transcription setup</title><style>',
+'body{margin:0;padding:28px 20px 60px;background:#0e1113;color:#efe8d6;',
+'font:15px/1.65 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}',
+'main{max-width:820px;margin:0 auto}h1{font-size:26px;margin:0 0 4px;letter-spacing:.01em}',
+'.sub{color:#9fb08f;margin:0 0 26px}.k{color:#e8b64c}h2{font-size:13px;letter-spacing:.16em;color:#a8c58f;',
+'margin:30px 0 8px;text-transform:uppercase}p,li{color:#d7d2c2}ul,ol{padding-left:1.2em}li{margin:.35em 0}',
+'code{background:#1b2118;border:1px solid #2c3a31;border-radius:6px;padding:1px 6px;color:#cfe6b8;font-size:13px}',
+'pre{background:#151b16;border:1px solid #2c3a31;border-radius:10px;padding:12px 14px;overflow:auto;',
+'color:#cfe6b8;font-size:13px;line-height:1.5}a{color:#6fd8de}table{border-collapse:collapse;width:100%;font-size:14px}',
+'th,td{text-align:left;padding:7px 9px;border-bottom:1px solid #2c3a31;vertical-align:top}th{color:#a8c58f;font-weight:600}',
+'.box{border:1px solid #3d5a3a;background:#152015;border-radius:12px;padding:14px 16px;margin:18px 0}',
+'.warn{border-color:#6b5324;background:#211a0e}}.</style></head><body><main>',
+'<h1>Live Transcription <span class="k">\u00b7</span> how to set this up</h1>',
+'<p class="sub">Optional. The desk dials, reads the script, fires objections, fills qualifiers, runs callbacks and alarms ',
+'with this switched <b>off</b>. Nothing here is required to work a list.</p>',
+'<div class="box"><b>What it does:</b> it turns the call into running text, then uses that text to surface the matching ',
+'spiel, auto-fill qualifiers and log what you heard into the checklist. Two engines have to agree: an <b>ear</b> ',
+'(speech-to-text) and, if you want suggested replies, a <b>brain</b> (a local language model).</div>',
+'<h2>1 \u00b7 Decide what the desk should hear</h2>',
+'<table><tr><th>Audio source</th><th>What it captures</th><th>Needs</th></tr>',
+'<tr><td><b>Browser mic (Web Speech)</b></td><td>Whatever your microphone hears \u2014 you, plus the prospect if you are on ',
+'speaker</td><td>Chrome or Edge. No install, no key.</td></tr>',
+'<tr><td><b>Mic \u2192 Local Whisper</b></td><td>Your microphone only, transcribed on your machine</td>',
+'<td>A Whisper STT server (below)</td></tr>',
+'<tr><td><b>System audio \u2192 Local Whisper</b></td><td>What your computer plays \u2014 the <b>prospect/lead side</b> of a ',
+'softphone or browser call. Your own mic is <b>not</b> captured in this mode.</td>',
+'<td>A Whisper STT server, plus granting the browser screen/tab share</td></tr></table>',
+'<div class="box warn">So the current behaviour is by design, not a bug: <b>System audio</b> gives you the prospect speaking ',
+'and will never show your lines. If you want both sides in one transcript, use <b>Browser mic</b> or <b>Mic \u2192 Local Whisper</b> ',
+'with the call on speaker, or run two sources for separate transcripts.</div>',
+'<h2>2 \u00b7 The ear \u2014 Whisper (STT)</h2>',
+'<p>Desk settings \u25b8 Live transcription has two fields: <code>Whisper STT base URL</code> (default ',
+'<code>http://localhost:8000/v1</code>) and <code>STT model</code> (default <code>whisper-1</code>). The desk posts audio ',
+'chunks to <code>&lt;base URL&gt;/audio/transcriptions</code> \u2014 the OpenAI request shape, so any server that speaks it works.</p>',
+'<h4>Local \u2014 private, free, fine on an 8GB rig</h4>',
+'<p>The easiest ear is <a target="_blank" rel="noopener" href="https://github.com/speaches-ai/speaches">Speaches</a>, ',
+'an OpenAI-compatible Whisper server. One Docker command and the desk\u0027s default URL works:',
+'<pre>docker run -p 8000:8000 ghcr.io/speaches-ai/speaches:latest-cpu</pre>',
+'<p>Smaller model, smaller latency: <code>whisper-tiny</code> or <code>whisper-base</code> inside the server, or the ',
+'<code>ggml-*.bin</code> models from <a target="_blank" rel="noopener" href="https://github.com/ggml-org/whisper.cpp">whisper.cpp</a>. ',
+'<code>tiny</code>/<code>base</code> run happily on an 8GB machine; <code>small</code>/<code>medium</code> want a GPU.</p>',
+'<h4>Hosted \u2014 no install</h4>',
+'<p>Point the base URL at <code>https://api.openai.com/v1</code>, set the model to <code>whisper-1</code>, and put your key in the ',
+'key field (<a target="_blank" rel="noopener" href="https://developers.openai.com/api/docs/guides/speech-to-text">speech-to-text docs</a>). ',
+'Audio leaves your machine when you use a hosted endpoint.</p>',
+'<h2>3 \u00b7 The brain \u2014 Ollama with phi4-mini</h2>',
+'<p><a target="_blank" rel="noopener" href="https://ollama.com/download">Install Ollama</a>, then pull a small model that fits ',
+'a low-budget rig: <a target="_blank" rel="noopener" href="https://ollama.com/library/phi4-mini">phi4-mini</a> is 3.8B / about ',
+'2.5GB on disk and answers on an 8GB GPU (CPU-only works, slower).</p>',
+'<pre>ollama pull phi4-mini\nollama serve   # usually already running as a service</pre>',
+'<p>In Desk settings: base URL <code>http://localhost:11434/v1</code>, model <code>phi4-mini</code>. Use the Test buttons to ',
+'check each half before you dial.</p>',
+'<h2>4 \u00b7 Switch it on and check</h2>',
+'<ol><li>Desk settings \u25b8 <b>Enable live transcription</b> \u2014 the call timer and verdict pills appear in the header once on.</li>',
+'<li>Pick the audio source, press <b>Test STT</b> (and <b>Test Brain</b>).</li>',
+'<li>Open the Live deck (\u23f5 or tap the rail) and press <b>Start listening</b>. For system audio, choose the call tab and tick ',
+'<b>Share tab audio</b>.</li><li>Watch the metric tiles (chunk / STT / match / E2E) \u2014 if STT is slow, use a smaller Whisper model.</li></ol>',
+'<div class="box">Privacy: with a localhost base URL, audio and transcript never leave this computer. The desk stores only your ',
+'own settings, and the campaign file you export contains no keys.</div>',
+'<p style="margin-top:26px"><a href="#" onclick="window.close();return false">Close this tab</a> \u00b7 the guide reopens any time ',
+'from the Live deck \u25b8 \u{1F9ED} How to set this up.</p>',
+'</main></body></html>'].join('');
+function liveGuidePanel(){const o=$('#liveGuide');if(!o)return;
+ const f=$('#liveGuideFrame');if(f&&!f.getAttribute('srcdoc'))f.srcdoc=LIVE_GUIDE;
+ o.hidden=false;SFX.play('open');setTimeout(()=>$('#btnLiveGuideClose').focus(),70)}
+function liveGuideClose(){const o=$('#liveGuide');if(!o||o.hidden)return;o.hidden=true;$('#btnLiveGuide').focus()}
+function liveGuide(){
+ // A Blob document keeps this offline and same-origin; plain window.open (no features) so we can
+ // tell a real block from a success, then detach opener so the new tab cannot reach back here.
+ try{const u=URL.createObjectURL(new Blob([LIVE_GUIDE],{type:'text/html'}));
+  const w=window.open(u,'_blank');
+  if(w){try{w.opener=null}catch(e){}setTimeout(()=>URL.revokeObjectURL(u),120000);return}
+  URL.revokeObjectURL(u)}catch(e){}
+ liveGuidePanel();toast('Browser blocked the new tab — opened the guide inside the desk','warn')}
+
 function workBadge(){const b=$('#btnSaveWork'),s=$('#workState');
  if(b)b.classList.toggle('attn',DIRTY);
  if(s){s.textContent=DIRTY?'unsaved to file':'file up to date';s.className='wstate'+(DIRTY?' warn':' ok')}
@@ -3344,7 +3497,7 @@ function applySetUI(){const s=SET;
  $('#tHover').checked=s.hoverSfx;$('#tType').checked=s.typeSfx;$('#tRipple').checked=s.ripple;
  $('#sfxSt').textContent=s.sfx?'ON':'MUTED';$('#btnSound').textContent=s.sfx?'🔔':'🔕';$('#btnSound').classList.toggle('on',s.sfx);
  $('#gSound').textContent=s.sfx?'🔔 SOUND ON':'🔕 MUTED';
- $('#tAI').checked=s.ai;$('#srcSelect').value=s.source;$('#chanSelect').value=s.channel;$('#langSelect').value=s.lang;
+ $('#tAI').checked=s.ai;document.body.classList.toggle('ai-live',!!s.ai);$('#srcSelect').value=s.source;$('#chanSelect').value=s.channel;$('#langSelect').value=s.lang;
  $('#sensRange').value=s.sens;$('#sensVal').textContent=(+s.sens).toFixed(2);$('#cdVal').textContent=(+s.cooldown).toFixed(1)+'s';
  $('#tAutoSpiel').checked=s.autoSpiel;$('#tAutoFill').checked=s.autoFill;$('#tSticky').checked=s.sticky;$('#tBrain').checked=s.brainOn;
  $('#readRange').value=s.readSize;$('#readVal').textContent=s.readSize+'px';$('#spacingSelect').value=s.spacing;
@@ -3507,6 +3660,10 @@ function bind(){const s=SET;
   toast((shipped?'Shipped script deleted':'Script deleted')+' — '+stash.name,'warn',
    {label:'Undo',fn:()=>{if(shipped)shipGone(stash.id,false);PROFILES.splice(Math.min(i,PROFILES.length),0,stash);
     saveProfiles();activate(stash.id);renderProfiles();toast('Restored '+stash.name,'ok')}})};
+ $('#btnLiveGuide').onclick=liveGuide;
+ $('#btnAiGuide').onclick=liveGuide;
+ $('#btnLiveGuideClose').onclick=liveGuideClose;
+ $('#liveGuide').onclick=e=>{if(e.target===$('#liveGuide'))liveGuideClose()};
  $('#btnIntro').onclick=()=>showIntro();
  $('#inDismiss').onclick=()=>hideIntro(true);
  $('#intro').onclick=e=>{if(e.target===$('#intro'))hideIntro(false)};
@@ -3762,6 +3919,7 @@ function bind(){const s=SET;
  document.addEventListener('keydown',e=>{const tg=(e.target.tagName||'').toLowerCase();
   const typing=tg==='input'||tg==='textarea'||e.target.isContentEditable;
   if(typing&&e.key.length===1)SFX.play('type');
+  if(!$('#liveGuide').hidden){if(e.key==='Escape'){e.preventDefault();SFX.play('cancel');liveGuideClose()}return}
   if(!$('#intro').hidden){if(e.key==='Escape'){e.preventDefault();SFX.play('cancel');hideIntro(true)}return}
   if(e.key==='F2'){e.preventDefault();SFX.play('confirm');newCall();return}
   if(e.key==='Escape'){if(U.drawer){closeDrawer();return}if(U.pfOpen){setPf(false);return}if(U.coOpen){setCo(false);return}}

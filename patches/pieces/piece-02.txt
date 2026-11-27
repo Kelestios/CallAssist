@@ -1,0 +1,20 @@
+-        <div class="yn"><button type="button" data-region="north">NorthBay</button><button type="button" data-region="south">SouthBay</button></div></div>
+-      <div class="cd-arow" data-addr="north"><div class="tag">NORTHBAY <span class="live">IN USE</span></div>
+-        <div class="row"><input type="text" id="coNorth"><button class="btn mini" data-cocopy="north">📋</button></div></div>
+-      <div class="cd-arow" data-addr="south"><div class="tag">SOUTHBAY <span class="live">IN USE</span></div>
+-        <div class="row"><input type="text" id="coSouth"><button class="btn mini" data-cocopy="south">📋</button></div></div>
++        <div class="yn" id="coChips"></div></div>
++      <div id="coSites"></div>
++
+@@ -1034,0 +1037,3 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
++      <div class="row wrap" style="margin-top:7px">
++        <button class="btn mini sun" id="btnCoAddSite">＋ Add service address</button>
++        <button class="btn mini" id="btnCoLabels">🏷 Rename designations</button></div>
+@@ -1129 +1133,0 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
+-            <button class="btn mini honey" id="btnFmtObjMd">⬇ Objections .md</button>
+@@ -1345 +1349 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
+-      <button class="btn mini" id="rawTabObj">⚡ Objections</button>
++      <button class="btn mini" id="rawTabObj">⚡ Objections .csv</button>
+@@ -1518,2 +1522,12 @@ let CO=Object.assign({name:'Norcal Energy Geeks',email:'hello@norcalenergygeeks.
+- north:'755 Southpoint Blvd, Petaluma CA',south:'1181 Cadillac Ct, Milpitas, CA',region:'north'},store.get('co',{}));
+-const saveCo=()=>store.set('co',CO);

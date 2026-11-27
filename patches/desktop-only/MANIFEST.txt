@@ -1,0 +1,12 @@
+Desktop-only patch, split into piece-01..piece-04 (cat in order = the patch).
+patch sha256 6126d8fed36710f9b223a8a861210fd5bc12edc1a69805758358c5bd1e2257fa
+patch blob   4ef0c9a8c97c5be97d4e5d88991d07695f2070ef   7070 bytes, 17 hunks, zero-context
+base   blob  5baced71f744e6333193a269f613570015685139  index.html on this branch (unchanged by these pieces)
+result blob  fdaa9c6518957bd00c2b5eef9bcdb3f9bc98ee41  316421 bytes
+sha256       ed37bf7c1e80631d3da7cd5d300b81672f66f5cb9c1780a93171f5d6793db5e2
+apply        cat patches/desktop-only/piece-0*.txt > desktop-only.patch
+             git apply --unidiff-zero desktop-only.patch
+verified     pieces fetched from this branch concatenate to the patch blob above, and
+             applying them to this branch's index.html yields the result blob byte-exactly.
+tests        62/62 desktop layout+storage checks at 1366x768, 1600x900, 1920x1080;
+             7/7 onboarding-gate flow checks; reduced-motion shows content; no JS errors.

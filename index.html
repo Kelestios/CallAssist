@@ -872,41 +872,6 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
   background:linear-gradient(135deg,var(--block),var(--warnbg));border:1px solid var(--honey);border-radius:999px;padding:3px 11px;transition:.16s}
 #credit:hover{background:var(--g-sun);color:var(--on-warm);transform:translateY(-1px)}
 @media (max-width:1599px){:root{--cfgW:276px;--rightW:344px}}
-@media (max-width:1279px){
-  #layout{z-index:auto} /* Let the side panels sit above the page scrim. */
-  #configPanel,#rightCol{position:fixed;top:var(--headH);bottom:0;z-index:75;width:min(370px,94vw);
-    background:var(--bg1);box-shadow:var(--shadow2);transition:transform .26s cubic-bezier(.2,.8,.25,1)}
-  #configPanel{left:0;border-right:1px solid var(--line2);transform:translateX(-105%)}
-  #rightCol{left:0;border-right:1px solid var(--line2);transform:translateX(-105%)}
-  #configPanel.open,#rightCol.open{transform:none}
-  .cd-grid,.pf-grid{grid-template-columns:minmax(0,1fr)}
-  #alarmBar{flex-wrap:wrap;bottom:14px}
-}
-@media (max-width:979px){
-  #center{flex-direction:column}
-  #scriptPane{flex:1 1 auto;min-height:0}
-  .deck{flex:0 0 42px;border-left:none;border-top:1px solid var(--line2)}
-  .deck.active{flex:0 0 var(--deck)}
-  .deck-rail{flex-direction:row;padding:0 14px;justify-content:center;gap:10px}
-  .deck-rail .vt{writing-mode:horizontal-tb;letter-spacing:.2em}
-  .deck-rail::before{left:0;right:0;top:0;bottom:auto;width:auto;height:3px}
-  #divider{flex:0 0 12px;cursor:row-resize}
-  #divider::before{width:46px;height:4px;background:repeating-linear-gradient(90deg,var(--leaf) 0 4px,transparent 4px 8px)}
-  #divider::after{content:"⇅";top:50%;left:calc(50% + 36px);transform:translateY(-50%)}
-  .cb-grid{grid-template-columns:1fr}
-  .gslots{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:900px){.btn .lbl{display:none}.brand small{display:none}.tb-btns{margin-left:0}.clock small{display:none}}
-@media (max-width:640px){
-  #topbar{padding:8px 9px;gap:6px}.pill{font-size:9px;padding:4px 8px}
-  #scriptScroll{padding:10px}.sc-head .idx{font-size:27px}
-  #keys .hs{display:none}.drawer{width:100vw}.clock b{font-size:12.5px}
-  .cb-top{flex-wrap:wrap}.pad{grid-template-columns:1fr}
-  #credit{font-size:9px;padding:3px 9px}.gtitle{font-size:28px}
-  #configTab{top:auto;bottom:58px;left:12px;transform:none;writing-mode:horizontal-tb;
-    border-radius:999px;padding:10px 15px;letter-spacing:.12em}
-  #configTab:hover{padding-right:15px}
-}
 /* Subtle active-state prompts; the existing reduced-motion rule disables them. */
 @keyframes activeStage{50%{transform:scale(1.10);box-shadow:0 0 0 5px var(--tint-leaf-h)}}
 @keyframes editNudge{50%{transform:rotate(-12deg) scale(1.18)}}
@@ -1420,7 +1385,8 @@ const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const fmtDur=s=>{s=Math.max(0,Math.floor(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?h+':'+pad(m)+':'+pad(x):pad(m)+':'+pad(x)};
 const ZONES={ET:'America/New_York',CT:'America/Chicago',MT:'America/Denver',PT:'America/Los_Angeles'};
 const tzOf=k=>k==='local'?undefined:ZONES[k]||ZONES.PT;
-const isNarrow=()=>innerWidth<1280,isStacked=()=>innerWidth<980;
+/* Desktop-only workspace: no phone/tablet layout modes. Side-by-side decks, left
+   qualifier rail, overlay-free panels, horizontal divider resizing. */
 const grad=(a,b)=>'linear-gradient(135deg,'+a+','+b+')';
 const THEMES={
  solar:{label:'Default (Solar Punk)',sub:'Verdant · honey · cream',sw:['#377a41','#e8b64c','#f3eddb']},
@@ -2028,7 +1994,7 @@ let S={stage:0,lead:store.get('lead',null)||{},ctx:store.get('ctx',{}),custom:st
  active:store.get('deck','obj')};
 FIELDS.forEach(f=>{if(f.k!=='datetime'&&S.lead[f.k]===undefined)S.lead[f.k]=''});
 if(!S.lead.date)S.lead.date='';if(!S.lead.time)S.lead.time='';
-let U={drawer:null,cfgOpen:!isNarrow(),rightOpen:!isNarrow(),qualOpen:true,coOpen:false,coLabels:false,pfOpen:false,heardOpen:true,
+let U={drawer:null,cfgOpen:true,rightOpen:true,qualOpen:true,coOpen:false,coLabels:false,pfOpen:false,heardOpen:true,
  nav:{level:'pad',cat:null,id:null},q:'',editScript:false,editObj:false,rawMode:'script',
  cbQ:'',cbFilter:'upcoming',cbSort:'soon',cbSel:new Set(),cbEdit:null,cbLead:null,cbCtx:null};
 let lastFire={},timerInt=null,undoCall=null,brainBusy=false,interimEl=null,hSeq=0,callStart=Date.now(),baseTitle=document.title;
@@ -2780,7 +2746,7 @@ function liveBadges(){const r=aiReady(),t=r?(AE.listening?'LIVE':'READY'):'OFF';
  $('#liveBadge').textContent=t;$('#liveBadge').className=cls;$('#liveBadge2').textContent=t;$('#liveBadge2').className=cls;
  $('#liveRail').classList.toggle('listening',AE.listening);
  const st=$('#liveStatus');if(st){st.className='pill '+(AE.listening?'live':'');st.querySelector('span:last-child').textContent=AE.listening?'LISTENING':(r?'READY':'OFF')}}
-function openAiSettings(){U.cfgOpen=true;if(isNarrow())U.rightOpen=false;applyLayout();
+function openAiSettings(){U.cfgOpen=true;applyLayout();
  setTimeout(()=>{const el=$('#aiSec');if(el)el.scrollIntoView({block:'start',behavior:'smooth'})},220)}
 function startSystemAudio(){SET.ai=true;SET.source='system';saveSet();applySetUI();
  if(!BRAIN.sttBase){toast('Set the Local Whisper STT base URL first — opening settings','warn');openAiSettings();return}
@@ -3001,6 +2967,7 @@ let DIRTY=false;
 function markDirty(k){if(DIRTY)return;if(['profiles','set','co','lead','ctx','gates','deck','views'].indexOf(String(k))<0)return;
  DIRTY=true;workBadge()}
 function clearDirty(){DIRTY=false;workBadge()}
+function armWorkTracking(){BOOTED=true;clearDirty()}
 function workBadge(){const b=$('#btnSaveWork'),s=$('#workState');
  if(b)b.classList.toggle('attn',DIRTY);
  if(s){s.textContent=DIRTY?'unsaved to file':'file up to date';s.className='wstate'+(DIRTY?' warn':' ok')}
@@ -3031,15 +2998,15 @@ function applyTheme(){const t=THEMES[SET.theme]?SET.theme:'solar';SET.theme=t;
  const pv=$('#themePrev');pv.querySelector('.tx').innerHTML='<b>'+esc(THEMES[t].label)+'</b><small>'+esc(THEMES[t].sub)+'</small>';
  pv.querySelectorAll('.sw i').forEach((el,i)=>el.style.background=THEMES[t].sw[i]);
  recolorCats()}
-function applyLayout(){const n=isNarrow();
+function applyLayout(){
  $('#configPanel').classList.toggle('open',U.cfgOpen);$('#rightCol').classList.toggle('open',U.rightOpen&&U.qualOpen);
- $('#configPanel').hidden=n?false:!U.cfgOpen;$('#rightCol').hidden=n?false:!(U.rightOpen&&U.qualOpen);
+ $('#configPanel').hidden=!U.cfgOpen;$('#rightCol').hidden=!(U.rightOpen&&U.qualOpen);
  $('#rightTab').hidden=U.rightOpen&&U.qualOpen;$('#rightCol').inert=!(U.rightOpen&&U.qualOpen);
  $('#btnQual').setAttribute('aria-expanded',String(U.rightOpen&&U.qualOpen));
  document.body.classList.toggle('cfg-closed',!U.cfgOpen);
  $('#btnCfg').classList.toggle('on',U.cfgOpen);$('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen);
  $('#btnCfgHide').textContent=U.cfgOpen?'◀ Hide':'▶ Show';
- $('#scrim').classList.toggle('show',!!U.drawer||(n&&(U.cfgOpen||U.rightOpen)));measure()}
+ $('#scrim').classList.toggle('show',!!U.drawer);measure()}
 function applyPanels(){$('#qualBody').hidden=!U.qualOpen;$('#qualCar').textContent=U.qualOpen?'◂':'▸';
  applyLayout();
  $('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen)}
@@ -3110,8 +3077,8 @@ function gAct(n){$$('.act').forEach(a=>a.classList.remove('on'));$('#act'+n).cla
  $('#gate .gbody').scrollTop=0;SFX.play('sweep')}
 function enterDesk(){const g=$('#gate');g.classList.add('leaving');SFX.play('enter');
  const f=document.createElement('div');f.id='cineflash';document.body.appendChild(f);
- setTimeout(()=>{g.hidden=true;const app=$('#app');app.classList.add('on','cine-in');BOOTED=true;
-  renderAll();setActive(isStacked()?null:(S.active||'obj'),true);measure();clearDirty();
+ setTimeout(()=>{g.hidden=true;const app=$('#app');app.classList.add('on','cine-in');
+  renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
   toast('Desk ready \u2014 '+P.name,'ok');setTimeout(()=>app.classList.remove('cine-in'),1250);f.remove()},820)}
 // One campaign file, shared by the gate and the desk. Never includes API keys.
 function fullProfile(altName){return{type:'gceleste-profile',version:1,exported:new Date().toISOString(),
@@ -3328,12 +3295,12 @@ function bind(){const s=SET;
   $('#dncBanner').classList.toggle('show',S.outcome==='dnc');$('#btnSetCb').hidden=S.outcome!=='callback';
   if(S.outcome==='set'){const a=assess();if(a.lv==='ready'){SFX.play('save');toast('Appointment set — all gates closed 🎉','ok')}else toast('Appointment set — '+a.lb,'warn')}});
  $('#btnSetCb').onclick=()=>{openDrawer('cb');openComposer(true,null)};
- $('#btnCfg').onclick=()=>{U.cfgOpen=!U.cfgOpen;if(isNarrow()&&U.cfgOpen)U.rightOpen=false;applyLayout()};
+ $('#btnCfg').onclick=()=>{U.cfgOpen=!U.cfgOpen;applyLayout()};
  $('#btnCfgHide').onclick=()=>{U.cfgOpen=!U.cfgOpen;applyLayout()};
- $('#configTab').onclick=()=>{U.cfgOpen=true;if(isNarrow())U.rightOpen=false;applyLayout()};
- $('#rightTab').onclick=()=>{U.rightOpen=true;U.qualOpen=true;if(isNarrow())U.cfgOpen=false;applyLayout();applyPanels()};
+ $('#configTab').onclick=()=>{U.cfgOpen=true;applyLayout()};
+ $('#rightTab').onclick=()=>{U.rightOpen=true;U.qualOpen=true;applyLayout();applyPanels()};
  $('#btnQual').onclick=()=>{U.rightOpen=!(U.rightOpen&&U.qualOpen);U.qualOpen=U.rightOpen;
-  if(isNarrow()&&U.rightOpen)U.cfgOpen=false;applyLayout();applyPanels()};
+  applyLayout();applyPanels()};
  $('#qualHead').onclick=e=>{if(e.target.closest('button'))return;U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnQualClose').onclick=e=>{e.stopPropagation();U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnFields').onclick=e=>{e.stopPropagation();openDrawer('field')};
@@ -3373,8 +3340,8 @@ function bind(){const s=SET;
  $('#btnCopyQual').onclick=()=>copyText(qualText());
  $('#btnQualCb').onclick=()=>{openDrawer('cb');openComposer(true,null)};
  $('#btnRef').onclick=()=>download('gceleste-reference.md',scriptToMd(SCRIPT)+'\n\n'+objToMd(OBJ,CATS),'text/markdown');
- $('#btnResetLayout').onclick=()=>{U.cfgOpen=!isNarrow();U.rightOpen=!isNarrow();U.qualOpen=true;
-  setActive(isStacked()?null:'obj',true);setDeckSize(50);s.readSize=17;s.spacing='comfortable';applySetUI();applyLayout();applyPanels()};
+ $('#btnResetLayout').onclick=()=>{U.cfgOpen=true;U.rightOpen=true;U.qualOpen=true;
+  setActive('obj',true);setDeckSize(50);s.readSize=17;s.spacing='comfortable';applySetUI();applyLayout();applyPanels()};
  $('#btnFmtScript').onclick=()=>{download('gceleste-SCRIPT-FORMAT.md',SCRIPT_TEMPLATE,'text/markdown');toast('Script format downloaded — read the header first','ok')};
  $('#btnFmtObj').onclick=()=>{download('gceleste-OBJECTIONS-FORMAT.csv',OBJ_CSV_TEMPLATE,'text/csv');toast('Objection CSV format downloaded','ok')};
  $('#btnCopyPrompt').onclick=()=>{copyText(GPT_PROMPT);toast('Prompt copied — paste it into ChatGPT with your script','ok')};
@@ -3439,7 +3406,7 @@ function bind(){const s=SET;
  $('#abSnooze').onclick=()=>{const c=Alarm.cur();Alarm.stop();if(c){c.alerted=false;c.snoozeUntil=Date.now()+3e5;saveCbs();renderCbs();toast('Snoozed 5 minutes','warn')}};
  $('#abOpen').onclick=()=>{const c=Alarm.cur();Alarm.stop();openDrawer('cb');if(c){U.cbQ=c.name||'';$('#cbSearch').value=U.cbQ}renderCbs()};
  $('#abDone').onclick=()=>{const c=Alarm.cur();Alarm.stop();if(c){c.status='done';saveCbs();renderCbs();toast('Marked called','ok')}};
- $('#scrim').onclick=()=>{if(U.drawer){closeDrawer();return}if(isNarrow()){U.cfgOpen=false;U.rightOpen=false;applyLayout()}};
+ $('#scrim').onclick=()=>{if(U.drawer)closeDrawer()};
  $$('[data-close]').forEach(b=>b.onclick=closeDrawer);
  $('#rawTabScript').onclick=()=>{U.rawMode='script';$('#rawTabScript').classList.add('on');$('#rawTabObj').classList.remove('on');loadRaw()};
  $('#rawTabObj').onclick=()=>{U.rawMode='obj';$('#rawTabObj').classList.add('on');$('#rawTabScript').classList.remove('on');loadRaw()};
@@ -3493,7 +3460,9 @@ function bind(){const s=SET;
  const dv=$('#divider');let drag=false;
  dv.addEventListener('pointerdown',e=>{drag=true;dv.classList.add('active');document.body.classList.add('dragging');try{dv.setPointerCapture(e.pointerId)}catch(x){}});
  dv.addEventListener('pointermove',e=>{if(!drag)return;const r=$('#center').getBoundingClientRect();
-  const p=isStacked()?((e.clientY-r.top)/r.height*100):((e.clientX-r.left)/r.width*100);setDeckSize(100-p,true)});
+  const gut=dv.getBoundingClientRect().width;
+  const rails=[].slice.call(document.querySelectorAll('.deck:not(.active)')).reduce(function(t,el){return t+el.getBoundingClientRect().width},0);
+  setDeckSize(Math.max(0,r.right-e.clientX-gut-rails)/r.width*100,true)});
  const end=e=>{if(!drag)return;drag=false;dv.classList.remove('active');document.body.classList.remove('dragging');
   try{dv.releasePointerCapture(e.pointerId)}catch(x){}saveSet()};
  dv.addEventListener('pointerup',end);dv.addEventListener('pointercancel',end);
@@ -3649,11 +3618,7 @@ function bind(){const s=SET;
   if(k==='r'){SFX.play('cancel');resumeCall();return}
   if(e.key==='ArrowRight'){SFX.play('sweep');goStage(S.stage+1)}
   else if(e.key==='ArrowLeft'){SFX.play('sweep');goStage(S.stage-1)}});
- let lastN=isNarrow(),lastS=isStacked();
- addEventListener('resize',()=>{const n=isNarrow(),st=isStacked();
-  if(n!==lastN){lastN=n;U.cfgOpen=!n;U.rightOpen=!n}
-  if(st!==lastS){lastS=st;if(st&&S.active)setActive(null,true)}
-  applyLayout();applyPanels();measure()});
+ addEventListener('resize',()=>{applyLayout();applyPanels();measure()});
  if(window.ResizeObserver)new ResizeObserver(measure).observe($('#head'));
  addEventListener('beforeunload',()=>{persist();saveLead();saveCtx();saveGates();saveSet();saveBrain();saveCo();saveCbs()});
  document.addEventListener('visibilitychange',()=>{if(!document.hidden){checkAlarms();tickClock();tickCb()}})}
@@ -3664,7 +3629,7 @@ renderCbs();renderTimer();rebuildTranscript();renderLive();applyLayout();applyPa
 $('#rawTabScript').classList.add('on');
 setInterval(heartbeat,1000);
 if(store.get('gateSeen',false)){
- $('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(isStacked()?null:(S.active||'obj'),true);measure();
+ $('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
  if(leadHasData())toast('Draft checklist restored','ok');
  if(pending().length)toast(pending().length+' callbacks armed — alarm '+SET.alarmLead+' min before','ok');
 }else{gAct(1)}

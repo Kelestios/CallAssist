@@ -1,0 +1,18 @@
++ north:'755 Southpoint Blvd, Petaluma CA',south:'1181 Cadillac Ct, Milpitas, CA',region:'0'},store.get('co',{}));
++// Service addresses belong to the campaign: any number of labelled sites.
++if(!Array.isArray(CO.sites)||!CO.sites.length)CO.sites=[{l:'NorthBay',v:CO.north||''},{l:'SouthBay',v:CO.south||''}];
++if(CO.region==='south')CO.region='1';else if(CO.region==='north')CO.region='0';
++const coSync=()=>{CO.sites=CO.sites.filter(s=>s&&typeof s==='object');
++ CO.sites.forEach((s,i)=>{if(i===0)CO.north=s.v;if(i===1)CO.south=s.v});
++ if(!CO.sites.length)CO.sites=[{l:'Site',v:''}];
++ CO.region=String(Math.max(0,Math.min(parseInt(CO.region,10)||0,CO.sites.length-1)));};
++const siteAddr=()=>{const s=CO.sites[parseInt(CO.region,10)||0];coSync();const t=CO.sites[parseInt(CO.region,10)||0];return t?(t.v||''):''};
++const siteLabel=()=>{const s=CO.sites[parseInt(CO.region,10)||0];return s&&s.l?s.l:('Site '+((parseInt(CO.region,10)||0)+1))};
++coSync();
++const saveCo=()=>{coSync();store.set('co',CO)};
+@@ -1987 +2001 @@ if(!S.lead.date)S.lead.date='';if(!S.lead.time)S.lead.time='';
+-let U={drawer:null,cfgOpen:!isNarrow(),rightOpen:!isNarrow(),qualOpen:true,coOpen:false,pfOpen:false,heardOpen:true,
++let U={drawer:null,cfgOpen:!isNarrow(),rightOpen:!isNarrow(),qualOpen:true,coOpen:false,coLabels:false,pfOpen:false,heardOpen:true,
+@@ -2232 +2246 @@ function deOCR(t){let n=0;
+-function normalize(t){return t.replace(/\r\n?/g,'\n').replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"')
++function normalize(t,fold){const e=t.replace(/\r\n?/g,'\n');return fold===false?e.replace(/\u00A0/g,' ').replace(/^\uFEFF/,''):e.replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"')

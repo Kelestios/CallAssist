@@ -1,0 +1,21 @@
+# CallAssist index.html change set — assembled by CI, verified before any write.
+schema = callassist-assembly/v1
+destination = index.html
+order = 1
+transport = base64(76-col, whitespace-immune) -> gzip -> git diff -U0
+
+file = change.patch.b64
+file_bytes = 7405
+file_lines = 97
+file_sha256 = 5e72d8b4bfedfa5a6f835aa5858219dc0a87ddf5580787ffa54a88afefb47a17
+
+decoded_gz_sha256 = 671b87b0d5b1229490f53c54e38878636b40143686b73cb72a833783f57f9827
+decoded_patch_bytes = 16752
+decoded_patch_sha256 = 2cc55b8f3b24bd090287798a053e80a06f436eefad4923d147c2b315a91fc674
+
+preimage_blob = b140340a5c5808c0c72710084d3f63d567b864d5
+expected_blob = ef87479871bcf994d17d83b86baa95280e04093a
+apply_flags = --check --unidiff-zero
+
+provenance = built in-sandbox from base.html(main) + out.html; CI simulation from a
+  pristine checkout of main reproduced expected_blob byte-for-byte before upload.

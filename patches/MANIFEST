@@ -1,59 +1,52 @@
-# CallAssist index.html change set — assembled by CI, verified before any write.
-schema = callassist-assembly/v2
+# CallAssist index.html change set — zero-context unified diff, split on whole lines.
+schema = callassist-assembly/v3
 destination = index.html
-transport = base64(76-col) split into ordered pieces -> gzip -> git diff -U0
+transport = ordered UTF-8 text pieces, whole-line boundaries, reassembled by filename order (piece NN)
 
 preimage_blob = b140340a5c5808c0c72710084d3f63d567b864d5
 expected_blob = ef87479871bcf994d17d83b86baa95280e04093a
 apply_flags = --check --unidiff-zero
 
-assembled_gz_sha256 = 671b87b0d5b1229490f53c54e38878636b40143686b73cb72a833783f57f9827
 assembled_patch_bytes = 16752
 assembled_patch_sha256 = 2cc55b8f3b24bd090287798a053e80a06f436eefad4923d147c2b315a91fc674
+piece_count = 8
 
-piece_count = 9
+piece = piece-01.txt
+piece_bytes = 2393
+piece_lines = 22
+piece_sha256 = 4845c4eb205ab345fcbedd8d8aaee4063463b708794e33113de739ed69983bb0
 
-piece = part-01.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = 0b88883060e446a412e4bd63a5ef480f0a46cae4309fdfca0b4836fd0e669417
+piece = piece-02.txt
+piece_bytes = 1705
+piece_lines = 22
+piece_sha256 = 12e4b3bff6b653659ef7ea43f32e3bbb56b1e8dfb51c189af6cc865c77b63627
 
-piece = part-02.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = 08ecd9c841368931dafdbabccb4a82183b5bf20564bccc1147f993d5a1f2b099
+piece = piece-03.txt
+piece_bytes = 2245
+piece_lines = 22
+piece_sha256 = 76c45fc7c40d24e25751eba4aafb94774d615577fae4687183c6218b793cbb0e
 
-piece = part-03.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = 62b15068d8c2e6101b20675e11b836a54d9fe206a406c3b6e5ecdf087efbbd70
+piece = piece-04.txt
+piece_bytes = 1748
+piece_lines = 22
+piece_sha256 = 969ec2b8608befb1bbb07f3e8f9b63729390fb0c821071cbcf79e1bf9dfaf823
 
-piece = part-04.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = 0ca29027050972e64aea26e6ab5064cae7a329cd2939400e67f866335536ba70
+piece = piece-05.txt
+piece_bytes = 2413
+piece_lines = 22
+piece_sha256 = bf6e33b4d6b29ce9b551d1fc0eceb7ff6b1072b952cdf41eefa548c5847c29d7
 
-piece = part-05.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = 60687c0b84fc0bfbca91865d20624d749e433884298cb7611ada175710fd253b
+piece = piece-06.txt
+piece_bytes = 1922
+piece_lines = 22
+piece_sha256 = 935208f66445fda0ecfed40f3165ee6f1e723a1319016c219946c082b21458ac
 
-piece = part-06.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = bfc60aed8d4aabaaa43c4b53b99fcd46e7b5cc95ef370598e39d58cbd6d7a066
+piece = piece-07.txt
+piece_bytes = 2220
+piece_lines = 22
+piece_sha256 = 38cca821ecc1963b6db9ba447694be9321ba5ebc1faa66b5b0e9e3c496128c14
 
-piece = part-07.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = c6620a0173fa90116b5fa21f1f4009087d5ad348d4e1729961dc59d9d7e46ded
-
-piece = part-08.b64
-piece_bytes = 924
-piece_lines = 12
-piece_sha256 = 97b23887d9b7219d6dcdd5b922133b9c83a9ad1e25d164d497aef9a8189e8b62
-
-piece = part-09.b64
-piece_bytes = 13
-piece_lines = 1
-piece_sha256 = 9e9e00254271389378f24dde82ddbf1b54fa9cdd3f48174340c4bc335fe11931
+piece = piece-08.txt
+piece_bytes = 2106
+piece_lines = 20
+piece_sha256 = 409597b2a156efd21f10c2c6bc8b1a8e3c15a0ce76a335b10700355db496ae63

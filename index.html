@@ -190,6 +190,55 @@ body.dragging{user-select:none;cursor:col-resize}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='150' height='150'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23n)'/%3E%3C/svg%3E")}
 #gate .vig{position:absolute;inset:0;background:radial-gradient(120% 85% at 50% 45%,transparent 42%,rgba(0,0,0,.62))}
 #gate .scan{position:absolute;inset:0;opacity:.05;background:repeating-linear-gradient(180deg,rgba(255,255,255,.5) 0 1px,transparent 1px 4px)}
+/* ── cinematic charcoal gate ─────────────────────────────────────────── */
+#gate{background:#0e1113;color:#efece3}
+#gate .horizon{background:radial-gradient(closest-side,rgba(94,158,110,.17),rgba(46,92,64,.10) 55%,transparent 78%);filter:blur(54px)}
+#gate .sun{background:radial-gradient(closest-side,rgba(226,183,96,.15),transparent 72%);filter:blur(68px)}
+#gate .vig{background:radial-gradient(112% 78% at 50% 42%,transparent 36%,rgba(2,3,4,.74))}
+#gate .grain{opacity:.10;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23g)' opacity='.6'/%3E%3C/svg%3E");
+ animation:grainDrift 5.4s steps(5) infinite}
+@keyframes grainDrift{0%{transform:translate3d(0,0,0)}20%{transform:translate3d(-2%,1%,0)}40%{transform:translate3d(1%,-2%,0)}
+ 60%{transform:translate3d(-1%,-1%,0)}80%{transform:translate3d(2%,1%,0)}100%{transform:translate3d(0,0,0)}}
+#gate .gweave{position:absolute;inset:0;pointer-events:none;opacity:.05;
+ background:repeating-linear-gradient(115deg,rgba(255,255,255,.18) 0 1px,transparent 1px 5px),
+            repeating-linear-gradient(65deg,rgba(0,0,0,.32) 0 1px,transparent 1px 6px)}
+#gate .gflare{position:absolute;left:-25%;right:-25%;top:38%;height:1px;pointer-events:none;opacity:.55;
+ background:linear-gradient(90deg,transparent,rgba(236,216,172,.62),transparent);animation:flarePan 11s ease-in-out infinite alternate}
+@keyframes flarePan{from{transform:translateY(-2.5vh) scaleX(.86);opacity:.28}to{transform:translateY(2.5vh) scaleX(1);opacity:.62}}
+#gate .cinebar{position:absolute;left:0;right:0;height:5.5vh;z-index:4;pointer-events:none;background:#000;
+ transition:transform .9s cubic-bezier(.4,0,.2,1),opacity .9s}
+#gate .cinebar.t{top:0;transform-origin:top;box-shadow:0 1px 0 rgba(226,183,96,.22);background:#000}
+#gate .cinebar.b{bottom:0;transform-origin:bottom}
+#gate.leaving .cinebar{transform:scaleY(0);opacity:0}
+#gate .gtitle{color:#f7f3e7}
+#gate .gkicker{color:rgba(226,183,96,.82)}
+#gate .gsub{color:rgba(239,236,227,.68)}
+#gate .gfoot{color:rgba(239,236,227,.5)}
+#gate .gpath{background:rgba(255,255,255,.035);border-color:rgba(232,226,208,.15)}
+#gate .gpath small{color:rgba(239,236,227,.55)}
+#gate .gdrop{border-color:rgba(232,226,208,.22);background:rgba(255,255,255,.025)}
+#gate .gslot{border-color:rgba(232,226,208,.16)}
+#gate .gbtn{color:rgba(239,236,227,.74);border-color:rgba(239,236,227,.22)}
+/* handoff: gate curtain -> desk reveal */
+#gate.leaving{opacity:0;transform:scale(1.06);filter:brightness(1.5) saturate(1.08)}
+#cineflash{position:fixed;inset:0;z-index:400;pointer-events:none;opacity:0;
+ background:radial-gradient(58% 44% at 50% 46%,rgba(255,246,222,.92),rgba(226,183,96,.24) 46%,transparent 74%);
+ animation:cineFlash 1.15s ease-out both}
+@keyframes cineFlash{0%{opacity:0}16%{opacity:.92}100%{opacity:0}}
+#app.cine-in{animation:cineReveal 1.15s cubic-bezier(.2,.7,.2,1) both}
+@keyframes cineReveal{0%{opacity:.1;transform:scale(1.04);filter:brightness(1.7) saturate(.7)}
+ 52%{opacity:1}100%{opacity:1;transform:none;filter:none}}
+/* Scripts & Profiles: display face + save-work attention */
+#profPill{font-family:Impact,Haettenschweiler,'Franklin Gothic Bold','Arial Narrow Bold',sans-serif;
+ letter-spacing:.045em;max-width:250px;font-size:13px;text-transform:none}
+#btnSaveWork{position:relative;overflow:hidden}
+#btnSaveWork.attn{border-color:var(--honey);box-shadow:0 0 0 0 rgba(214,148,32,.5);animation:saveAttn 2.1s ease-out infinite}
+#btnSaveWork.attn::after{content:"";position:absolute;inset:0;pointer-events:none;
+ background:linear-gradient(100deg,transparent 20%,rgba(255,255,255,.45),transparent 80%);animation:sweep 2.6s linear infinite}
+@keyframes saveAttn{0%{box-shadow:0 0 0 0 rgba(214,148,32,.45)}70%{box-shadow:0 0 0 9px rgba(214,148,32,0)}100%{box-shadow:0 0 0 0 rgba(214,148,32,0)}}
+@keyframes sweep{0%{transform:translateX(-110%)}60%{transform:translateX(110%)}100%{transform:translateX(110%)}}
+#btnUploadLast{border-color:var(--leaf2)}
 .gtop{position:relative;z-index:2;flex:none;display:flex;align-items:center;gap:10px;padding:16px 22px}
 .gtop .mk{display:flex;align-items:center;gap:9px;font-size:10px;letter-spacing:.3em;color:rgba(240,233,214,.5)}
 .gtop .mk i{width:7px;height:7px;border-radius:50%;background:#e8b64c;box-shadow:0 0 10px #e8b64c;font-style:normal}
@@ -302,7 +351,8 @@ body.dragging{user-select:none;cursor:col-resize}
 #verdictMini.ready{background:var(--g-leaf);color:var(--on-accent);border-color:transparent}
 #verdictMini.review{background:var(--warnbg);color:var(--amber);border-color:var(--honey)}
 #verdictMini.dq{background:var(--badbg);color:var(--brick);border-color:var(--terra2)}
-#profPill{cursor:pointer;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+#profPill{cursor:pointer;max-width:250px;overflow:hidden;text-overflow:ellipsis}
+#profPill #workDot{font-style:normal;color:var(--honey);margin-left:5px;font-size:12px}
 #profPill:hover{border-color:var(--leaf)}
 .tb-btns{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
 .btn{font-family:inherit;font-size:11px;letter-spacing:.035em;color:var(--ink);cursor:pointer;background:var(--surf2);
@@ -331,7 +381,14 @@ body:not(.co-open) #btnCompany{color:#fff}body:not(.co-open) #btnCompany .lbl{co
 #companyDrop,#profDrop{max-height:0;overflow:hidden;transition:max-height .3s cubic-bezier(.2,.8,.25,1);
   background:linear-gradient(180deg,var(--block),var(--surf2));border-bottom:1px solid var(--line)}
 body.co-open #companyDrop{max-height:min(46vh,420px)}
-body.pf-open #profDrop{max-height:min(46vh,400px)}
+body.pf-open #profDrop{max-height:min(52vh,440px)}
+.wf-actions{display:flex;gap:10px;margin-top:11px;flex-wrap:wrap}
+.wf-actions #btnSaveWork{flex:1;min-width:150px;justify-content:center;font-weight:bold;letter-spacing:.06em;padding:11px 14px}
+.wf-actions #btnUploadLast{flex:1;min-width:130px;justify-content:center;padding:11px 14px}
+.wline{display:flex;flex-direction:column;gap:3px;margin:9px 0 0}
+.wstate{font-size:9.5px;font-weight:bold;letter-spacing:.12em;text-transform:uppercase}
+.wstate.ok{color:var(--leaf)}.wstate.warn{color:var(--honey)}
+.wnote{font-size:9.5px;color:var(--mut);line-height:1.6}
 .cd-grid{display:grid;grid-template-columns:minmax(230px,1.05fr) minmax(250px,1.3fr) minmax(190px,.85fr);gap:14px;
   padding:13px 16px;max-height:min(46vh,420px);overflow-y:auto}
 .cd-title{font-size:9.5px;letter-spacing:.22em;color:var(--amber);display:flex;align-items:center;gap:8px;margin-bottom:9px}
@@ -815,41 +872,6 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
   background:linear-gradient(135deg,var(--block),var(--warnbg));border:1px solid var(--honey);border-radius:999px;padding:3px 11px;transition:.16s}
 #credit:hover{background:var(--g-sun);color:var(--on-warm);transform:translateY(-1px)}
 @media (max-width:1599px){:root{--cfgW:276px;--rightW:344px}}
-@media (max-width:1279px){
-  #layout{z-index:auto} /* Let the side panels sit above the page scrim. */
-  #configPanel,#rightCol{position:fixed;top:var(--headH);bottom:0;z-index:75;width:min(370px,94vw);
-    background:var(--bg1);box-shadow:var(--shadow2);transition:transform .26s cubic-bezier(.2,.8,.25,1)}
-  #configPanel{left:0;border-right:1px solid var(--line2);transform:translateX(-105%)}
-  #rightCol{left:0;border-right:1px solid var(--line2);transform:translateX(-105%)}
-  #configPanel.open,#rightCol.open{transform:none}
-  .cd-grid,.pf-grid{grid-template-columns:minmax(0,1fr)}
-  #alarmBar{flex-wrap:wrap;bottom:14px}
-}
-@media (max-width:979px){
-  #center{flex-direction:column}
-  #scriptPane{flex:1 1 auto;min-height:0}
-  .deck{flex:0 0 42px;border-left:none;border-top:1px solid var(--line2)}
-  .deck.active{flex:0 0 var(--deck)}
-  .deck-rail{flex-direction:row;padding:0 14px;justify-content:center;gap:10px}
-  .deck-rail .vt{writing-mode:horizontal-tb;letter-spacing:.2em}
-  .deck-rail::before{left:0;right:0;top:0;bottom:auto;width:auto;height:3px}
-  #divider{flex:0 0 12px;cursor:row-resize}
-  #divider::before{width:46px;height:4px;background:repeating-linear-gradient(90deg,var(--leaf) 0 4px,transparent 4px 8px)}
-  #divider::after{content:"⇅";top:50%;left:calc(50% + 36px);transform:translateY(-50%)}
-  .cb-grid{grid-template-columns:1fr}
-  .gslots{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:900px){.btn .lbl{display:none}.brand small{display:none}.tb-btns{margin-left:0}.clock small{display:none}}
-@media (max-width:640px){
-  #topbar{padding:8px 9px;gap:6px}.pill{font-size:9px;padding:4px 8px}
-  #scriptScroll{padding:10px}.sc-head .idx{font-size:27px}
-  #keys .hs{display:none}.drawer{width:100vw}.clock b{font-size:12.5px}
-  .cb-top{flex-wrap:wrap}.pad{grid-template-columns:1fr}
-  #credit{font-size:9px;padding:3px 9px}.gtitle{font-size:28px}
-  #configTab{top:auto;bottom:58px;left:12px;transform:none;writing-mode:horizontal-tb;
-    border-radius:999px;padding:10px 15px;letter-spacing:.12em}
-  #configTab:hover{padding-right:15px}
-}
 /* Subtle active-state prompts; the existing reduced-motion rule disables them. */
 @keyframes activeStage{50%{transform:scale(1.10);box-shadow:0 0 0 5px var(--tint-leaf-h)}}
 @keyframes editNudge{50%{transform:rotate(-12deg) scale(1.18)}}
@@ -858,6 +880,16 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 .edit-icon{display:inline-block}
 #btnEdit.on .edit-icon,[data-objdone] .edit-icon{animation:editNudge 1.5s ease-in-out infinite}
 [data-objdone],body.editing #edDone{animation:savePrompt 1.8s ease-in-out infinite}
+/* reduce-motion must not hide content: the gate's entrance relies on animation
+   fill-state, so pin the settled values explicitly */
+@media (prefers-reduced-motion:reduce){
+  #gate .act>*{opacity:1!important;transform:none!important}
+  #gate .gline{transform:scaleX(1)!important}
+  #gate .grain,#gate .gflare{animation:none!important}
+  #gate .cinebar{transform:none!important;opacity:1!important}
+  #cineflash{display:none!important}
+  #app.cine-in{animation:none!important;opacity:1!important;transform:none!important;filter:none!important}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -865,7 +897,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 <div id="bg"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grain"></div><div class="vig"></div></div>
 
 <div id="gate">
-  <div class="gbg"><div class="horizon"></div><div class="sun"></div><div class="scan"></div><div class="grain"></div><div class="vig"></div></div>
+  <div class="gbg"><div class="horizon"></div><div class="sun"></div><div class="scan"></div><div class="gweave"></div><div class="gflare"></div><div class="grain"></div><div class="vig"></div></div><i class="cinebar t"></i><i class="cinebar b"></i>
   <div class="gtop">
     <div class="mk"><i></i>GCELESTE SOLAR ASSIST</div>
     <div class="sp">
@@ -885,83 +917,48 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
           <small>Nine stages, forty-plus objections, qualifiers and alarms — already loaded. Start dialing in one click.</small>
         </button>
         <button class="gpath" id="pathCustom" style="--pc:#e8b64c">
-          <span class="em">⬆</span><b>Load my own script</b>
-          <small>Bring a Markdown script and an objection sheet. The desk parses them, previews every issue, then becomes yours.</small>
+          <span class="em">📦</span><b>Load my campaign file</b>
+          <small>One — your campaign .json, exported by <b>Save Work</b>. The desk rebuilds the assembly line, objections, qualifiers, sound and service addresses from it.</small>
         </button>
       </div>
       <div class="gfoot">
-        <button class="glink" id="gFmt1">Download the format first</button>
+        <button class="glink" id="gFmt1">⬇ Example campaign .json</button>
         <button class="glink" id="gPrompt1">Copy the ChatGPT conversion prompt</button>
-        <span>Best results: download the template, then shape your script into it.</span>
+        <span>Coming back on another machine? Save Work writes one file; Upload Last reads it back.</span>
       </div>
     </section>
 
     <section class="act" id="act2">
       <div class="gstep"><span class="n on">1</span><span class="bar"></span><span class="n">2</span><span class="bar"></span><span class="n">3</span></div>
-      <div class="gkicker">STEP ONE · THE SCRIPT</div>
-      <h1 class="gtitle" style="font-size:clamp(24px,4vw,36px)">Nine stages,<br>one file.</h1>
-      <div class="gdrop" id="dropScript">
-        <span class="em">📄</span><b>Drop your script .md or .txt here</b>
-        <small>or click to choose a file · or paste below</small>
-        <input type="file" id="fileScript" accept=".md,.txt,.markdown,text/plain" hidden>
+      <div class="gkicker">STEP ONE · YOUR CAMPAIGN FILE</div>
+      <h1 class="gtitle" style="font-size:clamp(24px,4vw,36px)">One file.<br>Everything loaded.</h1>
+      <div class="gdrop" id="dropProf">
+        <span class="em">📦</span><b>Drop your campaign .json here</b>
+        <small>or click to choose a file · exported by <b>Save Work</b> · script, objections, qualifiers, gates, sound and service addresses</small>
+        <input type="file" id="fileProfGate" accept=".json,application/json" hidden>
       </div>
-      <textarea class="gta" id="taScript" placeholder="## 01 HOOK — Opening&#10;NEXT: Confirm the homeowner, then continue.&#10;COACH: Notice first, no product yet.&#10;&gt; Hi, is this [NAME]? My name is [AGENT] — did you get the notice sent to [ADDRESS]? {{WAIT}}&#10;- ✅ IF YES :: Okay, perfect.&#10;- ❌ IF NO :: Ah, got it — is the homeowner around?&#10;  NOTE: Owner must live in the home."></textarea>
+      <div class="gstats" id="profStats"></div>
       <div class="gslots" id="slotGrid"></div>
-      <div class="gstats" id="scriptStats"></div>
-      <div class="gerr" id="scriptErr"></div>
-      <div class="gnote"><b>Read the format first.</b> One <code>##</code> per stage. <code>&gt;</code> for a spoken line. <code>- LABEL :: reply</code> for a branch. Tokens stay in <code>[BRACKETS]</code>. Never paste a raw OCR'd PDF — clean the broken spacing first, or use the cleanup toggle below.</div>
+      <div class="gerr" id="profErr"></div>
+      <div class="gdrop" style="cursor:default;text-align:left;border-style:solid;margin-top:14px">
+        <span class="lbl" style="color:rgba(239,236,227,.5)">CAMPAIGN NAME ON THE DESK</span>
+        <input type="text" id="profName" placeholder="My campaign" style="background:rgba(0,0,0,.32);border-color:rgba(239,236,227,.2);color:#efece3;width:100%">
+      </div>
+      <p class="gnote"><b>Only .json here.</b> A <b>.md</b> script or <b>.csv</b> objection sheet still loads inside the desk — open ✎ Raw .md from the assembly line after you enter.</p>
       <div class="gacts">
-        <button class="gbtn" id="gFmt2">⬇ Script format</button>
-        <button class="gbtn" id="gPrompt2">📋 ChatGPT prompt</button>
-        <label class="gbtn" style="display:inline-flex;gap:7px;align-items:center;cursor:pointer"><input type="checkbox" id="deocr" style="accent-color:#e8b64c">Clean OCR spacing</label>
-        <button class="gbig" id="toStep2" disabled>NEXT → OBJECTIONS</button>
+        <button class="gbig" id="toStep2" disabled>NEXT → CONFIRM</button>
         <button class="gbtn" id="back1">← BACK</button>
       </div>
     </section>
-
     <section class="act" id="act3">
       <div class="gstep"><span class="n done">✓</span><span class="bar"></span><span class="n on">2</span><span class="bar"></span><span class="n">3</span></div>
-      <div class="gkicker">STEP TWO · THE OBJECTIONS</div>
-      <h1 class="gtitle" style="font-size:clamp(24px,4vw,36px)">Every pushback,<br>filed and colour-coded.</h1>
-      <div class="gdrop" id="dropObj">
-        <span class="em">⚡</span><b>Drop objections .md or .csv</b>
-        <small>Markdown with categories, or a CSV export from Sheets</small>
-        <input type="file" id="fileObj" accept=".md,.txt,.csv,text/plain,text/csv" hidden>
-      </div>
-      <textarea class="gta" id="taObj" placeholder="## 🏠 ROOF &amp; INSTALL&#10;### 🕳️ I don't want holes in my roof.&#10;CUES: holes in my roof | drill holes | mess up my roof&#10;&gt; Yeah, I get that — I wouldn't want somebody messing up my roof either.&#10;NEXT: Note the concern, ask roof type, resume."></textarea>
-      <div class="gstats" id="objStats"></div>
-      <div class="gerr" id="objErr"></div>
-      <div class="gnote"><b>Cues drive live matching.</b> Without them the desk can still show the reply, but it cannot surface it automatically from a call. Missing cues are auto-derived from the title and marked as weaker.</div>
-      <div class="gacts">
-        <button class="gbtn" id="gFmt3">⬇ Objection format</button>
-        <button class="gbtn" id="gKeepObj">Use the built-in objections</button>
-        <button class="gbig" id="toStep3" disabled>NEXT → REVIEW</button>
-        <button class="gbtn" id="back2">← BACK</button>
-      </div>
-    </section>
-
-    <section class="act" id="act4">
-      <div class="gstep"><span class="n done">✓</span><span class="bar"></span><span class="n done">✓</span><span class="bar"></span><span class="n on">3</span></div>
-      <div class="gkicker">STEP THREE · REVIEW</div>
-      <h1 class="gtitle" style="font-size:clamp(24px,4vw,36px)">Name it.<br>Then dial.</h1>
-      <div class="gdrop" style="cursor:default;text-align:left;border-style:solid">
-        <span class="lbl" style="color:rgba(240,233,214,.5)">PROFILE NAME</span>
-        <input type="text" id="profName" placeholder="Norcal Solar — Nov campaign" style="background:rgba(0,0,0,.3);border-color:rgba(240,233,214,.2);color:#f0e9d6">
-        <div class="row" style="margin-top:10px;gap:10px;flex-wrap:wrap">
-          <div style="flex:1;min-width:150px"><span class="lbl" style="color:rgba(240,233,214,.5)">AGENT NAME ON CALLS</span>
-            <input type="text" id="profAgent" value="Joe" style="background:rgba(0,0,0,.3);border-color:rgba(240,233,214,.2);color:#f0e9d6"></div>
-          <div style="flex:1;min-width:150px"><span class="lbl" style="color:rgba(240,233,214,.5)">BILL THRESHOLD</span>
-            <input type="number" id="profTh" value="150" style="background:rgba(0,0,0,.3);border-color:rgba(240,233,214,.2);color:#f0e9d6"></div>
-        </div>
-        <div style="margin-top:12px;font-size:10.5px;color:rgba(240,233,214,.55);line-height:1.7">
-          Hard disqualifiers start <b style="color:#e8b64c">off</b> for a custom line so the verdict never invents rules your campaign does not have. Turn on only what applies, in Desk settings → Campaign rules.
-        </div>
-      </div>
+      <div class="gkicker">STEP TWO · CONFIRM</div>
+      <h1 class="gtitle" style="font-size:clamp(24px,4vw,36px)">Check the numbers.<br>Then dial.</h1>
       <div class="gstats" id="reviewStats"></div>
       <div class="gerr" id="reviewErr"></div>
       <div class="gacts">
         <button class="gbig leaf" id="enterCustom">ENTER THE DESK →</button>
-        <button class="gbtn" id="back3">← BACK</button>
+        <button class="gbtn" id="back2">← BACK</button>
       </div>
     </section>
   </div>
@@ -978,7 +975,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
       <small><span class="dd" id="dialDot"></span><span id="clockDate">—</span> · <span id="clockLocal">--:--</span> yours</small></div>
     <select id="clockZone" aria-label="Displayed time zone"><option value="ET">ET</option><option value="CT">CT</option><option value="MT">MT</option><option value="PT" selected>PT</option><option value="local">MY TZ</option></select>
   </div>
-  <span class="pill" id="profPill" title="Switch profile">📜 <span id="profName2">Scripts</span></span>
+  <span class="pill" id="profPill" title="Scripts & profiles — save or load your campaign file">📜 <span id="profName2">Scripts and Profiles</span><i id="workDot" hidden>●</i></span>
   <span class="pill" id="timerMini">⏸ 00:00</span>
   <span class="pill" id="verdictMini">IN PROGRESS</span>
   <div class="tb-btns">
@@ -996,26 +993,23 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 
 <section id="profDrop">
   <div class="pf-grid">
-    <div><div class="cd-title">PROFILES</div><div class="pf-list" id="pfList"></div>
+    <div><div class="cd-title">CAMPAIGNS ON THIS DEVICE</div><div class="pf-list" id="pfList"></div>
       <div class="row wrap" style="margin-top:9px">
-        <button class="btn mini sun" id="btnPfNew">Load your custom script</button>
-        <button class="btn mini sun" id="btnPfSave">💾 Save this profile locally</button>
-        <button class="btn mini" id="btnPfDup">⧉ Duplicate active</button>
-        <button class="btn mini bad" id="btnPfDel">Delete active</button>
+        <button class="btn mini ghost" id="btnPfNew">⬆ Start from the loader</button>
+        <button class="btn mini" id="btnPfDup">⧉ Duplicate</button>
+        <button class="btn mini bad" id="btnPfDel">Delete</button>
       </div>
     </div>
-    <div><div class="cd-title">EXPORT &amp; RAW EDITOR</div>
+    <div><div class="cd-title">WORK FILE</div>
       <div class="cd-read" id="pfRead"></div>
-      <div class="row wrap" style="margin-top:9px">
-        <button class="btn mini" id="btnPfMd">⬇ Script .md</button>
-        <button class="btn mini" id="btnPfCsv">⬇ Objections .csv</button>
-        <button class="btn mini sun" id="btnPfJson">⬇ Full profile .json</button>
-        <button class="btn mini sun" id="btnPfImp">⬆ Import profile .json</button>
-        <input type="file" id="fileProf" accept=".json,application/json" hidden>
-        <button class="btn mini warn" id="btnRaw">✎ Raw Markdown editor</button>
-        <button class="btn mini ghost" id="btnPfClose">▴ Close</button>
+      <div class="wf-actions">
+        <button class="btn sun" id="btnSaveWork">💾 SAVE WORK</button>
+        <button class="btn" id="btnUploadLast">⬆ UPLOAD LAST</button>
       </div>
-      <p class="note" style="margin-top:8px">One file holds the whole campaign: <b>Full profile .json</b> carries your edited assembly line, the objections desk, qualifiers, gates and service addresses — <b>Import profile .json</b> puts all of it back on another machine. Commit a profile beside your deployment to version your line.</p>
+      <p class="wline"><span class="wstate ok" id="workState">file up to date</span>
+        <span class="wnote">One file: assembly line, objections, qualifiers, gates, service addresses and sound. Never includes AI keys.</span></p>
+      <input type="file" id="fileProf" accept=".json,application/json" hidden>
+      <div class="row wrap" style="margin-top:2px"><button class="btn mini ghost" id="btnPfClose">▴ Close</button></div>
     </div>
   </div>
 </section>
@@ -1391,7 +1385,8 @@ const uid=p=>p+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
 const fmtDur=s=>{s=Math.max(0,Math.floor(s));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return h?h+':'+pad(m)+':'+pad(x):pad(m)+':'+pad(x)};
 const ZONES={ET:'America/New_York',CT:'America/Chicago',MT:'America/Denver',PT:'America/Los_Angeles'};
 const tzOf=k=>k==='local'?undefined:ZONES[k]||ZONES.PT;
-const isNarrow=()=>innerWidth<1280,isStacked=()=>innerWidth<980;
+/* Desktop-only workspace: no phone/tablet layout modes. Side-by-side decks, left
+   qualifier rail, overlay-free panels, horizontal divider resizing. */
 const grad=(a,b)=>'linear-gradient(135deg,'+a+','+b+')';
 const THEMES={
  solar:{label:'Default (Solar Punk)',sub:'Verdant · honey · cream',sw:['#377a41','#e8b64c','#f3eddb']},
@@ -1512,8 +1507,9 @@ const SETDEF={theme:'solar',threshold:150,campZone:'PT',clockZone:'PT',agent:'Jo
  sfx:true,sfxVol:65,sfxPack:'default',hoverSfx:false,typeSfx:true,ripple:true,ai:false,source:'browser',channel:'customer',lang:'en-US',
  sens:.45,cooldown:2.5,autoSpiel:true,autoFill:true,sticky:true,brainOn:false,readSize:17,spacing:'comfortable',
  deck:50,coach:true,tapLog:true,autoLog:true};
+let BOOTED=false;
 const store={get(k,f){try{const v=localStorage.getItem('gceleste.v24.'+k);return v?JSON.parse(v):f}catch(e){return f}},
- set(k,v){try{localStorage.setItem('gceleste.v24.'+k,JSON.stringify(v))}catch(e){}}};
+ set(k,v){try{localStorage.setItem('gceleste.v24.'+k,JSON.stringify(v));if(BOOTED)markDirty(k)}catch(e){}}};
 let SET=Object.assign({},SETDEF,store.get('set',{}));
 if(!THEMES[SET.theme])SET.theme='solar';
 if(SET.sfxPack!=='sw')SET.sfxPack='default';
@@ -1998,7 +1994,7 @@ let S={stage:0,lead:store.get('lead',null)||{},ctx:store.get('ctx',{}),custom:st
  active:store.get('deck','obj')};
 FIELDS.forEach(f=>{if(f.k!=='datetime'&&S.lead[f.k]===undefined)S.lead[f.k]=''});
 if(!S.lead.date)S.lead.date='';if(!S.lead.time)S.lead.time='';
-let U={drawer:null,cfgOpen:!isNarrow(),rightOpen:!isNarrow(),qualOpen:true,coOpen:false,coLabels:false,pfOpen:false,heardOpen:true,
+let U={drawer:null,cfgOpen:true,rightOpen:true,qualOpen:true,coOpen:false,coLabels:false,pfOpen:false,heardOpen:true,
  nav:{level:'pad',cat:null,id:null},q:'',editScript:false,editObj:false,rawMode:'script',
  cbQ:'',cbFilter:'upcoming',cbSort:'soon',cbSel:new Set(),cbEdit:null,cbLead:null,cbCtx:null};
 let lastFire={},timerInt=null,undoCall=null,brainBusy=false,interimEl=null,hSeq=0,callStart=Date.now(),baseTitle=document.title;
@@ -2750,7 +2746,7 @@ function liveBadges(){const r=aiReady(),t=r?(AE.listening?'LIVE':'READY'):'OFF';
  $('#liveBadge').textContent=t;$('#liveBadge').className=cls;$('#liveBadge2').textContent=t;$('#liveBadge2').className=cls;
  $('#liveRail').classList.toggle('listening',AE.listening);
  const st=$('#liveStatus');if(st){st.className='pill '+(AE.listening?'live':'');st.querySelector('span:last-child').textContent=AE.listening?'LISTENING':(r?'READY':'OFF')}}
-function openAiSettings(){U.cfgOpen=true;if(isNarrow())U.rightOpen=false;applyLayout();
+function openAiSettings(){U.cfgOpen=true;applyLayout();
  setTimeout(()=>{const el=$('#aiSec');if(el)el.scrollIntoView({block:'start',behavior:'smooth'})},220)}
 function startSystemAudio(){SET.ai=true;SET.source='system';saveSet();applySetUI();
  if(!BRAIN.sttBase){toast('Set the Local Whisper STT base URL first — opening settings','warn');openAiSettings();return}
@@ -2966,27 +2962,34 @@ function renderProfiles(){$('#profPill').title='Switch script — active: '+P.na
  $('#pfRead').innerHTML='<b>'+esc(P.name)+'</b><br>'+P.script.length+' stages · '+P.obj.length+' replies · '+Object.keys(P.cats).length+' categories<br>'+
   FIELDS.length+' qualifier fields · '+GATES.length+' gates<br>Hard DQs: '+(Object.keys(RULES).filter(k=>RULES[k]).join(', ')||'none — advisory only')}
 function setCo(o){U.coOpen=o;document.body.classList.toggle('co-open',o);$('#btnCompany').classList.toggle('on',o);if(o){U.pfOpen=false;document.body.classList.remove('pf-open')}measure()}
-function importProfileJson(text,srcName){let j=null;try{j=JSON.parse(text)}catch(e){toast('That file is not valid JSON','bad');return}
- if(!j||typeof j!=='object'||!Array.isArray(j.script)||!j.script.length){toast('No script stages in that profile file','bad');return}
- const obj=Array.isArray(j.obj)?j.obj.filter(o=>o&&o.title&&Array.isArray(o.say)&&o.say.length):[];
- const prev=activeId,stash=clone(CO);
- const p={id:uid('p'),name:String(j.name||srcName||'Imported profile').slice(0,48),kind:'custom',em:j.em||'📁',
-  script:clone(j.script),obj:obj,
-  cats:colorCats(j.cats&&Object.keys(j.cats).length?clone(j.cats):clone(SOLAR_CATS)),
-  fields:Array.isArray(j.fields)&&j.fields.length?clone(j.fields):clone(SOLAR_FIELDS),
-  gates:Array.isArray(j.gates)&&j.gates.length?clone(j.gates):clone(SOLAR_GATES),
-  rules:Object.assign({single:false,flat:false,owner:false,credit:false,unit:false},j.rules||{})};
- PROFILES.push(p);saveProfiles();
- if(j.company){['name','email','phone'].forEach(k=>{if(typeof j.company[k]==='string')CO[k]=j.company[k]});
-  if(Array.isArray(j.company.sites)&&j.company.sites.length)
-   CO.sites=j.company.sites.map(s=>({l:String((s&&s.l)||'').slice(0,28),v:String((s&&s.v)||'')})).filter(s=>s.l||s.v);
-  if(j.company.region!==undefined)CO.region=String(j.company.region);
-  coSync();saveCo()}
- activate(p.id);renderCo();renderAll();
- toast('Imported '+p.name+' \u2014 '+p.script.length+(p.script.length===1?' stage':' stages')+', '+obj.length+(obj.length===1?' reply':' replies'),'ok',
-  {label:'Undo',fn:()=>{const i=PROFILES.findIndex(x=>x.id===p.id);if(i>=0)PROFILES.splice(i,1);
-   Object.keys(CO).forEach(k=>delete CO[k]);Object.assign(CO,stash);coSync();saveCo();
-   saveProfiles();activate(prev&&PROFILES.some(x=>x.id===prev)?prev:'agency');renderCo();renderAll();toast('Import undone','warn')}})}
+
+let DIRTY=false;
+function markDirty(k){if(DIRTY)return;if(['profiles','set','co','lead','ctx','gates','deck','views'].indexOf(String(k))<0)return;
+ DIRTY=true;workBadge()}
+function clearDirty(){DIRTY=false;workBadge()}
+function armWorkTracking(){BOOTED=true;clearDirty()}
+function workBadge(){const b=$('#btnSaveWork'),s=$('#workState');
+ if(b)b.classList.toggle('attn',DIRTY);
+ if(s){s.textContent=DIRTY?'unsaved to file':'file up to date';s.className='wstate'+(DIRTY?' warn':' ok')}
+ const d=$('#workDot');if(d)d.hidden=!DIRTY}
+function saveWork(){persist();saveLead();saveCtx();saveGates();saveSet();saveCo();saveCbs();
+ const nm=(P.name||'campaign').replace(/\W+/g,'-').slice(0,40);
+ download('callassist-'+nm+'-'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(fullProfile(),null,2),'application/json');
+ clearDirty();SFX.play('save');
+ toast('Saved — '+nm+'.json holds script, objections, qualifiers, addresses and sound','ok')}
+function importCampaign(text,fname){let j=null;try{j=JSON.parse(text)}catch(e){toast('That file is not valid JSON','bad');return}
+ const s=sanitizeProfile(j,fname);
+ if(s.err){toast(s.err,'bad');return}
+ const p=s.p,prevId=activeId,stashP=clone(P),stashCO=clone(CO),stashSET=clone(SET);
+ const prof={id:uid('p'),name:p.name,kind:'custom',em:p.em,script:p.script,obj:p.obj,cats:colorCats(p.cats),
+  fields:p.fields,gates:p.gates,rules:p.rules};
+ PROFILES.push(prof);saveProfiles();CO_FROM(p.company);if(p.settings)SET_FROM(p.settings);
+ activate(prof.id);renderAll();clearDirty();
+ toast('Loaded '+p.name+(s.warn.length?' · '+s.warn.join(', '):''),'ok',
+  {label:'Undo',fn:()=>{const i=PROFILES.findIndex(x=>x.id===prof.id);if(i>=0)PROFILES.splice(i,1);
+   Object.keys(CO).forEach(k=>delete CO[k]);Object.assign(CO,stashCO);coSync();saveCo();
+   Object.keys(SET).forEach(k=>delete SET[k]);Object.assign(SET,stashSET);saveSet();
+   saveProfiles();activate(PROFILES.some(x=>x.id===prevId)?prevId:'agency');renderCo();renderAll();toast('Load undone','warn')}})}
 function setPf(o){U.pfOpen=o;document.body.classList.toggle('pf-open',o);$('#profPill').classList.toggle('on',o);if(o){U.coOpen=false;document.body.classList.remove('co-open');renderProfiles()}measure()}
 function applyTheme(){const t=THEMES[SET.theme]?SET.theme:'solar';SET.theme=t;
  document.body.dataset.theme=t;
@@ -2995,15 +2998,15 @@ function applyTheme(){const t=THEMES[SET.theme]?SET.theme:'solar';SET.theme=t;
  const pv=$('#themePrev');pv.querySelector('.tx').innerHTML='<b>'+esc(THEMES[t].label)+'</b><small>'+esc(THEMES[t].sub)+'</small>';
  pv.querySelectorAll('.sw i').forEach((el,i)=>el.style.background=THEMES[t].sw[i]);
  recolorCats()}
-function applyLayout(){const n=isNarrow();
+function applyLayout(){
  $('#configPanel').classList.toggle('open',U.cfgOpen);$('#rightCol').classList.toggle('open',U.rightOpen&&U.qualOpen);
- $('#configPanel').hidden=n?false:!U.cfgOpen;$('#rightCol').hidden=n?false:!(U.rightOpen&&U.qualOpen);
+ $('#configPanel').hidden=!U.cfgOpen;$('#rightCol').hidden=!(U.rightOpen&&U.qualOpen);
  $('#rightTab').hidden=U.rightOpen&&U.qualOpen;$('#rightCol').inert=!(U.rightOpen&&U.qualOpen);
  $('#btnQual').setAttribute('aria-expanded',String(U.rightOpen&&U.qualOpen));
  document.body.classList.toggle('cfg-closed',!U.cfgOpen);
  $('#btnCfg').classList.toggle('on',U.cfgOpen);$('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen);
  $('#btnCfgHide').textContent=U.cfgOpen?'◀ Hide':'▶ Show';
- $('#scrim').classList.toggle('show',!!U.drawer||(n&&(U.cfgOpen||U.rightOpen)));measure()}
+ $('#scrim').classList.toggle('show',!!U.drawer);measure()}
 function applyPanels(){$('#qualBody').hidden=!U.qualOpen;$('#qualCar').textContent=U.qualOpen?'◂':'▸';
  applyLayout();
  $('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen)}
@@ -3069,64 +3072,118 @@ function rawPreview(){const t=$('#rawTa').value,opts={deocr:$('#rawDeocr').check
    '<span class="cb-stat"><b>'+r.objs.filter(o=>o.autoCues).length+'</b> auto-cues</span>';
   $('#rawErr').innerHTML=r.issues.map(i=>'<div><span class="t '+(i.l==='e'?'e':'w')+'">'+(i.l==='e'?'ERROR':'NOTE')+'</span>'+esc(i.t)+'</div>').join('')}}
 
-const G={script:null,obj:null,cats:null,keepObj:false};
+const G={prof:null,file:''};
 function gAct(n){$$('.act').forEach(a=>a.classList.remove('on'));$('#act'+n).classList.add('on');
  $('#gate .gbody').scrollTop=0;SFX.play('sweep')}
-function slotPreview(){const el=$('#slotGrid');if(!G.script){el.innerHTML='';return}
- el.innerHTML=G.script.stages.slice(0,12).map((s,i)=>'<div class="gslot ok"><b>'+pad(i+1)+' '+esc(s.short)+'</b><span>'+esc(s.title)+'</span></div>').join('')
-  +(G.script.stages.length>12?'<div class="gslot"><b>+'+(G.script.stages.length-12)+'</b><span>more stages</span></div>':'')}
+function enterDesk(){const g=$('#gate');g.classList.add('leaving');SFX.play('enter');
+ const f=document.createElement('div');f.id='cineflash';document.body.appendChild(f);
+ setTimeout(()=>{g.hidden=true;const app=$('#app');app.classList.add('on','cine-in');
+  renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
+  toast('Desk ready \u2014 '+P.name,'ok');setTimeout(()=>app.classList.remove('cine-in'),1250);f.remove()},820)}
+// One campaign file, shared by the gate and the desk. Never includes API keys.
+function fullProfile(altName){return{type:'gceleste-profile',version:1,exported:new Date().toISOString(),
+ name:String(altName||P.name||'Campaign').slice(0,48),kind:P.kind||'custom',em:P.em||'\U0001F4C1',
+ script:clone(P.script),obj:clone(P.obj),cats:clone(P.cats),fields:clone(P.fields),gates:clone(P.gates),rules:clone(RULES),
+ company:{name:CO.name,email:CO.email,phone:CO.phone,region:CO.region,sites:clone(CO.sites)},
+ settings:{theme:SET.theme,threshold:SET.threshold,agent:SET.agent,campZone:SET.campZone,clockZone:SET.clockZone,cbZone:SET.cbZone,
+  alarmOn:SET.alarmOn,alarmLead:SET.alarmLead,alarmVol:SET.alarmVol,sfx:SET.sfx,sfxVol:SET.sfxVol,sfxPack:SET.sfxPack,
+  hoverSfx:SET.hoverSfx,typeSfx:SET.typeSfx,ripple:SET.ripple,deck:SET.deck,coach:SET.coach,tapLog:SET.tapLog,autoLog:SET.autoLog,
+  readSize:SET.readSize,spacing:SET.spacing,autoSpiel:SET.autoSpiel,autoFill:SET.autoFill,sticky:SET.sticky},
+ views:clone(store.get('views',[]))}}
+function sanitizeProfile(j,fallback){const warn=[],issues=[];
+ if(!j||typeof j!=='object'||Array.isArray(j))return{err:'Not a campaign file (expected one JSON object).'};
+ const raw=Array.isArray(j.script)?j.script.filter(s=>s&&typeof s==='object'):[];
+ if(!raw.length)return{err:'No script stages in this file \u2014 export again with Save Work.'};
+ const script=clone(raw);
+ script.forEach((s,i)=>{if(!Array.isArray(s.blocks)||!s.blocks.length){issues.push({l:'w',t:'Stage '+(i+1)+' has no blocks \u2014 one blank block added.'});s.blocks=[{lines:[],branches:[]}]}
+  if(!s.short)s.short='STAGE'+pad(i+1);if(!s.title)s.title=String(s.short);
+  s.blocks.forEach(b=>{if(!Array.isArray(b.lines))b.lines=[];
+   b.lines=b.lines.map(l=>typeof l==='string'?{t:l,cue:''}:(l&&typeof l==='object')?{t:String(l.t==null?'':l.t),cue:String(l.cue||'')}:{t:'',cue:''}).filter(l=>l.t.trim());
+   if(!Array.isArray(b.branches))b.branches=[];
+   b.branches.forEach(br=>{if(!Array.isArray(br.say))br.say=br.say?[String(br.say)]:[];br.say=br.say.map(String).filter(Boolean);
+    if(!br.label)br.label=String(br.k||'alt').toUpperCase()})})});
+ const empty=script.filter(s=>!s.blocks.some(b=>(b.lines||[]).length||(b.branches||[]).length));
+ if(empty.length)warn.push(empty.length+' empty stage'+(empty.length>1?'s':''));
+ const obj=(Array.isArray(j.obj)?j.obj:[]).filter(o=>o&&typeof o==='object'&&o.title&&Array.isArray(o.say)&&o.say.filter(Boolean).length)
+  .map(o=>Object.assign({id:uid('o'),cat:'general',em:'\U0001F4AC',cues:[],kw:[],branches:[],next:''},o,{say:o.say.map(String).filter(Boolean)}));
+ if(!obj.length)warn.push('no objections');
+ let cats=(j.cats&&typeof j.cats==='object'&&Object.keys(j.cats).length)?clone(j.cats):clone(SOLAR_CATS);
+ Object.keys(cats).forEach(k=>{const c=cats[k];if(!c||typeof c!=='object'){delete cats[k];return}if(!c.name)c.name=String(k).toUpperCase();if(!c.em)c.em='\U0001F4CC'});
+ obj.forEach(o=>{if(!cats[o.cat]){const k=o.cat||'general';cats[k]={em:'\U0001F4CC',name:String(k).toUpperCase(),sub:''};
+  issues.push({l:'w',t:'Objections referenced "'+k+'" \u2014 category created.'})}});
+ const fields=(Array.isArray(j.fields)&&j.fields.filter(f=>f&&f.k&&f.l).length)?j.fields.filter(f=>f&&f.k&&f.l).map(f=>Object.assign({k:String(f.k),l:String(f.l||f.k),req:false,type:'text',ph:''},f))
+  :clone(SOLAR_FIELDS);
+ if(fields===j.fields)warn.push('fields copied');
+ const gates=(Array.isArray(j.gates)&&j.gates.filter(g=>g&&g.k).length)?j.gates.filter(g=>g&&g.k):clone(SOLAR_GATES);
+ const RD={single:false,flat:false,owner:false,credit:false,unit:false};
+ const rules=Object.assign({},RD,j.rules&&typeof j.rules==='object'?j.rules:{});
+ Object.keys(RD).forEach(k=>{rules[k]=!!rules[k]});
+ const src=j.company&&typeof j.company==='object'?j.company:{};
+ const sites=(Array.isArray(src.sites)&&src.sites.length)
+  ? src.sites.map(s=>({l:String((s&&s.l)||'').slice(0,28),v:String((s&&s.v)||'')})).filter(s=>s.l||s.v)
+  : [{l:'NorthBay',v:String(src.north||CO.north||'')},{l:'SouthBay',v:String(src.south||CO.south||'')}];
+ const company={name:String(src.name||CO.name||''),email:String(src.email||CO.email||''),phone:String(src.phone||CO.phone||''),
+  region:String(Math.max(0,Math.min(parseInt(src.region,10)||0,sites.length-1))),sites:sites.slice(0,6)};
+ const st=j.settings&&typeof j.settings==='object'?j.settings:null;
+ return{p:{name:String(j.name||fallback||'Imported campaign').slice(0,48),em:String(j.em||'\U0001F4C1').slice(0,4),
+  script:script,obj:obj,cats:cats,fields:fields,gates:gates,rules:rules,company:company,settings:st,issues:issues},warn:warn}}
+function CO_FROM(c){if(!c)return;
+ ['name','email','phone'].forEach(k=>{if(typeof c[k]==='string')CO[k]=c[k]});
+ if(Array.isArray(c.sites)&&c.sites.length){CO.sites=c.sites.map(s=>({l:String((s&&s.l)||'').slice(0,28),v:String((s&&s.v)||'')})).filter(s=>s.l||s.v);
+  if(c.region!==undefined)CO.region=String(c.region)}
+ coSync();saveCo()}
+function SET_FROM(s){if(!s)return;
+ const N=['threshold','alarmLead','alarmVol','sfxVol','deck','readSize','cooldown','sens'],B=['alarmOn','sfx','hoverSfx','typeSfx','ripple','ai','autoSpiel','autoFill','sticky','coach','tapLog','autoLog','brainOn'];
+ N.forEach(k=>{if(s[k]!==undefined&&isFinite(+s[k]))SET[k]=+s[k]});
+ B.forEach(k=>{if(s[k]!==undefined)SET[k]=!!s[k]});
+ ['agent','campZone','clockZone','cbZone','source','channel','lang','spacing'].forEach(k=>{if(typeof s[k]==='string'&&s[k])SET[k]=s[k]});
+ if(s.theme&&THEMES[s.theme])SET.theme=s.theme;
+ if(s.sfxPack==='sw'||s.sfxPack==='default')SET.sfxPack=s.sfxPack;
+ saveSet();applyTheme();applySetUI()}
+function slotPreview(){const el=$('#slotGrid');if(!G.prof){el.innerHTML='';return}
+ const st=G.prof.script;
+ el.innerHTML=st.slice(0,12).map((s,i)=>'<div class="gslot ok"><b>'+pad(i+1)+' '+esc(s.short||'STAGE')+'</b><span>'+esc(s.title||'')+'</span></div>').join('')
+  +(st.length>12?'<div class="gslot"><b>+'+(st.length-12)+'</b><span>more stages</span></div>':'')}
 function statHTML(pairs){return pairs.map(p=>'<span class="gstat'+(p[2]?' '+p[2]:'')+'"><b>'+p[1]+'</b> '+p[0]+'</span>').join('')}
 function errHTML(iss){return iss.slice(0,14).map(i=>'<div><span class="t '+(i.l==='e'?'e':'w')+'">'+(i.l==='e'?'ERROR':'NOTE')+'</span>'+esc(i.t)+'</div>').join('')
- +(iss.length>14?'<div>…and '+(iss.length-14)+' more</div>':'')}
-function previewScript(){const raw=$('#taScript').value;
- if(!raw.trim()){G.script=null;$('#scriptStats').innerHTML='';$('#scriptErr').innerHTML='';$('#slotGrid').innerHTML='';$('#toStep2').disabled=true;return}
- const r=parseScript(raw,{deocr:$('#deocr').checked});G.script=r;
- const lines=r.stages.reduce((a,s)=>a+s.blocks.reduce((x,b)=>x+(b.lines||[]).length,0),0);
- const branches=r.stages.reduce((a,s)=>a+s.blocks.reduce((x,b)=>x+(b.branches||[]).length,0),0);
- const uk=unknownTokens(r.stages);
- $('#scriptStats').innerHTML=statHTML([['stages',r.stages.length],['spoken lines',lines],['branches',branches],
-  ['spacing fixes',r.deocrN],['errors',r.issues.filter(i=>i.l==='e').length,r.issues.some(i=>i.l==='e')?'bad':'']]);
- $('#scriptErr').innerHTML=errHTML(r.issues)+(uk.length?'<div><span class="t w">TOKEN</span>These become editable context chips: '+esc(uk.join(', '))+'</div>':'');
- slotPreview();$('#toStep2').disabled=!r.stages.length||!lines}
-function previewObj(){const raw=$('#taObj').value;
- if(!raw.trim()){G.obj=null;$('#objStats').innerHTML='';$('#objErr').innerHTML='';$('#toStep3').disabled=!G.keepObj;return}
- const first=raw.split('\n').filter(l=>l.trim()&&!l.startsWith('#'))[0]||'';
- const isCsv=first.split(',').length>=4&&!/^>/.test(first);
- const r=isCsv?parseObjCsv(raw):parseObjMd(raw,{deocr:$('#deocr').checked});
- G.obj=r.objs;G.cats=r.cats;G.keepObj=false;
- $('#objStats').innerHTML=statHTML([['replies',r.objs.length],['categories',Object.keys(r.cats).length],
-  ['auto-cues',r.objs.filter(o=>o.autoCues).length,r.objs.some(o=>o.autoCues)?'warn':''],
-  ['errors',r.issues.filter(i=>i.l==='e').length,r.issues.some(i=>i.l==='e')?'bad':'']]);
- $('#objErr').innerHTML=errHTML(r.issues);$('#toStep3').disabled=!r.objs.length}
-function reviewGate(){const s=G.script,o=G.keepObj?SOLAR_OBJ:G.obj;
- $('#reviewStats').innerHTML=statHTML([['stages',s?s.stages.length:0],['replies',o?o.length:0],
-  ['categories',G.keepObj?8:Object.keys(G.cats||{}).length],['fields',SOLAR_FIELDS.length]]);
- const uk=s?unknownTokens(s.stages):[];
- $('#reviewErr').innerHTML=(uk.length?'<div><span class="t w">TOKEN</span>Custom tokens ready as context chips: '+esc(uk.join(', '))+'</div>':'')
-  +'<div><span class="t w">RULES</span>Hard disqualifiers start off. Enable only what your campaign enforces, in Desk settings.</div>';
- if(!$('#profName').value)$('#profName').value='My line — '+new Date().toLocaleDateString()}
-function enterDesk(){$('#gate').classList.add('leaving');SFX.play('enter');
- setTimeout(()=>{$('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(isStacked()?null:(S.active||'obj'),true);measure();
-  toast('Desk ready — '+P.name,'ok')},820)}
-function loadCustom(){
- const name=$('#profName').value.trim()||'My line';
- const cats=G.keepObj?colorCats(SOLAR_CATS):colorCats(G.cats||{});
- const objs=G.keepObj?clone(SOLAR_OBJ):clone(G.obj||[]);
- objs.forEach(o=>{if(!cats[o.cat]){const p=palFor()[Object.keys(cats).length%8];
-  cats[o.cat]={em:'📌',name:String(o.cat).toUpperCase(),sub:'',c:p[0],cd:p[1],bg:p[2],g:grad(p[3],p[0])}}});
- const p={id:uid('p'),name,kind:'custom',em:'📁',script:clone(G.script.stages),obj:objs,cats,
-  fields:clone(SOLAR_FIELDS),gates:clone(SOLAR_GATES),rules:{single:false,flat:false,owner:false,credit:false,unit:false}};
- PROFILES.push(p);SET.agent=$('#profAgent').value.trim()||'Joe';
- const th=parseInt($('#profTh').value,10);SET.threshold=isNaN(th)?150:th;saveSet();
- activate(p.id);store.set('gateSeen',true);enterDesk()}
+ +(iss.length>14?'<div>\u2026and '+(iss.length-14)+' more</div>':'')}
+function profStage(text,fname){let j=null;
+ try{j=JSON.parse(text)}catch(e){G.prof=null;$('#profStats').innerHTML='';$('#profErr').innerHTML='<div><span class="t e">ERROR</span>'+esc(fname||'That file')+' is not valid JSON.</div>';
+  $('#slotGrid').innerHTML='';$('#toStep2').disabled=true;return}
+ const s=sanitizeProfile(j,fname);
+ if(s.err){G.prof=null;$('#profStats').innerHTML='';$('#profErr').innerHTML='<div><span class="t e">ERROR</span>'+esc(s.err)+'</div>';
+  $('#slotGrid').innerHTML='';$('#toStep2').disabled=true;return}
+ G.prof=s.p;G.file=fname||s.p.name;
+ $('#profName').value=$('#profName').value.trim()||s.p.name;
+ $('#profStats').innerHTML=statHTML([['stages',s.p.script.length],['replies',s.p.obj.length],['categories',Object.keys(s.p.cats).length],
+  ['fields',s.p.fields.length],['gates',s.p.gates.length],['sites',(s.p.company&&s.p.company.sites?s.p.company.sites.length:0)]].concat(s.warn.map(w=>[w,0,'warn'])));
+ $('#profErr').innerHTML=errHTML(s.issues||[]);slotPreview();$('#toStep2').disabled=false;
+ toast('Campaign read \u2014 '+s.p.name,'ok')}
+function profReview(){const p=G.prof;if(!p)return;
+ const c=p.company||{},sg=c.sites||[];
+ $('#reviewStats').innerHTML=statHTML([['stages',p.script.length],['replies',p.obj.length],['categories',Object.keys(p.cats).length],
+  ['fields',p.fields.length],['hard DQs',Object.keys(p.rules||{}).filter(k=>p.rules[k]).length],
+  ['service addresses',sg.length],['sound',(p.settings&&p.settings.sfxPack==='sw')?'Star Wars':'Default']]);
+ $('#reviewErr').innerHTML='<div><span class="t w">NAME</span>Renaming here only labels the desk copy \u2014 the file keeps its own name.</div>'
+  +(sg.length?'<div><span class="t w">ADDRESSES</span>'+esc(sg.map(s=>(s.l||'site')+' \u2192 '+(s.v||'\u2014')).join(' \u00b7 '))+'</div>':'')+
+  ((p.issues&&p.issues.length)?errHTML(p.issues):'')}
+function profCommit(){const p=G.prof;if(!p){toast('Load a campaign file first','bad');return}
+ const name=$('#profName').value.trim()||p.name;
+ const prof={id:uid('p'),name:name.slice(0,48),kind:'custom',em:p.em||'\U0001F4C1',
+  script:p.script,obj:p.obj,cats:colorCats(p.cats),fields:p.fields,gates:p.gates,rules:p.rules};
+ if(p.company)CO_FROM(p.company);
+ if(p.settings)SET_FROM(p.settings);
+ PROFILES.push(prof);saveProfiles();clearDirty();
+ activate(prof.id);applySetUI();renderAll();store.set('gateSeen',true);enterDesk()}
 function readFile(file,cb){const r=new FileReader();r.onload=()=>cb(String(r.result||''));r.readAsText(file)}
-function wireDrop(zoneId,inputId,taId,after){const z=$(zoneId),inp=$(inputId);
+function wireFile(zoneId,inputId,onText){const z=$(zoneId),inp=$(inputId);
+ if(!z||!inp)return;
  z.onclick=()=>inp.click();
- inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)readFile(f,t=>{$(taId).value=t;after();toast('Loaded '+f.name,'ok')})};
+ inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)readFile(f,t=>onText(t,f.name));inp.value=''};
  ['dragenter','dragover'].forEach(ev=>z.addEventListener(ev,e=>{e.preventDefault();z.classList.add('hot')}));
  ['dragleave','drop'].forEach(ev=>z.addEventListener(ev,e=>{e.preventDefault();z.classList.remove('hot')}));
  z.addEventListener('drop',e=>{const f=e.dataTransfer.files&&e.dataTransfer.files[0];
-  if(f)readFile(f,t=>{$(taId).value=t;after();toast('Loaded '+f.name,'ok')})})}
+  if(f)readFile(f,t=>onText(t,f.name))})}
 
 function applySetUI(){const s=SET;
  $('#thSelect').value=String(s.threshold);$('#thLabel').textContent=s.threshold?'$'+s.threshold:'none';
@@ -3155,9 +3212,9 @@ function applySetUI(){const s=SET;
 
 const HIT='button,a,input,select,textarea,summary,[role="button"],[role="checkbox"],[data-copy],[data-openobj],[data-nav-cat],[data-nav-home],[data-nav-back],[data-stage],[data-nav],[data-gate],[data-yn],[data-check-q],[data-focus],[data-focus-q],[data-region],[data-cocopy],[data-sfx],[data-spiel],[data-pin],[data-concern],[data-cbq],[data-cbsel],[data-cbdone],[data-cbreopen],[data-cbload],[data-cbedit],[data-cbrearm],[data-cbdel],[data-view],[data-delview],[data-delconcern],[data-tc],[data-close],[data-qual-jump],[data-hfield],[data-hrevert],[data-pfactivate],[data-flddel],[data-addline],[data-delline],[data-addcue],[data-addbranch],[data-delbranch],[data-addsay],[data-delsay],[data-addblock],[data-delblock],[data-addstage],[data-delstage],[data-addphrase],[data-objdone],[data-addobj],[data-oaddsay],[data-odelsay],[data-odelobj],.sline,.osay,.branch-head,.obr-h,.padtile,.orow,.rchip,.pivot,.bankchip,.qcheck,.grow,.deck-rail,.viewchip,.ctxchip,.conchip,.sfxc,.cbq,.tgl,.gpath,.gdrop,.glink,.gbtn,#divider,#qualHead,#profPill,#themeSelect2';
 const BADSEL='.btn.bad,[data-cbdel],[data-delconcern],[data-delview],[data-hrevert],[data-delline],[data-delbranch],[data-delsay],[data-delblock],[data-delstage],[data-odelsay],[data-odelobj],[data-flddel],#btnClearQual,#btnCbDelSel,#btnCbClearDone,#btnCbClearSamples,#btnStopAlarm,#abStop,#btnPfDel,#edRevert';
-const CANCELSEL='[data-close],#btnDeckClose,#btnDeckCollapse,#btnLiveClose,#btnLiveCollapse,#btnCoClose,#btnPfClose,#btnCbCancel,#btnQualClose,[data-spiel="dismiss"],#btnCfgHide,#back1,#back2,#back3,#gSkip';
+const CANCELSEL='[data-close],#btnDeckClose,#btnDeckCollapse,#btnLiveClose,#btnLiveCollapse,#btnCoClose,#btnPfClose,#btnCbCancel,#btnQualClose,[data-spiel="dismiss"],#btnCfgHide,#back1,#back2,#gSkip';
 const OKSEL='.btn.sun,.btn.grid,.btn.honey,.gbig,#btnCbSave,#btnViewOk,[data-cbdone],[data-spiel="done"],#abDone,#btnConfirmFilled,#btnTestAlarm,#rawApply,#edDone,#btnFieldsReset,#btnSystemAudio,#btnGateSystem';
-const NAVSEL='[data-stage],[data-nav],[data-nav-cat],[data-openobj],.padtile,.orow,.pivot,.rchip,[data-nav-home],[data-nav-back],#toStep2,#toStep3';
+const NAVSEL='[data-stage],[data-nav],[data-nav-cat],[data-openobj],.padtile,.orow,.pivot,.rchip,[data-nav-home],[data-nav-back],#toStep2';
 const TOGSEL='[data-yn],[data-gate],[data-check-q],.tgl,[data-region],.grow,.qcheck';
 function onPointer(e){if(e.button!=null&&e.button!==0)return;const t=e.target;if(!t||!t.closest)return;SFX.resume();
  const el=t.closest(HIT);
@@ -3238,12 +3295,12 @@ function bind(){const s=SET;
   $('#dncBanner').classList.toggle('show',S.outcome==='dnc');$('#btnSetCb').hidden=S.outcome!=='callback';
   if(S.outcome==='set'){const a=assess();if(a.lv==='ready'){SFX.play('save');toast('Appointment set — all gates closed 🎉','ok')}else toast('Appointment set — '+a.lb,'warn')}});
  $('#btnSetCb').onclick=()=>{openDrawer('cb');openComposer(true,null)};
- $('#btnCfg').onclick=()=>{U.cfgOpen=!U.cfgOpen;if(isNarrow()&&U.cfgOpen)U.rightOpen=false;applyLayout()};
+ $('#btnCfg').onclick=()=>{U.cfgOpen=!U.cfgOpen;applyLayout()};
  $('#btnCfgHide').onclick=()=>{U.cfgOpen=!U.cfgOpen;applyLayout()};
- $('#configTab').onclick=()=>{U.cfgOpen=true;if(isNarrow())U.rightOpen=false;applyLayout()};
- $('#rightTab').onclick=()=>{U.rightOpen=true;U.qualOpen=true;if(isNarrow())U.cfgOpen=false;applyLayout();applyPanels()};
+ $('#configTab').onclick=()=>{U.cfgOpen=true;applyLayout()};
+ $('#rightTab').onclick=()=>{U.rightOpen=true;U.qualOpen=true;applyLayout();applyPanels()};
  $('#btnQual').onclick=()=>{U.rightOpen=!(U.rightOpen&&U.qualOpen);U.qualOpen=U.rightOpen;
-  if(isNarrow()&&U.rightOpen)U.cfgOpen=false;applyLayout();applyPanels()};
+  applyLayout();applyPanels()};
  $('#qualHead').onclick=e=>{if(e.target.closest('button'))return;U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnQualClose').onclick=e=>{e.stopPropagation();U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnFields').onclick=e=>{e.stopPropagation();openDrawer('field')};
@@ -3283,8 +3340,8 @@ function bind(){const s=SET;
  $('#btnCopyQual').onclick=()=>copyText(qualText());
  $('#btnQualCb').onclick=()=>{openDrawer('cb');openComposer(true,null)};
  $('#btnRef').onclick=()=>download('gceleste-reference.md',scriptToMd(SCRIPT)+'\n\n'+objToMd(OBJ,CATS),'text/markdown');
- $('#btnResetLayout').onclick=()=>{U.cfgOpen=!isNarrow();U.rightOpen=!isNarrow();U.qualOpen=true;
-  setActive(isStacked()?null:'obj',true);setDeckSize(50);s.readSize=17;s.spacing='comfortable';applySetUI();applyLayout();applyPanels()};
+ $('#btnResetLayout').onclick=()=>{U.cfgOpen=true;U.rightOpen=true;U.qualOpen=true;
+  setActive('obj',true);setDeckSize(50);s.readSize=17;s.spacing='comfortable';applySetUI();applyLayout();applyPanels()};
  $('#btnFmtScript').onclick=()=>{download('gceleste-SCRIPT-FORMAT.md',SCRIPT_TEMPLATE,'text/markdown');toast('Script format downloaded — read the header first','ok')};
  $('#btnFmtObj').onclick=()=>{download('gceleste-OBJECTIONS-FORMAT.csv',OBJ_CSV_TEMPLATE,'text/csv');toast('Objection CSV format downloaded','ok')};
  $('#btnCopyPrompt').onclick=()=>{copyText(GPT_PROMPT);toast('Prompt copied — paste it into ChatGPT with your script','ok')};
@@ -3292,19 +3349,15 @@ function bind(){const s=SET;
  $('#btnPfNew').onclick=()=>{setPf(false);$('#btnOpenLoader').click()};
  $('#btnPfDup').onclick=()=>{const p=clone(P);p.id=uid('p');p.name=P.name+' — copy';p.kind='custom';p.em='📁';
   PROFILES.push(p);saveProfiles();activate(p.id);renderProfiles()};
- $('#btnPfSave').onclick=()=>{persist();saveLead();saveCtx();saveGates();saveSet();
-  toast('Saved "'+P.name+'" to this browser \u2014 script + objections','ok',{label:'Reload',fn:()=>location.reload()});SFX.play('save')};
+
  $('#btnPfDel').onclick=()=>{if(P.kind==='builtin'||P.kind==='agency'){toast('Shipped lines cannot be deleted','warn');return}
   const i=PROFILES.findIndex(x=>x.id===activeId),stash=PROFILES[i];PROFILES.splice(i,1);saveProfiles();activate(PROFILES.some(p=>p.id==='agency')?'agency':'builtin');renderProfiles();
   toast('Profile deleted','warn',{label:'Undo',fn:()=>{PROFILES.splice(i,0,stash);saveProfiles();activate(stash.id);renderProfiles()}})};
- $('#btnPfMd').onclick=()=>download('gceleste-script-'+P.name.replace(/\W+/g,'-')+'.md',scriptToMd(SCRIPT),'text/markdown');
- $('#btnPfCsv').onclick=()=>download('gceleste-objections-'+P.name.replace(/\W+/g,'-')+'.csv',objToCsv(OBJ,CATS),'text/csv');
- $('#btnPfJson').onclick=()=>{const out=Object.assign(clone(P),{company:{name:CO.name,email:CO.email,phone:CO.phone,region:CO.region,sites:clone(CO.sites)}});
-  download('gceleste-profile-'+P.name.replace(/\W+/g,'-')+'.json',JSON.stringify(out,null,2),'application/json')};
- $('#btnPfImp').onclick=()=>$('#fileProf').click();
- $('#fileProf').onchange=e=>{const f=e.target.files&&e.target.files[0];if(f)readFile(f,t=>importProfileJson(t,f.name.replace(/\.json$/i,'')));
-  e.target.value=''};
- $('#btnRaw').onclick=()=>openDrawer('raw');$('#edRaw').onclick=()=>openDrawer('raw');
+ $('#btnSaveWork').onclick=saveWork;
+ $('#btnUploadLast').onclick=()=>$('#fileProf').click();
+ $('#fileProf').onchange=e=>{const f=e.target.files&&e.target.files[0];
+  if(f)readFile(f,t=>importCampaign(t,f.name.replace(/\.json$/i,'')));e.target.value=''};
+ $('#edRaw').onclick=()=>openDrawer('raw');
  $('#btnConfirmFilled').onclick=()=>{let n=0;Object.keys(S.lead).forEach(k=>{if(S.lead[k]){S.checked[k]=true;delete S.autoFilled[k];n++}});
   FIELDS.forEach(it=>updateRow(it.k));renderHeard();toast(n?n+' fields confirmed':'Nothing filled yet',n?'ok':'warn')};
  $('#btnClearQual').onclick=()=>{const st={lead:clone(S.lead),ctx:clone(S.ctx),custom:clone(S.custom),gates:clone(S.gates),tc:S.tc};
@@ -3353,7 +3406,7 @@ function bind(){const s=SET;
  $('#abSnooze').onclick=()=>{const c=Alarm.cur();Alarm.stop();if(c){c.alerted=false;c.snoozeUntil=Date.now()+3e5;saveCbs();renderCbs();toast('Snoozed 5 minutes','warn')}};
  $('#abOpen').onclick=()=>{const c=Alarm.cur();Alarm.stop();openDrawer('cb');if(c){U.cbQ=c.name||'';$('#cbSearch').value=U.cbQ}renderCbs()};
  $('#abDone').onclick=()=>{const c=Alarm.cur();Alarm.stop();if(c){c.status='done';saveCbs();renderCbs();toast('Marked called','ok')}};
- $('#scrim').onclick=()=>{if(U.drawer){closeDrawer();return}if(isNarrow()){U.cfgOpen=false;U.rightOpen=false;applyLayout()}};
+ $('#scrim').onclick=()=>{if(U.drawer)closeDrawer()};
  $$('[data-close]').forEach(b=>b.onclick=closeDrawer);
  $('#rawTabScript').onclick=()=>{U.rawMode='script';$('#rawTabScript').classList.add('on');$('#rawTabObj').classList.remove('on');loadRaw()};
  $('#rawTabObj').onclick=()=>{U.rawMode='obj';$('#rawTabObj').classList.add('on');$('#rawTabScript').classList.remove('on');loadRaw()};
@@ -3397,25 +3450,19 @@ function bind(){const s=SET;
  $('#gSkip').onclick=()=>{store.set('gateSeen',true);enterDesk()};
  $('#pathBuiltin').onclick=()=>{activate('agency');store.set('gateSeen',true);enterDesk()};
  $('#pathCustom').onclick=()=>gAct(2);
- $('#back1').onclick=()=>gAct(1);$('#back2').onclick=()=>gAct(2);$('#back3').onclick=()=>gAct(3);
- $('#toStep2').onclick=()=>{previewObj();gAct(3)};
- $('#toStep3').onclick=()=>{reviewGate();gAct(4)};
- $('#gKeepObj').onclick=()=>{G.keepObj=true;G.obj=null;G.cats=null;$('#taObj').value='';
-  $('#objStats').innerHTML=statHTML([['built-in replies',SOLAR_OBJ.length],['categories',8]]);$('#objErr').innerHTML='';$('#toStep3').disabled=false};
- $('#enterCustom').onclick=loadCustom;
- $('#taScript').addEventListener('input',previewScript);$('#deocr').addEventListener('change',previewScript);
- $('#taObj').addEventListener('input',previewObj);
- wireDrop('#dropScript','#fileScript','#taScript',previewScript);
- wireDrop('#dropObj','#fileObj','#taObj',previewObj);
- $('#gFmt1').onclick=()=>{download('gceleste-SCRIPT-FORMAT.md',SCRIPT_TEMPLATE,'text/markdown');toast('Format downloaded — read the header first','ok')};
- $('#gFmt2').onclick=()=>{download('gceleste-SCRIPT-FORMAT.md',SCRIPT_TEMPLATE,'text/markdown');toast('Format downloaded — read the header first','ok')};
- $('#gFmt3').onclick=()=>{download('gceleste-OBJECTIONS-FORMAT.csv',OBJ_CSV_TEMPLATE,'text/csv');toast('CSV format downloaded','ok')};
- $('#gPrompt1').onclick=()=>{copyText(GPT_PROMPT);toast('Prompt copied — paste it into ChatGPT with your script','ok')};
- $('#gPrompt2').onclick=()=>{copyText(GPT_PROMPT);toast('Prompt copied — paste it into ChatGPT with your script','ok')};
+ $('#back1').onclick=()=>gAct(1);$('#back2').onclick=()=>gAct(2);
+ $('#toStep2').onclick=()=>{if(!G.prof){toast('Load your campaign .json first','bad');return}profReview();gAct(3)};
+ $('#enterCustom').onclick=profCommit;
+ wireFile('#dropProf','#fileProfGate',profStage);
+ $('#gFmt1').onclick=()=>{download('gceleste-example-campaign.json',JSON.stringify(fullProfile('Example campaign'),null,2),'application/json');
+  toast('Example file downloaded — same shape as Save Work','ok')};
+ $('#gPrompt1').onclick=()=>{copyText(GPT_PROMPT);toast('Prompt copied — it returns Markdown for the desk Raw editor','ok')};
  const dv=$('#divider');let drag=false;
  dv.addEventListener('pointerdown',e=>{drag=true;dv.classList.add('active');document.body.classList.add('dragging');try{dv.setPointerCapture(e.pointerId)}catch(x){}});
  dv.addEventListener('pointermove',e=>{if(!drag)return;const r=$('#center').getBoundingClientRect();
-  const p=isStacked()?((e.clientY-r.top)/r.height*100):((e.clientX-r.left)/r.width*100);setDeckSize(100-p,true)});
+  const gut=dv.getBoundingClientRect().width;
+  const rails=[].slice.call(document.querySelectorAll('.deck:not(.active)')).reduce(function(t,el){return t+el.getBoundingClientRect().width},0);
+  setDeckSize(Math.max(0,r.right-e.clientX-gut-rails)/r.width*100,true)});
  const end=e=>{if(!drag)return;drag=false;dv.classList.remove('active');document.body.classList.remove('dragging');
   try{dv.releasePointerCapture(e.pointerId)}catch(x){}saveSet()};
  dv.addEventListener('pointerup',end);dv.addEventListener('pointercancel',end);
@@ -3558,7 +3605,7 @@ function bind(){const s=SET;
   const typing=tg==='input'||tg==='textarea'||e.target.isContentEditable;
   if(typing&&e.key.length===1)SFX.play('type');
   if(e.key==='F2'){e.preventDefault();SFX.play('confirm');newCall();return}
-  if(e.key==='Escape'&&U.drawer){closeDrawer();return}
+  if(e.key==='Escape'){if(U.drawer){closeDrawer();return}if(U.pfOpen){setPf(false);return}if(U.coOpen){setCo(false);return}}
   const g=e.target.closest&&e.target.closest('[data-gate]');
   if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();const k=g.dataset.gate;S.gates[k]=!S.gates[k];
    saveGates();renderGates();renderVerdict();SFX.play(S.gates[k]?'on':'off');return}
@@ -3571,11 +3618,7 @@ function bind(){const s=SET;
   if(k==='r'){SFX.play('cancel');resumeCall();return}
   if(e.key==='ArrowRight'){SFX.play('sweep');goStage(S.stage+1)}
   else if(e.key==='ArrowLeft'){SFX.play('sweep');goStage(S.stage-1)}});
- let lastN=isNarrow(),lastS=isStacked();
- addEventListener('resize',()=>{const n=isNarrow(),st=isStacked();
-  if(n!==lastN){lastN=n;U.cfgOpen=!n;U.rightOpen=!n}
-  if(st!==lastS){lastS=st;if(st&&S.active)setActive(null,true)}
-  applyLayout();applyPanels();measure()});
+ addEventListener('resize',()=>{applyLayout();applyPanels();measure()});
  if(window.ResizeObserver)new ResizeObserver(measure).observe($('#head'));
  addEventListener('beforeunload',()=>{persist();saveLead();saveCtx();saveGates();saveSet();saveBrain();saveCo();saveCbs()});
  document.addEventListener('visibilitychange',()=>{if(!document.hidden){checkAlarms();tickClock();tickCb()}})}
@@ -3586,7 +3629,7 @@ renderCbs();renderTimer();rebuildTranscript();renderLive();applyLayout();applyPa
 $('#rawTabScript').classList.add('on');
 setInterval(heartbeat,1000);
 if(store.get('gateSeen',false)){
- $('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(isStacked()?null:(S.active||'obj'),true);measure();
+ $('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
  if(leadHasData())toast('Draft checklist restored','ok');
  if(pending().length)toast(pending().length+' callbacks armed — alarm '+SET.alarmLead+' min before','ok');
 }else{gAct(1)}

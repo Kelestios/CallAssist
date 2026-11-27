@@ -291,14 +291,12 @@ body.dragging{user-select:none;cursor:col-resize}
 .dd{width:7px;height:7px;border-radius:50%;background:var(--line3);flex:none}
 .dd.on{background:var(--ok);box-shadow:0 0 7px var(--ok)}
 .clock select{width:auto;min-width:72px;font-size:10.5px;font-weight:bold;padding:5px 22px 5px 8px;background-color:var(--paper);border-color:var(--teal2);color:var(--teal)}
-#themeSelect{width:auto;min-width:158px;font-size:10px;font-weight:bold;padding:5px 22px 5px 8px;background-color:var(--paper);border-color:var(--honey);color:var(--amber)}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:999px;border:1px solid var(--line2);
   background:var(--surf);font-size:10.5px;letter-spacing:.1em;color:var(--ink2);white-space:nowrap}
 .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--faint)}
 .pill.live .dot{background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 1.4s infinite}
 .pill.err .dot{background:var(--bad)}
 @keyframes pulse{50%{opacity:.42}}
-#stagePill{border-color:var(--honey);background:linear-gradient(135deg,var(--tint-honey),var(--tint-leaf));color:var(--amber)}
 #timerMini{font-variant-numeric:tabular-nums;letter-spacing:.11em;color:var(--teal)}
 #verdictMini{font-weight:bold}
 #verdictMini.ready{background:var(--g-leaf);color:var(--on-accent);border-color:transparent}
@@ -361,7 +359,7 @@ body.pf-open #profDrop{max-height:min(46vh,400px)}
 .pane{min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
 #configPanel{flex:0 0 var(--cfgW);background:var(--bg1);border-right:1px solid var(--line)}
 #center{flex:1 1 auto;display:flex;min-width:0;min-height:0}
-#rightCol{flex:0 0 var(--rightW);display:flex;flex-direction:column;min-height:0;border-left:1px solid var(--line);background:var(--bg1)}
+#rightCol{flex:0 0 var(--rightW);display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--bg1)}
 .scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .p-head{flex:none;display:flex;align-items:center;gap:7px;padding:10px 12px;border-bottom:1px solid var(--line);
   background:linear-gradient(100deg,var(--tint-leaf),transparent);flex-wrap:wrap}
@@ -374,11 +372,11 @@ body.pf-open #profDrop{max-height:min(46vh,400px)}
   align-items:center;gap:9px;box-shadow:5px 0 18px var(--tint-leaf-h);transition:padding .18s,box-shadow .18s}
 #configTab:hover{padding-right:12px;box-shadow:8px 0 24px var(--tint-leaf-h)}
 body.cfg-closed #configTab{display:flex}
-#rightTab{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:66;display:none;
-  writing-mode:vertical-rl;font-family:inherit;font-size:10px;font-weight:bold;letter-spacing:.22em;
-  color:var(--on-accent);background:var(--g-grid);border:none;border-radius:12px 0 0 12px;padding:16px 8px;cursor:pointer;
-  align-items:center;gap:9px;box-shadow:-5px 0 18px var(--tint-teal)}
-#rightTab:hover{padding-left:12px}
+#rightTab{flex:0 0 var(--rail);position:relative;display:flex;flex-direction:column;align-items:center;gap:11px;padding:14px 0;
+  border:0;border-right:1px solid var(--line2);font-family:inherit;cursor:pointer;color:var(--forest);background:linear-gradient(180deg,var(--leafbg),var(--infobg))}
+#rightTab::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-leaf)}
+#rightTab .em{font-size:19px}#rightTab .vt{writing-mode:vertical-rl;font-size:9.5px;font-weight:bold;letter-spacing:.24em}
+#rightTab:hover{background:var(--okbg)}
 #scriptPane{flex:1 1 auto}
 #scriptScroll{padding:13px 15px}
 body.editing #scriptScroll{background:linear-gradient(180deg,var(--tint-honey),transparent 220px)}
@@ -816,13 +814,12 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 #credit:hover{background:var(--g-sun);color:var(--on-warm);transform:translateY(-1px)}
 @media (max-width:1599px){:root{--cfgW:276px;--rightW:344px}}
 @media (max-width:1279px){
+  #layout{z-index:auto} /* Let the side panels sit above the page scrim. */
   #configPanel,#rightCol{position:fixed;top:var(--headH);bottom:0;z-index:75;width:min(370px,94vw);
     background:var(--bg1);box-shadow:var(--shadow2);transition:transform .26s cubic-bezier(.2,.8,.25,1)}
   #configPanel{left:0;border-right:1px solid var(--line2);transform:translateX(-105%)}
-  #rightCol{right:0;border-left:1px solid var(--line2);transform:translateX(105%)}
+  #rightCol{left:0;border-right:1px solid var(--line2);transform:translateX(-105%)}
   #configPanel.open,#rightCol.open{transform:none}
-  #rightTab{display:flex!important}
-  body.cfg-closed #rightTab{display:none!important}
   .cd-grid,.pf-grid{grid-template-columns:minmax(0,1fr)}
   #alarmBar{flex-wrap:wrap;bottom:14px}
 }
@@ -840,7 +837,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
   .cb-grid{grid-template-columns:1fr}
   .gslots{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media (max-width:900px){.btn .lbl{display:none}.brand small{display:none}.tb-btns{margin-left:0}.clock small{display:none}#themeSelect{min-width:112px}}
+@media (max-width:900px){.btn .lbl{display:none}.brand small{display:none}.tb-btns{margin-left:0}.clock small{display:none}}
 @media (max-width:640px){
   #topbar{padding:8px 9px;gap:6px}.pill{font-size:9px;padding:4px 8px}
   #scriptScroll{padding:10px}.sc-head .idx{font-size:27px}
@@ -850,9 +847,15 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
   #configTab{top:auto;bottom:58px;left:12px;transform:none;writing-mode:horizontal-tb;
     border-radius:999px;padding:10px 15px;letter-spacing:.12em}
   #configTab:hover{padding-right:15px}
-  #rightTab{top:auto;bottom:58px;right:12px;transform:none;writing-mode:horizontal-tb;
-    border-radius:999px;padding:10px 15px;letter-spacing:.12px}
 }
+/* Subtle active-state prompts; the existing reduced-motion rule disables them. */
+@keyframes activeStage{50%{transform:scale(1.10);box-shadow:0 0 0 5px var(--tint-leaf-h)}}
+@keyframes editNudge{50%{transform:rotate(-12deg) scale(1.18)}}
+@keyframes savePrompt{50%{box-shadow:0 0 0 4px var(--tint-leaf-h)}}
+.rchip.cur .n{animation:activeStage 1.8s ease-in-out infinite}
+.edit-icon{display:inline-block}
+#btnEdit.on .edit-icon,[data-objdone] .edit-icon{animation:editNudge 1.5s ease-in-out infinite}
+[data-objdone],body.editing #edDone{animation:savePrompt 1.8s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -964,7 +967,6 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 
 <div id="app">
 <button id="configTab" title="Open desk settings">⚙ SETTINGS</button>
-<button id="rightTab" title="Open qualifiers">🗂 QUALIFIERS</button>
 
 <div id="head">
 <header id="topbar">
@@ -974,19 +976,11 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
       <small><span class="dd" id="dialDot"></span><span id="clockDate">—</span> · <span id="clockLocal">--:--</span> yours</small></div>
     <select id="clockZone" aria-label="Displayed time zone"><option value="ET">ET</option><option value="CT">CT</option><option value="MT">MT</option><option value="PT" selected>PT</option><option value="local">MY TZ</option></select>
   </div>
-  <select id="themeSelect" title="Color scheme" aria-label="Color scheme">
-    <option value="solar">Default (Solar Punk)</option>
-    <option value="dark">Dark Mode</option>
-    <option value="fb">Facebook blue and cream</option>
-    <option value="red">Red Cream</option>
-    <option value="violet">Violet Cream</option>
-  </select>
   <span class="pill" id="profPill" title="Switch profile">📁 <span id="profName2">Solar line</span></span>
-  <span class="pill" id="stagePill">STAGE 01 / 09</span>
   <span class="pill" id="timerMini">⏸ 00:00</span>
   <span class="pill" id="verdictMini">IN PROGRESS</span>
   <div class="tb-btns">
-    <button class="btn violet" id="btnEdit" title="Edit the script live (E)">✎ <span class="lbl">Edit script</span></button>
+    <button class="btn violet" id="btnEdit" title="Edit the script live (E)"><span class="edit-icon" aria-hidden="true">✎</span> <span class="lbl">Edit script</span></button>
     <button class="btn" id="btnNew" title="New call (F2)">🔄 <span class="lbl">New call</span></button>
     <button class="btn honey on" id="btnDeck" title="Objection dialpad (O)">⚡ <span class="lbl">Objections</span> <span class="badge" id="objTotal">0</span></button>
     <button class="btn" id="btnLive" title="Live transcription deck">🎙 <span class="lbl">Live</span> <span class="badge dim" id="liveBadge">OFF</span></button>
@@ -1002,7 +996,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
   <div class="pf-grid">
     <div><div class="cd-title">PROFILES</div><div class="pf-list" id="pfList"></div>
       <div class="row wrap" style="margin-top:9px">
-        <button class="btn mini sun" id="btnPfNew">＋ Load a script</button>
+        <button class="btn mini sun" id="btnPfNew">Load your custom script</button>
         <button class="btn mini" id="btnPfDup">⧉ Duplicate active</button>
         <button class="btn mini bad" id="btnPfDel">Delete active</button>
       </div>
@@ -1189,6 +1183,39 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
     </div>
   </aside>
 
+<button id="rightTab" aria-label="Open qualifiers" aria-controls="rightCol" aria-expanded="false"><span class="em">🗂</span><span class="vt">QUALIFIERS</span><span class="ar">▸</span></button>
+  <aside id="rightCol">
+    <div class="p-head" id="qualHead" style="cursor:pointer">
+      <h3>🗂 QUALIFIERS <span class="badge leaf" id="qBadge">0/12</span></h3>
+      <div class="sp"><button class="btn tiny violet" id="btnFields">✎ Fields</button><button class="btn tiny ghost" id="btnQualClose">✕</button><span class="car" id="qualCar" style="font-size:10px;color:var(--leaf)">▾</span></div>
+    </div>
+    <div class="pane" id="qualBody" style="flex:1;min-height:0">
+      <div class="q-top"><div class="sub">Type as they answer · tap the circle to confirm · merged live into the script</div>
+        <div class="qprog"><div class="bar"><i id="qualBar" style="width:0%"></i></div><b id="qualPct">0%</b></div></div>
+      <div class="q-scroll">
+        <div class="qgroup">APPOINTMENT</div>
+        <div id="checklist"></div>
+        <div class="verdict" id="verdictBox"></div>
+        <div class="gates" id="gatesWrap"></div>
+        <div class="q-extra">
+          <h6>CALL CONTEXT — OPTIONAL, FEEDS THE SCRIPT</h6>
+          <div class="ctxchips" id="ctxChips"></div>
+          <div class="row" style="margin-top:8px"><input type="text" id="ctxEdit" placeholder="Add context — or TOKEN: value"><button class="btn mini" id="btnCtxAdd">＋</button></div>
+          <h6 style="margin-top:11px">CONCERNS RAISED</h6>
+          <div class="concerns" id="concernsWrap"></div>
+          <div class="row" style="margin-top:8px"><input type="text" id="concernInput" placeholder="Add a concern…"><button class="btn mini" id="btnAddConcern">＋</button></div>
+        </div>
+      </div>
+      <div class="q-foot">
+        <button class="btn mini sun" id="btnCopyQual">📋 Copy all</button>
+        <button class="btn mini" id="btnConfirmFilled">✓ Confirm filled</button>
+        <button class="btn mini warn" id="btnQualCb">⏰ Callback</button>
+        <button class="btn mini" id="btnExportQual">⬇ .txt</button>
+        <button class="btn mini bad" id="btnClearQual" style="margin-left:auto">✕ Clear</button>
+      </div>
+    </div>
+  </aside>
+
   <div id="center">
     <section class="pane" id="scriptPane">
       <div class="p-head"><h3>◧ ASSEMBLY LINE</h3>
@@ -1250,37 +1277,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
     </section>
   </div>
 
-  <aside id="rightCol">
-    <div class="p-head" id="qualHead" style="cursor:pointer">
-      <h3>🗂 QUALIFIERS <span class="badge leaf" id="qBadge">0/12</span></h3>
-      <div class="sp"><button class="btn tiny violet" id="btnFields">✎ Fields</button><button class="btn tiny ghost" id="btnQualClose">✕</button><span class="car" id="qualCar" style="font-size:10px;color:var(--leaf)">▾</span></div>
-    </div>
-    <div class="pane" id="qualBody" style="flex:1;min-height:0">
-      <div class="q-top"><div class="sub">Type as they answer · tap the circle to confirm · merged live into the script</div>
-        <div class="qprog"><div class="bar"><i id="qualBar" style="width:0%"></i></div><b id="qualPct">0%</b></div></div>
-      <div class="q-scroll">
-        <div class="qgroup">APPOINTMENT</div>
-        <div id="checklist"></div>
-        <div class="verdict" id="verdictBox"></div>
-        <div class="gates" id="gatesWrap"></div>
-        <div class="q-extra">
-          <h6>CALL CONTEXT — OPTIONAL, FEEDS THE SCRIPT</h6>
-          <div class="ctxchips" id="ctxChips"></div>
-          <div class="row" style="margin-top:8px"><input type="text" id="ctxEdit" placeholder="Add context — or TOKEN: value"><button class="btn mini" id="btnCtxAdd">＋</button></div>
-          <h6 style="margin-top:11px">CONCERNS RAISED</h6>
-          <div class="concerns" id="concernsWrap"></div>
-          <div class="row" style="margin-top:8px"><input type="text" id="concernInput" placeholder="Add a concern…"><button class="btn mini" id="btnAddConcern">＋</button></div>
-        </div>
-      </div>
-      <div class="q-foot">
-        <button class="btn mini sun" id="btnCopyQual">📋 Copy all</button>
-        <button class="btn mini" id="btnConfirmFilled">✓ Confirm filled</button>
-        <button class="btn mini warn" id="btnQualCb">⏰ Callback</button>
-        <button class="btn mini" id="btnExportQual">⬇ .txt</button>
-        <button class="btn mini bad" id="btnClearQual" style="margin-left:auto">✕ Clear</button>
-      </div>
-    </div>
-  </aside>
+
 </div>
 
 <footer id="keys">
@@ -1707,6 +1704,9 @@ function builtinProfile(){return{id:'builtin',name:'Solar line — built-in',kin
 let PROFILES=store.get('profiles',null);
 if(!Array.isArray(PROFILES)||!PROFILES.length)PROFILES=[builtinProfile()];
 if(!PROFILES.some(p=>p.id==='builtin'))PROFILES.unshift(builtinProfile());
+// Recover line text saved by older builds without discarding the user's edits.
+PROFILES.forEach(p=>(p.script||[]).forEach(st=>(st.blocks||[]).forEach(b=>{
+ if(Array.isArray(b.lines))b.lines=b.lines.map(l=>typeof l==='string'?{t:l,cue:''}:l)})));
 let activeId=store.get('active','builtin');
 if(!PROFILES.some(p=>p.id===activeId))activeId='builtin';
 let P=PROFILES.find(p=>p.id===activeId);
@@ -2150,8 +2150,8 @@ function renderRail(){const total=SCRIPT.length;
  $('#rail').innerHTML=SCRIPT.map((s,i)=>{const c=i===S.stage?'cur':(i<S.stage?'done':'');
   return '<button class="rchip '+c+'" data-stage="'+i+'"'+(U.editScript?' draggable="true"':'')+'><span class="n">'+(i<S.stage&&!U.editScript?'✓':pad(i+1))+'</span><span class="t">'+esc(s.short)+'</span></button>'}).join('')
   +(U.editScript?'<button class="rchip" data-addstage="1" title="Add a stage"><span class="n" style="border-style:dashed">＋</span><span class="t">NEW</span></button>':'');
- $('#stagePill').textContent='STAGE '+pad(Math.min(S.stage+1,total))+' / '+pad(total)}
-function lineHTML(l,path,i){const inner=U.editScript?'<span'+edAttr(path)+'>'+esc(l.t)+'</span>'+(l.cue?'<span class="cue"'+edAttr(path+'.cue')+'>'+esc(l.cue)+'</span>':'')
+}
+function lineHTML(l,path,i){const inner=U.editScript?'<span'+edAttr(path+'.t')+'>'+esc(l.t)+'</span>'+(l.cue?'<span class="cue"'+edAttr(path+'.cue')+'>'+esc(l.cue)+'</span>':'')
   :rich(l.t)+(l.cue?'<span class="cue">'+esc(l.cue)+'</span>':'');
  return '<div class="sline" style="--i:'+i+'"'+(U.editScript?'':' data-copy="'+esc(plain(l.t))+'" title="Tap to copy"')+'>'+inner
   +(U.editScript?'<span class="edtools"><button class="btn tiny" data-addline="'+path+'">＋ line</button><button class="btn tiny bad" data-delline="'+path+'">✕</button>'+(l.cue?'':'<button class="btn tiny" data-addcue="'+path+'">＋ cue</button>')+'</span>':'')+'</div>'}
@@ -2178,7 +2178,7 @@ function renderStage(){
   const hb='<h4><span'+edAttr(bp+'.title')+'>'+esc(b.title||'')+'</span>'+
    (b.focus&&!U.editScript?'<button class="btn mini focus" data-focus="'+esc(b.focus)+'" style="margin-left:auto">🗂 Record</button>':'')+
    (U.editScript?'<button class="btn tiny bad" data-delblock="'+bp+'" style="margin-left:auto">✕ block</button>':'')+'</h4>';
-  const lines=(b.lines||[]).map(l=>lineHTML(l,bp+'.lines.'+i,i++)).join('');
+  const lines=(b.lines||[]).map((l,li)=>lineHTML(l,bp+'.lines.'+li,i++)).join('');
   const phr=(b.phrases||[]).map((p,j)=>U.editScript
    ?'<div class="sline"><span'+edAttr(bp+'.phrases.'+j)+'>'+esc(p)+'</span></div>'
    :'<button class="bankchip" data-copy="'+esc(p)+'">'+esc(p)+'</button>').join('');
@@ -2213,7 +2213,7 @@ function deckNav(){const n=U.nav,q=U.q.trim();
  else if(n.level==='one'){const o=OBJ.find(x=>x.id===n.id);if(o){const c=CATS[o.cat]||{em:'📌',name:o.cat};
   h+='<span class="crumb"><span class="sep">›</span><button class="btn tiny" data-nav-cat="'+o.cat+'">'+c.em+' '+esc(c.name)+'</button><span class="sep">›</span><b>'+o.em+' '+esc(o.title)+'</b></span>'}}
  if(!q&&n.level!=='pad')h+='<button class="btn mini warn" data-nav-back="1" style="margin-left:auto">◀ Back</button>';
- if(U.editObj)h+='<button class="btn mini sun" data-objdone="1" style="margin-left:auto">✓ Done editing</button>';
+ if(U.editObj)h+='<button class="btn mini sun" data-objdone="1" style="margin-left:auto"><span class="edit-icon" aria-hidden="true">✓</span> Done editing</button>';
  $('#deckNav').innerHTML=h}
 function padHTML(){const keys=Object.keys(CATS).filter(k=>inCat(k).length||U.editObj);
  return '<div class="pad">'+keys.map(k=>{const c=CATS[k],n=inCat(k).length;
@@ -2680,19 +2680,22 @@ function setCo(o){U.coOpen=o;document.body.classList.toggle('co-open',o);$('#btn
 function setPf(o){U.pfOpen=o;document.body.classList.toggle('pf-open',o);$('#profPill').classList.toggle('on',o);if(o){U.coOpen=false;document.body.classList.remove('co-open');renderProfiles()}measure()}
 function applyTheme(){const t=THEMES[SET.theme]?SET.theme:'solar';SET.theme=t;
  document.body.dataset.theme=t;
- $('#themeSelect').value=t;$('#themeSelect2').value=t;
+ $('#themeSelect2').value=t;
  $('#themeSt').textContent=THEMES[t].label.toUpperCase();
  const pv=$('#themePrev');pv.querySelector('.tx').innerHTML='<b>'+esc(THEMES[t].label)+'</b><small>'+esc(THEMES[t].sub)+'</small>';
  pv.querySelectorAll('.sw i').forEach((el,i)=>el.style.background=THEMES[t].sw[i]);
  recolorCats()}
 function applyLayout(){const n=isNarrow();
- $('#configPanel').classList.toggle('open',U.cfgOpen);$('#rightCol').classList.toggle('open',U.rightOpen);
- $('#configPanel').hidden=n?false:!U.cfgOpen;$('#rightCol').hidden=n?false:!U.rightOpen;
+ $('#configPanel').classList.toggle('open',U.cfgOpen);$('#rightCol').classList.toggle('open',U.rightOpen&&U.qualOpen);
+ $('#configPanel').hidden=n?false:!U.cfgOpen;$('#rightCol').hidden=n?false:!(U.rightOpen&&U.qualOpen);
+ $('#rightTab').hidden=U.rightOpen&&U.qualOpen;$('#rightCol').inert=!(U.rightOpen&&U.qualOpen);
+ $('#btnQual').setAttribute('aria-expanded',String(U.rightOpen&&U.qualOpen));
  document.body.classList.toggle('cfg-closed',!U.cfgOpen);
  $('#btnCfg').classList.toggle('on',U.cfgOpen);$('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen);
  $('#btnCfgHide').textContent=U.cfgOpen?'◀ Hide':'▶ Show';
  $('#scrim').classList.toggle('show',!!U.drawer||(n&&(U.cfgOpen||U.rightOpen)));measure()}
-function applyPanels(){$('#qualBody').hidden=!U.qualOpen;$('#qualCar').textContent=U.qualOpen?'▾':'▸';
+function applyPanels(){$('#qualBody').hidden=!U.qualOpen;$('#qualCar').textContent=U.qualOpen?'◂':'▸';
+ applyLayout();
  $('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen)}
 function measure(){document.documentElement.style.setProperty('--headH',$('#head').offsetHeight+'px')}
 function openDrawer(which){U.drawer=which;$$('.drawer').forEach(d=>d.classList.remove('open'));
@@ -2840,7 +2843,7 @@ function applySetUI(){const s=SET;
  $('#promptBox').textContent=GPT_PROMPT;
  setDeckSize(s.deck||50,true);alarmSt();SFX.vol();applyTheme()}
 
-const HIT='button,a,input,select,textarea,summary,[role="button"],[role="checkbox"],[data-copy],[data-openobj],[data-nav-cat],[data-nav-home],[data-nav-back],[data-stage],[data-nav],[data-gate],[data-yn],[data-check-q],[data-focus],[data-focus-q],[data-region],[data-cocopy],[data-sfx],[data-spiel],[data-pin],[data-concern],[data-cbq],[data-cbsel],[data-cbdone],[data-cbreopen],[data-cbload],[data-cbedit],[data-cbrearm],[data-cbdel],[data-view],[data-delview],[data-delconcern],[data-tc],[data-close],[data-qual-jump],[data-hfield],[data-hrevert],[data-pfactivate],[data-flddel],[data-addline],[data-delline],[data-addcue],[data-addbranch],[data-delbranch],[data-addsay],[data-delsay],[data-addblock],[data-delblock],[data-addstage],[data-delstage],[data-addphrase],[data-objdone],[data-addobj],[data-oaddsay],[data-odelsay],[data-odelobj],.sline,.osay,.branch-head,.obr-h,.padtile,.orow,.rchip,.pivot,.bankchip,.qcheck,.grow,.deck-rail,.viewchip,.ctxchip,.conchip,.sfxc,.cbq,.tgl,.gpath,.gdrop,.glink,.gbtn,#divider,#qualHead,#profPill,#themeSelect,#themeSelect2';
+const HIT='button,a,input,select,textarea,summary,[role="button"],[role="checkbox"],[data-copy],[data-openobj],[data-nav-cat],[data-nav-home],[data-nav-back],[data-stage],[data-nav],[data-gate],[data-yn],[data-check-q],[data-focus],[data-focus-q],[data-region],[data-cocopy],[data-sfx],[data-spiel],[data-pin],[data-concern],[data-cbq],[data-cbsel],[data-cbdone],[data-cbreopen],[data-cbload],[data-cbedit],[data-cbrearm],[data-cbdel],[data-view],[data-delview],[data-delconcern],[data-tc],[data-close],[data-qual-jump],[data-hfield],[data-hrevert],[data-pfactivate],[data-flddel],[data-addline],[data-delline],[data-addcue],[data-addbranch],[data-delbranch],[data-addsay],[data-delsay],[data-addblock],[data-delblock],[data-addstage],[data-delstage],[data-addphrase],[data-objdone],[data-addobj],[data-oaddsay],[data-odelsay],[data-odelobj],.sline,.osay,.branch-head,.obr-h,.padtile,.orow,.rchip,.pivot,.bankchip,.qcheck,.grow,.deck-rail,.viewchip,.ctxchip,.conchip,.sfxc,.cbq,.tgl,.gpath,.gdrop,.glink,.gbtn,#divider,#qualHead,#profPill,#themeSelect2';
 const BADSEL='.btn.bad,[data-cbdel],[data-delconcern],[data-delview],[data-hrevert],[data-delline],[data-delbranch],[data-delsay],[data-delblock],[data-delstage],[data-odelsay],[data-odelobj],[data-flddel],#btnClearQual,#btnCbDelSel,#btnCbClearDone,#btnCbClearSamples,#btnStopAlarm,#abStop,#btnPfDel,#edRevert';
 const CANCELSEL='[data-close],#btnDeckClose,#btnDeckCollapse,#btnLiveClose,#btnLiveCollapse,#btnCoClose,#btnPfClose,#btnCbCancel,#btnQualClose,[data-spiel="dismiss"],#btnCfgHide,#back1,#back2,#back3,#gSkip';
 const OKSEL='.btn.sun,.btn.grid,.btn.honey,.gbig,#btnCbSave,#btnViewOk,[data-cbdone],[data-spiel="done"],#abDone,#btnConfirmFilled,#btnTestAlarm,#rawApply,#edDone,#btnFieldsReset,#btnSystemAudio,#btnGateSystem';
@@ -2863,9 +2866,9 @@ function onPointer(e){if(e.button!=null&&e.button!==0)return;const t=e.target;if
  if(t.closest(NAVSEL)){SFX.play('sweep');ripple(e.clientX,e.clientY,'var(--moss)');return}
  if(t.closest('.sfxc')){ripple(e.clientX,e.clientY,'var(--teal)');return}
  SFX.play('cursor');ripple(e.clientX,e.clientY,'var(--leaf)')}
-function setEdit(on){U.editScript=on;document.body.classList.toggle('editing',on);
+function setEdit(on){if(!on){clearTimeout(persistT);persist()}U.editScript=on;document.body.classList.toggle('editing',on);
  $('#btnEdit').classList.toggle('on',on);$('#btnEdit2').classList.toggle('on',on);
- $('#btnEdit').innerHTML=on?'✓ <span class="lbl">Done editing</span>':'✎ <span class="lbl">Edit script</span>';
+ $('#btnEdit').innerHTML=on?'<span class="edit-icon" aria-hidden="true">✓</span> <span class="lbl">Done editing</span>':'<span class="edit-icon" aria-hidden="true">✎</span> <span class="lbl">Edit script</span>';
  renderStage();if(on)toast('Live edit on — every change saves as you type','ok')}
 function bind(){const s=SET;
  const tgl=(id,k,after)=>$(id).addEventListener('change',e=>{s[k]=e.target.checked;saveSet();if(after)after()});
@@ -2880,7 +2883,6 @@ function bind(){const s=SET;
  ['single','flat','owner','credit','unit'].forEach(k=>{$('#r'+cap(k)).addEventListener('change',e=>{RULES[k]=e.target.checked;persist();renderVerdict()})});
  $('#clockZone').addEventListener('change',e=>{s.clockZone=e.target.value;saveSet();tickClock()});
  const setTheme=v=>{s.theme=v;saveSet();applyTheme();renderDeck();renderPivots();renderSpiel();persist()};
- $('#themeSelect').addEventListener('change',e=>setTheme(e.target.value));
  $('#themeSelect2').addEventListener('change',e=>setTheme(e.target.value));
  $('#campZone').addEventListener('change',e=>{s.campZone=e.target.value;saveSet();tickClock();renderCbs()});
  $('#thSelect').addEventListener('change',e=>{s.threshold=+e.target.value;$('#thLabel').textContent=s.threshold?'$'+s.threshold:'none';
@@ -2929,10 +2931,10 @@ function bind(){const s=SET;
  $('#btnCfgHide').onclick=()=>{U.cfgOpen=!U.cfgOpen;applyLayout()};
  $('#configTab').onclick=()=>{U.cfgOpen=true;if(isNarrow())U.rightOpen=false;applyLayout()};
  $('#rightTab').onclick=()=>{U.rightOpen=true;U.qualOpen=true;if(isNarrow())U.cfgOpen=false;applyLayout();applyPanels()};
- $('#btnQual').onclick=()=>{if(!U.rightOpen){U.rightOpen=true;U.qualOpen=true}else if(U.qualOpen)U.qualOpen=false;else U.qualOpen=true;
+ $('#btnQual').onclick=()=>{U.rightOpen=!(U.rightOpen&&U.qualOpen);U.qualOpen=U.rightOpen;
   if(isNarrow()&&U.rightOpen)U.cfgOpen=false;applyLayout();applyPanels()};
- $('#qualHead').onclick=e=>{if(e.target.closest('button'))return;U.qualOpen=!U.qualOpen;applyPanels()};
- $('#btnQualClose').onclick=e=>{e.stopPropagation();U.rightOpen=false;applyLayout()};
+ $('#qualHead').onclick=e=>{if(e.target.closest('button'))return;U.rightOpen=false;U.qualOpen=false;applyPanels()};
+ $('#btnQualClose').onclick=e=>{e.stopPropagation();U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnFields').onclick=e=>{e.stopPropagation();openDrawer('field')};
  $('#btnEdit').onclick=()=>setEdit(!U.editScript);$('#btnEdit2').onclick=()=>setEdit(!U.editScript);
  $('#edDone').onclick=()=>setEdit(false);
@@ -3144,7 +3146,7 @@ function bind(){const s=SET;
   if(T.closest('#edRevert')){if(P.kind==='builtin'){const st=clone(SCRIPT);SCRIPT=clone(SOLAR_SCRIPT);P.script=SCRIPT;persist();renderStage();
     toast('Built-in script restored','ok',{label:'Undo',fn:()=>{SCRIPT=st;P.script=SCRIPT;persist();renderStage()}})}
    else toast('Custom profiles have no built-in to revert to — use Raw Markdown or reload the file','warn');return}
-  if(T.closest('[data-objdone]')){U.editObj=false;$('#btnObjEdit').classList.remove('on');renderDeck();return}
+  if(T.closest('[data-objdone]')){clearTimeout(persistT);persist();U.editObj=false;$('#btnObjEdit').classList.remove('on');renderDeck();return}
   const ao=T.closest('[data-addobj]');if(ao){const k=ao.dataset.addobj;
    const o={id:uid('o'),cat:k,em:'💬',title:'New objection',cues:[],kw:[],say:['Write the reply here.'],next:'',branches:[]};
    OBJ.push(o);persist();U.nav={level:'one',cat:k,id:o.id};renderDeck();return}

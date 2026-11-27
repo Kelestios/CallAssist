@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GCeleste Solar Assist — Script · Objections · Live Desk</title>
+<title>Call Assist — Script · Objections · Live Desk</title>
 <style>
 /* ═══════════════════════════════════════════════════════════════
    GCeleste Solar Assist v24
@@ -324,14 +324,24 @@ body.dragging{user-select:none;cursor:col-resize}
 #topbar::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;
   background:linear-gradient(90deg,var(--leaf),var(--moss),var(--honey),var(--terra),var(--teal));opacity:.92}
 .brand{display:flex;align-items:center;gap:10px;margin-right:2px}
-.brand .ring{width:37px;height:37px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:bold;
-  background:conic-gradient(from 200deg,var(--leaf),var(--moss),var(--honey),var(--terra),var(--teal),var(--leaf));
-  box-shadow:0 0 15px var(--tint-leaf-h);animation:spin 15s linear infinite}
-.brand .ring span{width:29px;height:29px;border-radius:50%;background:var(--bg1);display:grid;place-items:center;
-  animation:spin 15s linear infinite reverse;color:var(--forest);letter-spacing:.02em}
-@keyframes spin{to{transform:rotate(360deg)}}
+.brand .ring{width:38px;height:38px;flex:none;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 34% 30%,#fff6d8,var(--honey) 58%,#c9871a);
+  box-shadow:0 0 15px rgba(232,182,76,.5);animation:sunPulse 3.4s ease-in-out infinite}
+.brand .ring::after{content:"";position:absolute;inset:-9px;border-radius:50%;
+  background:repeating-conic-gradient(from 0deg,rgba(232,182,76,.92) 0 3.2deg,transparent 3.2deg 15deg);
+  -webkit-mask:radial-gradient(circle,transparent 0 19px,#000 19px 28px);
+  mask:radial-gradient(circle,transparent 0 19px,#000 19px 28px);
+  animation:sunRays 18s linear infinite}
+.brand .ring span{position:relative;z-index:1;display:grid;place-items:center;font-size:16px;font-weight:800;line-height:1;
+  color:#5a3a06;text-shadow:0 1px 0 rgba(255,255,255,.55)}
+@keyframes sunRays{to{transform:rotate(360deg)}}
+@keyframes sunPulse{0%,100%{box-shadow:0 0 11px rgba(232,182,76,.42)}50%{box-shadow:0 0 26px rgba(232,182,76,.82)}}
 .brand b{font-size:14px;letter-spacing:.045em;color:var(--forest);display:block}
 .brand small{display:block;color:var(--mut);font-size:9px;letter-spacing:.15em}
+.brand small a{color:var(--amber);text-decoration:none;border-radius:5px;padding:0 4px;margin:0 -4px;
+  border-bottom:1px solid transparent;transition:background .18s,color .18s,border-color .18s}
+.brand small a:hover{background:var(--g-sun);color:var(--on-warm);border-bottom-color:var(--honey)}
+.brand small a:focus-visible{outline:2px solid var(--honey);outline-offset:1px}
 .clock{display:flex;align-items:center;gap:8px;padding:4px 8px 4px 11px;border-radius:11px;
   border:1px solid var(--line2);background:linear-gradient(135deg,var(--tint-teal),var(--tint-leaf))}
 .clock .ct{display:flex;flex-direction:column;line-height:1.15}
@@ -345,6 +355,17 @@ body.dragging{user-select:none;cursor:col-resize}
 .pill .dot{width:8px;height:8px;border-radius:50%;background:var(--faint)}
 .pill.live .dot{background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 1.4s infinite}
 .pill.err .dot{background:var(--bad)}
+#profPill{cursor:pointer;font-weight:bold;font-size:11px;letter-spacing:.09em;color:var(--on-accent);
+  border-color:var(--teal2);background:linear-gradient(135deg,var(--violet),var(--violet2) 55%,var(--teal));
+  box-shadow:0 3px 12px rgba(96,78,140,.34),inset 0 1px 0 rgba(255,255,255,.22);
+  transition:transform .16s,box-shadow .2s ease,filter .2s ease}
+#profPill:hover{transform:translateY(-2px);filter:saturate(1.2) brightness(1.06);
+  box-shadow:0 7px 20px rgba(96,78,140,.42),inset 0 1px 0 rgba(255,255,255,.28)}
+#profPill:active{transform:translateY(1px) scale(.985)}
+#profPill:focus-visible{outline:2px solid var(--honey);outline-offset:2px}
+#profPill.on{background:linear-gradient(135deg,var(--teal),var(--violet2) 45%,var(--honey));
+  box-shadow:0 0 0 3px var(--tint-violet),0 7px 20px rgba(96,78,140,.4)}
+#profPill #workDot{color:var(--honey);margin-left:1px;animation:pulse 1.2s infinite}
 @keyframes pulse{50%{opacity:.42}}
 #timerMini{font-variant-numeric:tabular-nums;letter-spacing:.11em;color:var(--teal)}
 #verdictMini{font-weight:bold}
@@ -416,9 +437,13 @@ body.pf-open #profDrop{max-height:min(52vh,440px)}
 #layout{position:relative;z-index:1;flex:1;min-height:0;display:grid;grid-template-rows:1fr auto}
 #cols{display:flex;min-height:0;min-width:0}
 .pane{min-height:0;min-width:0;display:flex;flex-direction:column;overflow:hidden}
-#configPanel{flex:0 0 var(--cfgW);background:var(--bg1);border-right:1px solid var(--line)}
+#configPanel{flex:0 0 var(--cfgW);background:var(--bg1);border-right:1px solid var(--line);min-width:0;min-height:0;overflow:hidden;
+  transition:flex-basis .3s cubic-bezier(.2,.8,.25,1),opacity .22s ease,border-right-width .3s ease}
 #center{flex:1 1 auto;display:flex;min-width:0;min-height:0}
-#rightCol{flex:0 0 var(--rightW);display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--bg1)}
+#rightCol{flex:0 0 var(--rightW);display:flex;flex-direction:column;min-height:0;border-right:1px solid var(--line);background:var(--bg1);
+  min-width:0;overflow:hidden;transition:flex-basis .3s cubic-bezier(.2,.8,.25,1),opacity .22s ease,border-right-width .3s ease}
+/* Collapsed = zero basis with a fade. Content stays mounted, so reopening never rebuilds the panel. */
+#configPanel.collapsed,#rightCol.collapsed{flex-basis:0;opacity:0;border-right-width:0;pointer-events:none}
 .scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain}
 .p-head{flex:none;display:flex;align-items:center;gap:7px;padding:10px 12px;border-bottom:1px solid var(--line);
   background:linear-gradient(100deg,var(--tint-leaf),transparent);flex-wrap:wrap}
@@ -435,7 +460,14 @@ body.cfg-closed #configTab{display:flex}
   border:0;border-right:1px solid var(--line2);font-family:inherit;cursor:pointer;color:var(--forest);background:linear-gradient(180deg,var(--leafbg),var(--infobg))}
 #rightTab::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-leaf)}
 #rightTab .em{font-size:19px}#rightTab .vt{writing-mode:vertical-rl;font-size:9.5px;font-weight:bold;letter-spacing:.24em}
-#rightTab:hover{background:var(--okbg)}
+#rightTab{transition:background .2s ease,box-shadow .2s ease}
+#rightTab::before{transition:width .18s ease,filter .2s ease}
+#rightTab .em{transition:transform .24s cubic-bezier(.2,.8,.25,1)}
+#rightTab .vt{transition:letter-spacing .26s ease,color .2s ease}
+#rightTab:hover{background:var(--okbg);box-shadow:inset 0 0 22px var(--tint-leaf-h)}
+#rightTab:hover::before{width:6px;filter:brightness(1.14)}
+#rightTab:hover .em{transform:translateY(-3px) scale(1.08)}
+#rightTab:hover .vt{letter-spacing:.34em;color:var(--forest)}
 #scriptPane{flex:1 1 auto}
 #scriptScroll{padding:13px 15px}
 body.editing #scriptScroll{background:linear-gradient(180deg,var(--tint-honey),transparent 220px)}
@@ -523,11 +555,16 @@ body.editing .edbar{display:flex}
 #dncBanner{display:none;margin-top:12px;border:1px solid var(--terra2);background:var(--badbg);color:var(--brick);border-radius:12px;padding:11px 14px;font-size:11px;line-height:1.6}
 #dncBanner.show{display:block}
 #divider{flex:0 0 12px;position:relative;cursor:col-resize;touch-action:none;
-  background:linear-gradient(180deg,var(--bg2),var(--surf3));border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  background:linear-gradient(180deg,var(--bg2),var(--surf3));border-left:1px solid var(--line);border-right:1px solid var(--line);
+  transition:background .22s ease}
 #divider:hover,#divider.active{background:linear-gradient(180deg,var(--leafbg),var(--sage))}
 #divider::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:46px;border-radius:3px;
-  background:repeating-linear-gradient(180deg,var(--leaf) 0 4px,transparent 4px 8px);opacity:.65}
-#divider::after{content:"⇄";position:absolute;top:calc(50% + 36px);left:50%;transform:translateX(-50%);font-size:9px;color:var(--leaf)}
+  background:repeating-linear-gradient(180deg,var(--leaf) 0 4px,transparent 4px 8px);opacity:.65;
+  transition:height .26s cubic-bezier(.2,.8,.25,1),opacity .2s ease,filter .2s ease}
+#divider:hover::before,#divider.active::before{height:104px;opacity:1;filter:brightness(1.14) saturate(1.12)}
+#divider::after{content:"⇄";position:absolute;top:calc(50% + 36px);left:50%;transform:translateX(-50%);font-size:9px;color:var(--leaf);
+  opacity:.5;transition:opacity .2s ease,color .2s ease}
+#divider:hover::after,#divider.active::after{opacity:1;color:var(--forest)}
 .deck{flex:0 0 var(--rail);position:relative;transition:flex-basis .3s cubic-bezier(.2,.8,.25,1)}
 .deck.active{flex:0 0 var(--deck)}
 #objDeck{background:linear-gradient(180deg,var(--bg1),var(--bg0));border-left:1px solid var(--line2)}
@@ -535,13 +572,15 @@ body.editing .edbar{display:flex}
 .deck .deck-full{display:none;flex-direction:column;height:100%;min-height:0}
 .deck.active .deck-full{display:flex}
 .deck-rail{display:flex;flex-direction:column;align-items:center;gap:11px;padding:14px 0;cursor:pointer;height:100%;
-  border:none;font-family:inherit;transition:background .18s;position:relative;overflow:hidden}
+  border:none;font-family:inherit;position:relative;overflow:hidden;
+  transition:background .22s ease,box-shadow .22s ease}
 .deck.active .deck-rail{display:none}
 #objRail{background:linear-gradient(180deg,var(--tint-honey),var(--terrabg))}
 #objRail:hover{background:linear-gradient(180deg,var(--warnbg),var(--badbg))}
 #liveRail{background:linear-gradient(180deg,var(--tint-teal),var(--leafbg))}
 #liveRail:hover{background:linear-gradient(180deg,var(--infobg),var(--okbg))}
-.deck-rail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.deck-rail::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  transition:width .18s ease,filter .2s ease}
 #objRail::before{background:var(--g-obj)}
 #liveRail::before{background:var(--g-lv)}
 .deck-rail .em{font-size:19px;line-height:1}
@@ -550,6 +589,17 @@ body.editing .edbar{display:flex}
 #liveRail .vt{color:var(--teal)}
 .deck-rail .ar{font-size:11px;color:var(--faint)}
 #liveRail.listening .em{animation:pulse 1.1s infinite}
+.deck-rail .em{transition:transform .24s cubic-bezier(.2,.8,.25,1)}
+.deck-rail .vt{transition:letter-spacing .26s ease,color .2s ease}
+.deck-rail .ar{transition:transform .2s ease,color .2s ease}
+.deck-rail:hover::before{width:6px;filter:brightness(1.14) saturate(1.12)}
+.deck-rail:hover .em{transform:translateY(-3px) scale(1.08)}
+.deck-rail:hover .vt{letter-spacing:.34em}
+.deck-rail:hover .ar{transform:translateY(-2px);color:var(--mut)}
+#objRail:hover{box-shadow:inset 0 0 22px var(--tint-honey)}
+#objRail:hover .vt{color:var(--terra)}
+#liveRail:hover{box-shadow:inset 0 0 22px var(--tint-teal)}
+#liveRail:hover .vt{color:var(--sky)}
 .deck-head{flex:none;padding:10px 12px;border-bottom:1px solid var(--line)}
 #objDeck .deck-head{background:linear-gradient(100deg,var(--tint-honey),var(--terrabg))}
 #liveDeck .deck-head{background:linear-gradient(100deg,var(--tint-teal),var(--leafbg))}
@@ -864,13 +914,52 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 @keyframes tIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .toast.out{animation:tOut .25s both}
 @keyframes tOut{to{opacity:0;transform:translateY(10px)}}
+#intro{position:fixed;inset:0;z-index:360;display:grid;place-items:center;padding:22px;
+  background:rgba(26,21,8,.5);backdrop-filter:blur(2px);animation:inFade .2s ease}
+#intro[hidden]{display:none}
+#intro .inCard{width:min(1010px,94vw);max-height:86vh;overflow:auto;background:var(--bg1);
+  border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow2);padding:18px 20px 16px;
+  animation:inUp .28s cubic-bezier(.2,.8,.25,1)}
+#intro .inHead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:11px}
+#intro .inHead b{font-size:16px;letter-spacing:.02em;color:var(--forest)}
+#intro .inHead small{color:var(--mut);font-size:10.5px;letter-spacing:.05em}
+#intro .inGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;padding:13px 0 4px}
+#intro .inCol{border:1px solid var(--line);border-radius:13px;padding:11px 13px;background:var(--surf)}
+#intro .inCol h4{margin:0 0 7px;font-size:10px;letter-spacing:.17em;color:var(--violet);display:flex;gap:7px;align-items:center}
+#intro .inCol ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+#intro .inCol li{font-size:11px;line-height:1.55;color:var(--ink2)}
+#intro .inCol li b{color:var(--forest)}
+#intro kbd{font-family:inherit;font-size:9.5px;font-weight:bold;color:var(--forest);background:var(--block);
+  border:1px solid var(--line2);border-bottom-width:2px;border-radius:6px;padding:1px 5px;margin:0 2px}
+#intro .inFoot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px;padding-top:12px;
+  border-top:1px solid var(--line)}
+#intro .inFoot .inHint{font-size:10px;color:var(--mut);letter-spacing:.04em}
+@keyframes inFade{from{opacity:0}to{opacity:1}}
+@keyframes inUp{from{opacity:0;transform:translateY(16px) scale(.985)}to{opacity:1;transform:none}}
+/* Footer: intro re-opener + the Ko-fi support dock (items 1 and 6). */
+#btnIntro{margin-left:auto;font-family:inherit;font-size:9.5px;font-weight:bold;letter-spacing:.07em;color:var(--violet);
+  cursor:pointer;background:linear-gradient(135deg,var(--violetbg),var(--block));border:1px solid var(--violet2);
+  border-radius:999px;padding:3px 11px;transition:.16s}
+#btnIntro:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(106,86,152,.24)}
+#btnIntro:focus-visible{outline:2px solid var(--violet2);outline-offset:2px}
+#kofiDock{position:fixed;right:16px;bottom:42px;z-index:350;width:204px;height:74px}
+#kofiDock[hidden]{display:none}
+/* Ko-fi pins its own bubble to the viewport corner; the dock keeps it above the Support button. */
+#kofiDock .floatingchat-container-wrap{position:static!important;width:auto!important;height:auto!important;z-index:1}
+#kofiDock iframe.floatingchat-container{position:static!important;width:190px;height:65px;border:0}
+#kofiDock .floatingchat-container-wrap-mobi,#kofiDock .floating-chat-kofi-popup-iframe-mobi{display:none!important}
+#kofiDock .floating-chat-kofi-popup-iframe{position:absolute!important;left:auto!important;right:0!important;bottom:82px!important;z-index:2}
 #keys{display:flex;gap:13px;align-items:center;padding:5px 14px;font-size:9.5px;color:var(--faint);
   border-top:1px solid var(--line);background:var(--footbg);letter-spacing:.055em;flex-wrap:wrap}
 #keys b{color:var(--mut)}
-#credit{margin-left:auto;display:inline-flex;align-items:center;gap:7px;text-decoration:none;
+#credit{margin-left:13px;display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:inherit;cursor:pointer;
   font-size:9.5px;font-weight:bold;letter-spacing:.07em;color:var(--forest);
   background:linear-gradient(135deg,var(--block),var(--warnbg));border:1px solid var(--honey);border-radius:999px;padding:3px 11px;transition:.16s}
 #credit:hover{background:var(--g-sun);color:var(--on-warm);transform:translateY(-1px)}
+#credit:focus-visible{outline:2px solid var(--honey);outline-offset:2px}
+#credit.on{background:var(--g-sun);color:var(--on-warm);box-shadow:0 0 0 3px var(--tint-honey);transform:translateY(-1px)}
+#credit i{font-style:normal;font-size:8px;opacity:.6;transition:transform .2s ease}
+#credit.on i{transform:rotate(180deg);opacity:1}
 @media (max-width:1599px){:root{--cfgW:276px;--rightW:344px}}
 /* Subtle active-state prompts; the existing reduced-motion rule disables them. */
 @keyframes activeStage{50%{transform:scale(1.10);box-shadow:0 0 0 5px var(--tint-leaf-h)}}
@@ -969,7 +1058,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 
 <div id="head">
 <header id="topbar">
-  <div class="brand"><div class="ring"><span>GC</span></div><div><b>GCELESTE SOLAR ASSIST</b><small>SCRIPT · OBJECTIONS · LIVE DESK</small></div></div>
+  <div class="brand"><div class="ring" aria-hidden="true"><span>G</span></div><div><b>Call Assist</b><small>by <a id="byline" href="https://ko-fi.com/Gio_Celeste" target="_blank" rel="noopener noreferrer">@Kelestios.</a></small></div></div>
   <div class="clock" id="clock">
     <div class="ct"><b id="clockTime">--:--:--</b>
       <small><span class="dd" id="dialDot"></span><span id="clockDate">—</span> · <span id="clockLocal">--:--</span> yours</small></div>
@@ -1283,10 +1372,45 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 <footer id="keys">
   <span><b>E</b> edit script</span><span><b>O</b> objections</span><span><b>F2</b> new call</span>
   <span><b>L</b> callbacks</span><span><b>Q</b> qualifiers</span><span class="hs"><b>← →</b> stages</span><span class="hs"><b>drag ⇄</b> resize</span>
-  <a id="credit" href="https://ko-fi.com/Gio_Celeste" target="_blank" rel="noopener noreferrer">☕ Gio Celeste · ko-fi.com/Gio_Celeste</a>
+  <button id="btnIntro" title="Show the quick intro again" aria-expanded="false" aria-controls="intro">❔ Quick intro</button>
+  <button id="credit" title="Show or hide the Ko-fi support widget" aria-expanded="false" aria-controls="kofiDock">☕ Support us!<i>▾</i></button>
 </footer>
 </div>
 </div>
+
+<div id="intro" hidden>
+  <div class="inCard" role="dialog" aria-modal="true" aria-labelledby="inTitle">
+    <div class="inHead"><b id="inTitle">Quick intro — how to drive the desk</b>
+      <small>Read it once, dismiss it, and it stays out of the way.</small></div>
+    <div class="inGrid">
+      <div class="inCol"><h4>🎛 Controls</h4><ul>
+        <li>The header buttons decide <b>what sits on the bench</b>: ⚡ Objections, 🗂 Qualifiers, 🎙 Live, plus 🔄 New call and ⏰ Callbacks.</li>
+        <li>A desk you close turns into a <b>vertical rail</b> on the right edge. Click the rail or press <kbd>O</kbd> to bring it back.</li>
+        <li>Drag the <b>⇄ divider</b> to trade script room for deck room. <kbd>⚙ SETTINGS</kbd> and <kbd>🗂 QUALIFICATIONS</kbd> slide the side panels open and shut.</li>
+        <li>Keys: <kbd>E</kbd> edit · <kbd>O</kbd> objections · <kbd>Q</kbd> qualifiers · <kbd>L</kbd> callbacks · <kbd>F2</kbd> new call · <kbd>← →</kbd> stages.</li>
+      </ul></div>
+      <div class="inCol"><h4>✎ Edit anything</h4><ul>
+        <li>Press <kbd>✎ Edit script</kbd> (or <kbd>E</kbd>). Every line, coach note, stage title and branch turns clickable.</li>
+        <li>Click it, type, press <b>Done</b>. Objection replies, qualifiers, company details and callbacks work the same way.</li>
+        <li><b>New stage</b>, <b>new line</b> and <b>Undo</b> sit in that same strip. Edits save to this browser the moment you press Done.</li>
+      </ul></div>
+      <div class="inCol"><h4>💾 Save and load</h4><ul>
+        <li><b>📜 Scripts and Profiles</b> holds it all. <b>Save Work</b> downloads <b>one campaign .json</b>: script, objections, qualifiers, gates, company, sound, addresses.</li>
+        <li><b>Upload Last</b> reads that file back here. <b>Start from the loader</b> rebuilds the desk from the same file on another machine.</li>
+        <li>A <b>●</b> on the 📜 pill means your file is behind your edits.</li>
+      </ul></div>
+      <div class="inCol"><h4>✅ Save it</h4><ul>
+        <li>End of session: <b>📜 → Save Work</b>. Name the file, keep it, open it whenever you dial again.</li>
+        <li>Nothing is uploaded anywhere — leads, calls and scripts stay on this device until you move the file yourself.</li>
+        <li>This intro returns from <b>❔ Quick intro</b>, bottom right.</li>
+      </ul></div>
+    </div>
+    <div class="inFoot"><button class="btn sun" id="inDismiss">Dismiss</button>
+      <span class="inHint">Press <kbd>Esc</kbd> to close. Every <kbd>key</kbd> above is a live desk shortcut.</span></div>
+  </div>
+</div>
+
+<div id="kofiDock" hidden></div>
 
 <div id="scrim"></div>
 
@@ -1963,10 +2087,18 @@ function builtinProfile(){return{id:'builtin',name:'Gio Script',kind:'builtin',e
  script:clone(SOLAR_SCRIPT),obj:clone(SOLAR_OBJ),cats:colorCats(SOLAR_CATS),
  fields:clone(SOLAR_FIELDS),gates:clone(SOLAR_GATES),
  rules:{single:true,flat:true,owner:true,credit:true,unit:true}}}
+// Shipped lines the agent deleted. Recorded so the seed below never resurrects them.
+let SHIP_GONE=store.get('shipGone',null);if(!Array.isArray(SHIP_GONE))SHIP_GONE=[];
+function shipGone(id,gone){const i=SHIP_GONE.indexOf(id);
+ if(gone){if(i<0)SHIP_GONE.push(id)}else if(i>=0)SHIP_GONE.splice(i,1);store.set('shipGone',SHIP_GONE)}
+function blankProfile(){return{id:uid('p'),name:'Blank Script',kind:'custom',em:'📄',script:[],obj:[],
+ cats:colorCats(SOLAR_CATS),fields:clone(SOLAR_FIELDS),gates:clone(SOLAR_GATES),
+ rules:{single:false,flat:false,owner:false,credit:false,unit:true}}}
 let PROFILES=store.get('profiles',null);
-if(!Array.isArray(PROFILES)||!PROFILES.length)PROFILES=[agencyProfile(),builtinProfile()];
-if(!PROFILES.some(p=>p.id==='agency'))PROFILES.unshift(agencyProfile());
-if(!PROFILES.some(p=>p.id==='builtin')){const ai=PROFILES.findIndex(p=>p.id==='agency');
+if(!Array.isArray(PROFILES)||!PROFILES.length)PROFILES=[agencyProfile(),builtinProfile()].filter(p=>SHIP_GONE.indexOf(p.id)<0);
+if(!PROFILES.length)PROFILES=[blankProfile()];
+if(!PROFILES.some(p=>p.id==='agency')&&SHIP_GONE.indexOf('agency')<0)PROFILES.unshift(agencyProfile());
+if(!PROFILES.some(p=>p.id==='builtin')&&SHIP_GONE.indexOf('builtin')<0){const ai=PROFILES.findIndex(p=>p.id==='agency');
  PROFILES.splice(ai<0?PROFILES.length:ai+1,0,builtinProfile())}
 // Shipped names changed; a name the agent chose for their own copy is never touched.
 PROFILES.forEach(p=>{if(p.id==='builtin'&&(p.name==='Solar line \u2014 built-in'||p.name==='Solar line'))p.name='Gio Script'});
@@ -1976,7 +2108,7 @@ PROFILES.forEach(p=>{if(p.id==='builtin'&&(p.name==='Solar line \u2014 built-in'
 PROFILES.forEach(p=>(p.script||[]).forEach(st=>(st.blocks||[]).forEach(b=>{
  if(Array.isArray(b.lines))b.lines=b.lines.map(l=>typeof l==='string'?{t:l,cue:''}:l)})));
 let activeId=store.get('active','agency');
-if(!PROFILES.some(p=>p.id===activeId))activeId='agency';
+if(!PROFILES.some(p=>p.id===activeId))activeId=(PROFILES[0]||{}).id;
 let P=PROFILES.find(p=>p.id===activeId);
 let SCRIPT=P.script,OBJ=P.obj,CATS=P.cats,FIELDS=P.fields,GATES=P.gates,RULES=P.rules;
 const saveProfiles=()=>{store.set('profiles',PROFILES);store.set('active',activeId)};
@@ -2968,6 +3100,22 @@ function markDirty(k){if(DIRTY)return;if(['profiles','set','co','lead','ctx','ga
  DIRTY=true;workBadge()}
 function clearDirty(){DIRTY=false;workBadge()}
 function armWorkTracking(){BOOTED=true;clearDirty()}
+function maybeIntro(){if(!store.get('introSeen',false))showIntro()}
+function showIntro(){const o=$('#intro');if(!o||!o.hidden)return;o.hidden=false;
+ $('#btnIntro').setAttribute('aria-expanded','true');SFX.play('open');setTimeout(()=>$('#inDismiss').focus(),80)}
+function hideIntro(refocus){const o=$('#intro');if(!o||o.hidden)return;o.hidden=true;store.set('introSeen',true);
+ $('#btnIntro').setAttribute('aria-expanded','false');if(refocus)$('#btnIntro').focus()}
+const KOFI={ready:false,failed:false};
+function kofiDock(then){if(KOFI.ready){then(true);return}if(KOFI.failed){then(false);return}
+ const sc=document.createElement('script');sc.src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js';sc.async=true;
+ sc.onload=()=>{try{kofiWidgetOverlay.draw('gio_celeste',{'type':'floating-chat',
+   'floating-chat.donateButton.text':'Tip Us','floating-chat.donateButton.background-color':'#5bc0de',
+   'floating-chat.donateButton.text-color':'#323842'},'kofiDock');KOFI.ready=true;then(true)}
+  catch(err){KOFI.failed=true;then(false)}};
+ sc.onerror=()=>{KOFI.failed=true;then(false)};document.head.appendChild(sc)}
+function setKofi(open){const d=$('#kofiDock'),b=$('#credit');if(!d||!b)return;
+ d.hidden=!open;b.classList.toggle('on',open);b.setAttribute('aria-expanded',String(open));
+ if(open)kofiDock(ok=>{if(!ok)toast('Ko-fi needs a connection — ko-fi.com/Gio_Celeste','warn')})}
 function workBadge(){const b=$('#btnSaveWork'),s=$('#workState');
  if(b)b.classList.toggle('attn',DIRTY);
  if(s){s.textContent=DIRTY?'unsaved to file':'file up to date';s.className='wstate'+(DIRTY?' warn':' ok')}
@@ -2999,9 +3147,11 @@ function applyTheme(){const t=THEMES[SET.theme]?SET.theme:'solar';SET.theme=t;
  pv.querySelectorAll('.sw i').forEach((el,i)=>el.style.background=THEMES[t].sw[i]);
  recolorCats()}
 function applyLayout(){
- $('#configPanel').classList.toggle('open',U.cfgOpen);$('#rightCol').classList.toggle('open',U.rightOpen&&U.qualOpen);
- $('#configPanel').hidden=!U.cfgOpen;$('#rightCol').hidden=!(U.rightOpen&&U.qualOpen);
- $('#rightTab').hidden=U.rightOpen&&U.qualOpen;$('#rightCol').inert=!(U.rightOpen&&U.qualOpen);
+ const cfgOn=!!U.cfgOpen,rightOn=!!(U.rightOpen&&U.qualOpen);
+ // Collapsed panels stay mounted at zero width so the transition can run; content is locked out meanwhile.
+ [['#configPanel',cfgOn],['#rightCol',rightOn]].forEach(x=>{const el=$(x[0]);
+  el.classList.toggle('collapsed',!x[1]);el.inert=!x[1];el.setAttribute('aria-hidden',String(!x[1]))});
+ $('#rightTab').hidden=rightOn;
  $('#btnQual').setAttribute('aria-expanded',String(U.rightOpen&&U.qualOpen));
  document.body.classList.toggle('cfg-closed',!U.cfgOpen);
  $('#btnCfg').classList.toggle('on',U.cfgOpen);$('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen);
@@ -3079,7 +3229,7 @@ function enterDesk(){const g=$('#gate');g.classList.add('leaving');SFX.play('ent
  const f=document.createElement('div');f.id='cineflash';document.body.appendChild(f);
  setTimeout(()=>{g.hidden=true;const app=$('#app');app.classList.add('on','cine-in');
   renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
-  toast('Desk ready \u2014 '+P.name,'ok');setTimeout(()=>app.classList.remove('cine-in'),1250);f.remove()},820)}
+  maybeIntro();toast('Desk ready \u2014 '+P.name,'ok');setTimeout(()=>app.classList.remove('cine-in'),1250);f.remove()},820)}
 // One campaign file, shared by the gate and the desk. Never includes API keys.
 function fullProfile(altName){return{type:'gceleste-profile',version:1,exported:new Date().toISOString(),
  name:String(altName||P.name||'Campaign').slice(0,48),kind:P.kind||'custom',em:P.em||'\U0001F4C1',
@@ -3350,9 +3500,17 @@ function bind(){const s=SET;
  $('#btnPfDup').onclick=()=>{const p=clone(P);p.id=uid('p');p.name=P.name+' — copy';p.kind='custom';p.em='📁';
   PROFILES.push(p);saveProfiles();activate(p.id);renderProfiles()};
 
- $('#btnPfDel').onclick=()=>{if(P.kind==='builtin'||P.kind==='agency'){toast('Shipped lines cannot be deleted','warn');return}
-  const i=PROFILES.findIndex(x=>x.id===activeId),stash=PROFILES[i];PROFILES.splice(i,1);saveProfiles();activate(PROFILES.some(p=>p.id==='agency')?'agency':'builtin');renderProfiles();
-  toast('Profile deleted','warn',{label:'Undo',fn:()=>{PROFILES.splice(i,0,stash);saveProfiles();activate(stash.id);renderProfiles()}})};
+ $('#btnPfDel').onclick=()=>{const i=PROFILES.findIndex(x=>x.id===activeId),stash=PROFILES[i];if(!stash)return;
+  const shipped=stash.kind==='builtin'||stash.kind==='agency';if(shipped)shipGone(stash.id,true);
+  PROFILES.splice(i,1);if(!PROFILES.length)PROFILES.push(blankProfile());
+  saveProfiles();activate(PROFILES[Math.min(i,PROFILES.length-1)].id);renderProfiles();
+  toast((shipped?'Shipped script deleted':'Script deleted')+' — '+stash.name,'warn',
+   {label:'Undo',fn:()=>{if(shipped)shipGone(stash.id,false);PROFILES.splice(Math.min(i,PROFILES.length),0,stash);
+    saveProfiles();activate(stash.id);renderProfiles();toast('Restored '+stash.name,'ok')}})};
+ $('#btnIntro').onclick=()=>showIntro();
+ $('#inDismiss').onclick=()=>hideIntro(true);
+ $('#intro').onclick=e=>{if(e.target===$('#intro'))hideIntro(false)};
+ $('#credit').onclick=()=>setKofi($('#kofiDock').hidden);
  $('#btnSaveWork').onclick=saveWork;
  $('#btnUploadLast').onclick=()=>$('#fileProf').click();
  $('#fileProf').onchange=e=>{const f=e.target.files&&e.target.files[0];
@@ -3604,6 +3762,7 @@ function bind(){const s=SET;
  document.addEventListener('keydown',e=>{const tg=(e.target.tagName||'').toLowerCase();
   const typing=tg==='input'||tg==='textarea'||e.target.isContentEditable;
   if(typing&&e.key.length===1)SFX.play('type');
+  if(!$('#intro').hidden){if(e.key==='Escape'){e.preventDefault();SFX.play('cancel');hideIntro(true)}return}
   if(e.key==='F2'){e.preventDefault();SFX.play('confirm');newCall();return}
   if(e.key==='Escape'){if(U.drawer){closeDrawer();return}if(U.pfOpen){setPf(false);return}if(U.coOpen){setCo(false);return}}
   const g=e.target.closest&&e.target.closest('[data-gate]');

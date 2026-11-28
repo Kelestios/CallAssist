@@ -18,12 +18,17 @@ blob byte-for-byte, and `node --check` on the extracted script is clean.
 ## Apply
 
 ```text
-git checkout -b wo6 maingit apply --unidiff-zero work-order-6-campaign-calendar.patch
+git checkout -b wo6 main
+git apply --unidiff-zero work-order-6-campaign-calendar.patch
 git hash-object index.html      # expect 4140254020f7c7c8a49d6462a9fe901b215b7f42
 mkdir -p docs tools
 cp CALENDAR-SETUP.md CALENDAR-HELPER.md CALENDAR-GHL.md docs/
 cp cal-proxy.py tools/
 ```
+
+Run each line separately. The first version of this block concatenated the first two commands into
+`maingit apply`, which is the documentation twin of the missing-space attribute bug in
+`docs/AGENT_PITFALLS.md`; it is repaired here and the fetched copy is the one to trust.
 
 The application file, the patch and the helper ship from the delivery folder because the
 connector used for these documentation commits does not carry files that size dependably.

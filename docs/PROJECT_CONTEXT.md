@@ -55,6 +55,14 @@ An earlier November 19 console had one shared transcription/Brain URL field. **T
 
 ## 4. Verified change log
 
+### Work order 7a — placeholder chip box fix, 2026-11-28
+
+Status: implemented locally, then merged to `main` (see commit/PR reference added on publication). Application change is CSS-only in `index.html`.
+
+- **Root cause:** the empty placeholder chip uses class `tok empty`, and the generic empty-state rule `.empty` (`padding:15px 8px; line-height:1.7`) leaked onto it (equal specificity, later in the sheet), bloating the chip box to ~47px around an ~8.8px word and disrupting paragraph layout.
+- **Fix:** `.tok.empty` now restates `padding:var(--tok-pad); line-height:1.1` (higher specificity beats `.empty`); base `.tok` tightened to `--tok-pad:0 3px`, `line-height:1.1`, `border-radius:3px`, `vertical-align:middle` so the small box hugs the word and centres on the line.
+- **Checks:** 21 jsdom regression checks pass (chip rules, declutter, rail/pulse, divider, GHL adapter + generic endpoint). Real Chromium verified the computed box: empty chip 11.7px tall / `0px 3px` padding (was 47px / `15px 8px`), filled chip 13.2px; paragraph flows normally. jsdom cannot resolve `var(--tok-pad)` in computed style, so the tight box was confirmed in the browser, not jsdom.
+
 ### Work order 7 — merged, 2026-11-28
 
 Status: **merged to `main`**. PR [#3](https://github.com/Kelestios/CallAssist/pull/3), implementation commit `3d2538f`, merge commit [`f16637e`](https://github.com/Kelestios/CallAssist/commit/f16637e1fe161443c77374a8400dc56eb4b214be). Application blob `67b281fdefbcdf558054be38660a7f48b1f019ae` (verified on remote `main`); adds `tools/cal-resolver.mjs`.

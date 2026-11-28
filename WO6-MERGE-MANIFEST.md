@@ -5,10 +5,10 @@ Final hashes, regenerated after the last build. Base is `main` @ 621796e2.
 | artefact | git blob | sha256 | bytes |
 |---|---|---|---|
 | `index.html` before | `574232463219306266848332a4d38b32ccdabec1` | `fa7bf51eab18bd38d040c97ce187e125d65116cf1bbae5d191e5d31f233b0bd9` | 353763 |
-| `index.html` after | `f731294d72605101a3be9a74bae4c21870203f0b` | `6c345cf6b431b77b84d5a22dd404e11d67da7a9d97527be0e9799b2f698a326b` | 388245? |
+| `index.html` after | `f731294d72605101a3be9a74bae4c21870203f0b` | `6c345cf6b431b77b84d5a22dd404e11d67da7a9d97527be0e9799b2f698a326b` | 388363 |
 | patch (`work-order-6-campaign-calendar.patch`) | `f0f357dee65178a2eaf7989954231158c5d446fc` | `3b5f9f95b74d6ca681d0b57640e0e3c03ca7e1f38dcc70f49c612d54f2c77d83` | 42691 |
-| helper (`tools/cal-proxy.py`) | `1481d086ef27a570d2e62863290c881245666d7c` | `88727122779bd7094806a9ec953238d20bcac78b2b955043e768a609b0fdc186` | 17953 |
-| setup doc (`docs/CALENDAR-SETUP.md`) | `6aad5de588dffc18d5215d3260f97030c2d3ac7f` | `70fe3c9684db1874cf7987c6aa38fd2464a72cf6f2da43f157bb0f7e03fc50d1` | 7326 |
+| helper (`cal-proxy.py`) | `1481d086ef27a570d2e62863290c881245666d7c` | `88727122779bd7094806a9ec953238d20bcac78b2b955043e768a609b0fdc186` | 17953 |
+| setup doc (`CALENDAR-SETUP.md`) | `6aad5de588dffc18d5215d3260f97030c2d3ac7f` | `70fe3c9684db1874cf7987c6aa38fd2464a72cf6f2da43f157bb0f7e03fc50d1` | 7326 |
 
 Verified: applying the zero-context patch to `main`'s `index.html` reproduces blob
 `f731294d72605101a3be9a74bae4c21870203f0b` byte-for-byte (`git apply --unidiff-zero`, then
@@ -20,12 +20,14 @@ Verified: applying the zero-context patch to `main`'s `index.html` reproduces bl
 git checkout -b wo6 main
 git apply --unidiff-zero work-order-6-campaign-calendar.patch
 git hash-object index.html      # → f731294d72605101a3be9a74bae4c21870203f0b
-mkdir -p docs tools             # CALENDAR-SETUP.md and cal-proxy.py ship in this branch
+mkdir -p docs tools
+cp CALENDAR-SETUP.md docs/ && cp cal-proxy.py tools/   # both ship from the delivery folder
 ```
 
-The full `index.html`, the patch and the Playwright suites live in the delivered work-order
-folder; the patch is too large to commit through the connector, which is why its hash is
-recorded here instead.
+On this branch: `docs/CALENDAR-SETUP.md` and this manifest.
+In the delivery folder, because the connector cannot carry files this size dependably:
+`index.html` (388,363 B), the patch (42,691 B), `cal-proxy.py` (17,953 B) and the Playwright
+suites. The hashes above let the merge be checked byte-for-byte after copying them in.
 
 ## What changed
 

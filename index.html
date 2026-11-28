@@ -45,7 +45,7 @@
   --g-lv:linear-gradient(180deg,#4ba3ab,#2b7a82 45%,#377a41);
   --shadow:0 12px 32px rgba(88,72,32,.16);--shadow2:0 18px 48px rgba(88,72,32,.24);
   --read:17px;--lead:1.62;--headH:66px;--deck:50%;--cfgW:300px;--rightW:372px;--rail:46px;
-  --tok:.688em;--tok-empty:.576em;--tok-pad:1px 5px;
+   --tok:.6em;--tok-empty:.52em;--tok-pad:0 4px;
   --fd:'Bodoni Moda',ui-serif,Georgia,'Times New Roman',serif;   /* wordmark face; Georgia when offline */
 }
 body[data-theme="dark"]{
@@ -459,13 +459,23 @@ body.pf-open #profDrop{max-height:min(52vh,440px)}
   background:linear-gradient(100deg,var(--tint-leaf),transparent);flex-wrap:wrap}
 .p-head h3{font-size:10.5px;letter-spacing:.19em;color:var(--forest);display:flex;align-items:center;gap:7px}
 .p-head .sp{margin-left:auto;display:flex;gap:5px;flex-wrap:wrap}
-/* settings expand tab — MIDDLE LEFT edge */
-#configTab{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:66;display:none;
-  writing-mode:vertical-rl;text-orientation:mixed;font-family:inherit;font-size:10px;font-weight:bold;letter-spacing:.22em;
-  color:var(--on-accent);background:var(--g-leaf);border:none;border-radius:0 12px 12px 0;padding:16px 8px;cursor:pointer;
-  align-items:center;gap:9px;box-shadow:5px 0 18px var(--tint-leaf-h);transition:padding .18s,box-shadow .18s}
-#configTab:hover{padding-right:12px;box-shadow:8px 0 24px var(--tint-leaf-h)}
+/* settings collapsed rail — LEFTMOST in-flow panel, mirrors the qualifiers rail but with an
+   amber line (the qualifiers rail uses green) so the two are told apart at a glance */
+#configTab{flex:0 0 var(--rail);position:relative;display:none;flex-direction:column;align-items:center;gap:11px;padding:14px 0;
+  border:0;border-right:1px solid var(--line2);font-family:inherit;cursor:pointer;color:var(--amber);
+  background:linear-gradient(180deg,var(--warnbg),var(--tint-honey));transition:background .2s ease,box-shadow .2s ease}
+#configTab::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-sun);transition:width .18s ease,filter .2s ease}
+#configTab .em{font-size:19px;transition:transform .24s cubic-bezier(.2,.8,.25,1)}
+#configTab .vt{writing-mode:vertical-rl;font-size:9.5px;font-weight:bold;letter-spacing:.24em;transition:letter-spacing .26s ease,color .2s ease}
+#configTab:hover{background:var(--warnbg);box-shadow:inset 0 0 22px var(--tint-honey)}
+#configTab:hover::before{width:6px;filter:brightness(1.1)}
+#configTab:hover .em{transform:translateY(-3px) scale(1.08)}
+#configTab:hover .vt{letter-spacing:.34em;color:var(--amber)}
 body.cfg-closed #configTab{display:flex}
+/* settings hide button — continuous gentle pulse while expanded, prompting the user to press it */
+#btnCfgHide.pulse{animation:cfgHidePulse 1.5s ease-in-out infinite}
+@keyframes cfgHidePulse{0%,100%{box-shadow:0 0 0 0 var(--tint-leaf-h);transform:translateX(0)}
+  50%{box-shadow:0 0 0 6px transparent;transform:translateX(-3px)}}
 #rightTab{flex:0 0 var(--rail);position:relative;display:flex;flex-direction:column;align-items:center;gap:11px;padding:14px 0;
   border:0;border-right:1px solid var(--line2);font-family:inherit;cursor:pointer;color:var(--forest);background:linear-gradient(180deg,var(--leafbg),var(--infobg))}
 #rightTab::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--g-leaf)}
@@ -514,10 +524,10 @@ body.editing .rchip{cursor:grab}
 .sline:hover{background:var(--tint-leaf-h)}
 .sline .cue{display:inline-block;font-size:8.5px;letter-spacing:.15em;color:var(--on-warm);background:var(--g-sun);border-radius:5px;
   padding:2px 7px;margin-left:8px;vertical-align:middle;font-weight:bold}
-/* placeholder chips — 20% smaller than v3 */
-.tok{border-radius:5px;padding:var(--tok-pad);font-size:var(--tok);font-weight:bold;white-space:nowrap;line-height:1.35;vertical-align:baseline}
+/* placeholder chips — compact inline-block so the box never overlaps the line above/below */
+.tok{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;border-radius:4px;padding:var(--tok-pad);font-size:var(--tok);font-weight:bold;white-space:nowrap;line-height:1.2;vertical-align:baseline}
 .tok.filled{background:var(--tok-fill-bg);color:var(--tok-fill-ink);border:1px solid var(--tok-fill-line)}
-.tok.empty{background:var(--tok-empty-bg);color:var(--tok-empty-ink);border:1px dashed var(--honey);font-size:var(--tok-empty);letter-spacing:.06em}
+.tok.empty{background:var(--tok-empty-bg);color:var(--tok-empty-ink);border:1px dashed var(--honey);font-size:var(--tok-empty);letter-spacing:.04em}
 .tok.custom{background:var(--violetbg);color:var(--violet);border:1px dashed var(--violet2)}
 .branch{border:1px solid var(--line2);border-radius:10px;overflow:hidden}
 .branch-head{width:100%;text-align:left;font-family:inherit;font-size:11px;font-weight:bold;color:var(--ink2);
@@ -575,6 +585,19 @@ body.editing .edbar{display:flex}
 #divider::after{content:"⇄";position:absolute;top:calc(50% + 36px);left:50%;transform:translateX(-50%);font-size:9px;color:var(--leaf);
   opacity:.5;transition:opacity .2s ease,color .2s ease}
 #divider:hover::after,#divider.active::after{opacity:1;color:var(--forest)}
+/* qualifiers resize handle — drag left/right to trade qualifiers width for script room */
+#qualDivider{flex:0 0 10px;position:relative;cursor:col-resize;touch-action:none;
+  background:linear-gradient(180deg,var(--bg2),var(--surf3));border-left:1px solid var(--line);border-right:1px solid var(--line);
+  transition:background .22s ease}
+#qualDivider[hidden]{display:none}
+#qualDivider:hover,#qualDivider.active{background:linear-gradient(180deg,var(--infobg),var(--teal2))}
+#qualDivider::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:4px;height:46px;border-radius:3px;
+  background:repeating-linear-gradient(180deg,var(--teal) 0 4px,transparent 4px 8px);opacity:.6;
+  transition:height .26s cubic-bezier(.2,.8,.25,1),opacity .2s ease,filter .2s ease}
+#qualDivider:hover::before,#qualDivider.active::before{height:104px;opacity:1;filter:brightness(1.14) saturate(1.12)}
+#qualDivider::after{content:"⇄";position:absolute;top:calc(50% + 36px);left:50%;transform:translateX(-50%);font-size:9px;color:var(--teal);
+  opacity:.5;transition:opacity .2s ease,color .2s ease}
+#qualDivider:hover::after,#qualDivider.active::after{opacity:1;color:var(--forest)}
 .deck{flex:0 0 var(--rail);position:relative;transition:flex-basis .3s cubic-bezier(.2,.8,.25,1)}
 .deck.active{flex:0 0 var(--deck)}
 #objDeck{background:linear-gradient(180deg,var(--bg1),var(--bg0));border-left:1px solid var(--line2)}
@@ -1157,7 +1180,6 @@ body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
 </div>
 
 <div id="app">
-<button id="configTab" title="Open desk settings">⚙ SETTINGS</button>
 
 <div id="head">
 <header id="topbar">
@@ -1234,6 +1256,7 @@ body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
 <div id="layout">
 <div id="cols">
 
+  <button id="configTab" aria-label="Open desk settings" aria-controls="configPanel" aria-expanded="false" title="Open desk settings"><span class="em">⚙</span><span class="vt">SETTINGS</span><span class="ar">▸</span></button>
   <aside class="pane" id="configPanel">
     <div class="p-head"><h3>⚙ DESK SETTINGS</h3><div class="sp"><button class="btn mini" id="btnCfgHide">◀ Hide</button></div></div>
     <div class="scroll" style="padding:11px 12px">
@@ -1409,6 +1432,8 @@ body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
       </div>
     </div>
   </aside>
+
+  <div id="qualDivider" title="Drag to resize qualifiers · double-click to reset" aria-hidden="true"></div>
 
   <div id="center">
     <section class="pane" id="scriptPane">
@@ -2703,7 +2728,7 @@ function objToCsv(objs,cats){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'"
      5. Dates are calendar parts ("2026-11-30"), never instants — formatting a local
         noon Date through the appointment zone used to shift every cell one day back.
    ══════════════════════════════════════════════════════════════════════════ */
-const CALDEF={url:'',api:'',tz:'',horizon:30};
+const CALDEF={url:'',api:'',tz:'',horizon:30,ghlId:'',resolver:''};
 let CAL=Object.assign({},CALDEF,store.get('cal',null)||{});
 const saveCal=()=>store.set('cal',CAL);
 const CALST={state:'off',days:{},asOf:0,msg:'',gen:0,open:false,pick:null,pickMonth:null,ctl:null};
@@ -2755,7 +2780,10 @@ function calDaysOpen(){return Object.keys(CALST.days).filter(k=>calSlots(k).leng
 async function calRefresh(why){
  CALST.gen++;const g=CALST.gen;
  if(CALST.ctl){try{CALST.ctl.abort()}catch(e){}CALST.ctl=null}
- if(!calOkUrl(CAL.api)){CALST.days={};CALST.state=CAL.url?'linked':'off';CALST.msg='';calRender();renderQual();
+ if(!calOkUrl(CAL.api)){
+  const gid=ghlId();
+  if(gid){await ghlRefresh(g,why,gid);return}
+  CALST.days={};CALST.state=CAL.url?'linked':'off';CALST.msg='';calRender();renderQual();
   if(why==='newcall')toast(CAL.url?'Calendar link saved \u00b7 live availability not connected, so times stay manual'
    :'No campaign calendar saved \u00b7 date and time stay manual','warn');return}
  CALST.days={};CALST.state='checking';calRender();renderQual();
@@ -2812,7 +2840,7 @@ async function calRefresh(why){
   if(k&&calDayKind(k)==='full'){S.lead.date='';S.lead.time='';saveLead();renderQual();
    toast('That date closed after the redial \u2014 cleared for this call','warn')}}}
 function calAfterSwitch(){CALST.gen++;CALST.pick=null;CALST.pickMonth=null;
- if(CAL.api){calRender();calRefresh('switch')}
+ if(CAL.api||ghlId()){calRender();calRefresh('switch')}
  else{CALST.days={};CALST.state=CAL.url?'linked':'off';calRender()}}
 function calNewCall(){CALST.gen++;CALST.pick=null;CALST.pickMonth=null;
  S.lead.date='';S.lead.time='';delete S.autoFilled.date;delete S.autoFilled.time;calRefresh('newcall')}
@@ -2842,7 +2870,7 @@ function calSavedLine(){const s=CALST.state;
  if(s==='empty')return'<b>Link saved</b> \u00b7 checked '+calClock(CALST.asOf)+' \u00b7 no open slots in this window';
  if(s==='checking')return'checking live availability\u2026';
  if(s==='error')return'<b>Link saved</b> \u00b7 <span class="calBad2">connection error: '+esc(CALST.msg)+'</span> \u00b7 no times invented';
- if(CAL.url)return'<b>Link saved</b> \u00b7 <b>live availability not connected</b> \u2014 add a read-only source to check times';
+ if(CAL.url)return'<b>Link saved</b> \u00b7 <b>live availability not connected</b> \u2014 '+(ghlSlug(CAL.url)?'resolve the Calendar ID (or run the resolver) to read live times':'add a read-only source to check times');
  return'Nothing saved yet'}
 function calTzSel(){const want=['America/New_York','America/Chicago','America/Denver','America/Los_Angeles','America/Phoenix','UTC'],z=calZone();
  if(want.indexOf(z)<0)want.push(z);
@@ -2852,15 +2880,26 @@ function calPanelHTML(){
   '<div class="calR1"><input type="url" id="calUrlIn" spellcheck="false" autocomplete="off" '+
    'placeholder="https://api.leadconnectorhq.com/widget/bookings/\u2026" value="'+esc(CAL.url)+'">'+
    '<button type="button" class="btn mini ghost" id="calOpenBtn"'+(calOkUrl(CAL.url)?'':' disabled')+'>Open calendar \u2197</button></div>'+
-  '<small>Paste the campaign\u2019s public booking link. Saving a link only stores where the diary lives \u2014 by itself it does not mean availability can be read.</small></div>'+
- '<div class="calIn"><span class="lbl">READ-ONLY AVAILABILITY SOURCE <i>optional</i></span>'+
-  '<div class="calR1"><input type="url" id="calApiIn" spellcheck="false" autocomplete="off" '+
-   'placeholder="http://127.0.0.1:8787/free-slots" value="'+esc(CAL.api)+'">'+
-   '<button type="button" class="btn mini" id="calTryBtn">\u27f3 Check now</button></div>'+
-  '<small>A booking widget does not hand its grid to another webpage, and this desk will not work around that \u2014 no scraping, no third-party proxy. '+
-   'See docs/PROJECT_CONTEXT.md for setup. Connect a trusted read-only availability endpoint that answers GET '+
-   '<code>from&amp;to&amp;tz</code> with <code>{"days":{"YYYY-MM-DD":[{"label":"9:30 AM"}]}}</code>. '+
-   'Keep tokens on your server, never in these URLs, this HTML file, or your campaign .json.</small></div>'+
+   '<small>Paste the campaign\u2019s public booking link. Saving a link only stores where the diary lives \u2014 by itself it does not mean availability can be read.</small></div>'+
+  (ghlSlug(CAL.url)||CAL.ghlId?
+   '<div class="calIn calGhl"><span class="lbl">LEADCONNECTOR LIVE SLOTS <i>read-only</i></span>'+
+    '<div class="calR1"><input type="text" id="calGhlIdIn" spellcheck="false" autocomplete="off" '+
+     'placeholder="Calendar ID (20-character code)" value="'+esc(CAL.ghlId)+'">'+
+     '<button type="button" class="btn mini" id="calResolveBtn">\u27f3 Resolve from link</button></div>'+
+    '<div class="calR1"><input type="url" id="calResolverIn" spellcheck="false" autocomplete="off" '+
+     'placeholder="Resolver URL \u2014 http://127.0.0.1:8788" value="'+esc(CAL.resolver)+'"></div>'+
+    '<small>Open times are read straight from LeadConnector\u2019s CORS-open <code>free-slots</code> API once the Calendar ID is known. '+
+     'A booking slug cannot be resolved from a third-party page (the provider locks that to its own origins), so either run '+
+     '<code>node tools/cal-resolver.mjs</code> and set the Resolver URL, or paste the Calendar ID once. '+
+     'Times follow the Appointment TZ below. No booking is ever made.</small></div>':'')+
+  '<div class="calIn"><span class="lbl">READ-ONLY AVAILABILITY SOURCE <i>optional</i></span>'+
+   '<div class="calR1"><input type="url" id="calApiIn" spellcheck="false" autocomplete="off" '+
+    'placeholder="http://127.0.0.1:8787/free-slots" value="'+esc(CAL.api)+'">'+
+    '<button type="button" class="btn mini" id="calTryBtn">\u27f3 Check now</button></div>'+
+   '<small>Optional generic endpoint for non-LeadConnector calendars. It must answer GET '+
+    '<code>from&amp;to&amp;tz</code> with <code>{"days":{"YYYY-MM-DD":[{"label":"9:30 AM"}]}}</code>. '+
+    'If both are set, this endpoint wins over the LeadConnector adapter. '+
+    'Keep tokens on your server, never in these URLs, this HTML file, or your campaign .json.</small></div>'+
  '<div class="calIn calTwo"><span class="lbl">DAYS AHEAD</span>'+
   '<input type="number" id="calHzIn" class="calHz" min="1" max="120" step="1" value="'+esc(String(CAL.horizon||30))+'">'+
   '<span class="lbl">APPOINTMENT TZ</span><select id="calTzIn">'+calTzSel()+'</select>'+
@@ -2881,23 +2920,26 @@ function calPanelSet(open){CALST.open=!!open;const f=$('#calFeature');if(f)f.cla
  if(open)calPanelFill();calRender();
  if(open)setTimeout(()=>{const i=$('#calUrlIn');if(i)try{i.focus()}catch(e){}},300)}
 
-/* ── the two qualifier cells (1a, 1b) ── */
+/* ── the two qualifier cells (1a, 1b, 1c) ──
+   Decluttered: the row shows only the calendar button and the chosen result. The manual /
+   verified / timezone detail lives in the field title, the status chip beside the Calendar
+   button and the picker — not as extra pills crowding the entry. Timezone is decided once by
+   the Appointment TZ selector at the top of the Calendar panel. */
 function calDateCell(){const v=calVerified();
- return'<span class="calQ"><input type="text" id="qf_date" data-q="date" spellcheck="false" class="calDate'+(v?' live':'')+'" '+
-  'value="'+esc(S.lead.date||'')+'" placeholder="'+(v?'Pick or type a date':'Tomorrow / Tue Nov 24')+'" '+
-  'title="'+(v?'Click to open the calendar \u2014 only days with open slots are selectable':'Click to open the calendar, or keep typing')+'">'+
-  '<button type="button" class="btn mini ghost calPickBtn" aria-label="Open the date picker" title="Open the calendar picker">\ud83d\uddd3\ufe0f</button>'+
-  (v?'':'<span class="calManual">manual</span>')+'</span>'}
+  const tip=v?'Verified availability — click to open the calendar and pick an open day'
+   :'Manual entry — not checked against live availability. Click to open the calendar, or keep typing';
+  return'<span class="calQ"><button type="button" class="btn mini ghost calPickBtn" aria-label="Open the date picker" title="Open the calendar picker">\ud83d\uddd3\ufe0f</button>'+
+   '<input type="text" id="qf_date" data-q="date" spellcheck="false" class="calDate'+(v?' live':'')+'" '+
+   'value="'+esc(S.lead.date||'')+'" placeholder="'+(v?'Pick or type a date':'Tomorrow / Tue Nov 24')+'" '+
+   'aria-label="Appointment date" title="'+esc(tip)+'"></span>'}
 function calTimeCell(){const k=calSelKey(),list=calSlots(k),cur=S.lead.time||'';
- if(!calVerified())return'<span class="calQ"><input type="text" id="qf_time" data-q="time" spellcheck="false" value="'+esc(cur)+
-  '" placeholder="6:30 PM" title="Type it \u2014 or connect a read-only availability source"><span class="calManual">manual</span>'+
-  '<span class="calRowTz" id="calZoneLblRow">' + esc(calTzTag()) + '</span></span>';
- const have=list.some(x=>x.label===cur);
- return'<span class="calQ"><select id="qf_time" data-q="time" title="Verified times from your availability source">'+
-  list.map(x=>'<option value="'+esc(x.label)+'"'+(x.label===cur?' selected':'')+'>'+esc(x.label)+'</option>').join('')+
-  (!have&&cur?'<option value="'+esc(cur)+'" selected>'+esc(cur)+' (typed)</option>':'')+'</select>'+
-  '<span class="calManual '+(list.length?'live':'warn')+'">'+(cur&&!have?'manual / unverified':list.length?'not reserved':'nothing open')+'</span>'+
-  '<span class="calRowTz" id="calZoneLblRow">'+esc(calTzTag())+'</span></span>'}
+  if(!calVerified())return'<span class="calQ"><input type="text" id="qf_time" data-q="time" spellcheck="false" value="'+esc(cur)+
+   '" placeholder="6:30 PM" aria-label="Appointment time" title="Manual entry \u2014 not checked against live availability. Type it, or connect a source. Times use the Appointment TZ set in the Calendar panel."></span>';
+  const have=list.some(x=>x.label===cur);
+  const tip=cur&&!have?'Typed time \u2014 manual / unverified':list.length?'Available when checked \u2014 not reserved':'Nothing open that day';
+  return'<span class="calQ"><select id="qf_time" data-q="time" aria-label="Appointment time" title="'+esc(tip+' \u00b7 '+calTzTag())+'">'+
+   list.map(x=>'<option value="'+esc(x.label)+'"'+(x.label===cur?' selected':'')+'>'+esc(x.label)+'</option>').join('')+
+   (!have&&cur?'<option value="'+esc(cur)+'" selected>'+esc(cur)+' (typed)</option>':'')+'</select></span>'}
 
 /* ── month picker ── */
 function calPopHTML(){const selK=calSelKey(),sp=calParts(selK)||calParts(calTodayKey());
@@ -2954,49 +2996,71 @@ function calMonthHop(dir){const cur=CALST.pickMonth||calParts(calSelKey());
  const nm2=new Date(Date.UTC(cur[0],cur[1]-1+dir,1));CALST.pickMonth=[nm2.getUTCFullYear(),nm2.getUTCMonth()+1];calPopSync()}
 
 /* ── form, storage, JSON, wiring ── */
-function calForm(){const u=$('#calUrlIn'),a=$('#calApiIn'),h=$('#calHzIn'),z=$('#calTzIn');
- return{url:String((u&&u.value)||'').trim(),api:String((a&&a.value)||'').trim(),
-  horizon:Math.max(1,Math.min(120,parseInt((h&&h.value)||'30',10)||30)),tz:String((z&&z.value)||'').trim()}}
+function calForm(){const u=$('#calUrlIn'),a=$('#calApiIn'),h=$('#calHzIn'),z=$('#calTzIn'),gi=$('#calGhlIdIn'),rs=$('#calResolverIn');
+  return{url:String((u&&u.value)||'').trim(),api:String((a&&a.value)||'').trim(),
+   horizon:Math.max(1,Math.min(120,parseInt((h&&h.value)||'30',10)||30)),tz:String((z&&z.value)||'').trim(),
+   ghlId:String((gi&&gi.value)||'').trim(),resolver:String((rs&&rs.value)||'').trim()}}
 function calValidate(v){const bad=[];
  if(v.url&&!calOkUrl(v.url))bad.push('the booking link must start with http:// or https://');
  if(v.api&&!calOkUrl(v.api))bad.push('the availability source must start with http:// or https://');
  if(v.api){try{void new URL(v.api,location.href)}catch(e){bad.push('the availability source is not a readable URL')}}
- if(!v.url&&!v.api)bad.push('paste the booking link first');
+ if(v.resolver&&!calOkUrl(v.resolver))bad.push('the resolver URL must start with http:// or https://');
+ if(v.ghlId&&!ghlLooksId(v.ghlId))bad.push('the Calendar ID looks wrong \u2014 it is the 20-character code, not the link slug');
+ if(!v.url&&!v.api&&!v.ghlId)bad.push('paste the booking link first');
  return bad}
 function calSay(msg,kind){const el=$('#calChk');
  if(el){el.textContent=msg;el.className='calMsg '+(kind||'')}
  if(msg)toast(msg,kind==='bad'?'bad':'warn')}
-function calSave(){const v=calForm(),bad=calValidate(v);
+async function calSave(){const v=calForm(),bad=calValidate(v);
  if(bad.length){calSay(bad[0],'bad');return}
- CAL.url=v.url;CAL.api=v.api;CAL.horizon=v.horizon;CAL.tz=v.tz;saveCal();
+ CAL.url=v.url;CAL.api=v.api;CAL.horizon=v.horizon;CAL.tz=v.tz;CAL.ghlId=v.ghlId;CAL.resolver=v.resolver;saveCal();
  CALST.pick=null;CALST.pickMonth=null;calSay('','');
+ const slug=ghlSlug(CAL.url);
+ if(!CAL.api&&slug&&!ghlId()){
+  calSay('Resolving the campaign calendar from the link\u2026','');
+  const res=await ghlResolve(slug);
+  if(res&&res.id){CAL.ghlId=res.id;saveCal();calSay('Calendar resolved \u2014 '+res.id,'')}
+  else calSay('Could not auto-resolve the link from this page. Run the resolver script, or paste the Calendar ID once.','warn')}
  calPanelSet(false);renderQual();
  if(v.api)toast('Calendar saved \u2014 checking live availability\u2026','ok');
- else if(v.url)toast('Link saved \u2014 that is NOT live availability. Save Work puts it in your campaign file','warn');
+ else if(ghlId())toast('Calendar saved \u2014 checking live availability\u2026','ok');
+ else if(v.url)toast('Link saved \u2014 that is NOT live availability yet. Add a Calendar ID or resolver, then Save','warn');
  else toast('Calendar settings cleared \u2014 date and time are manual again','warn');
  calRefresh('save')}
-function calForget(){const had=!!(CAL.url||CAL.api);CAL=Object.assign({},CALDEF);saveCal();calRefresh('remove');
+function calForget(){const had=!!(CAL.url||CAL.api||CAL.ghlId);CAL=Object.assign({},CALDEF);saveCal();calRefresh('remove');
  CALST.pick=null;CALST.pickMonth=null;calSay('','');calPanelSet(false);renderQual();calPopSync();
  toast(had?'Calendar link and availability source removed from this browser':'Nothing was connected to remove','warn')}
 function calExport(){return{url:String(CAL.url||''),api:String(CAL.api||''),tz:String(CAL.tz||''),
-  horizon:Math.max(1,Math.min(120,+CAL.horizon||30))}}
+ horizon:Math.max(1,Math.min(120,+CAL.horizon||30)),ghlId:String(CAL.ghlId||''),resolver:String(CAL.resolver||'')}}
 function calApplyJ(j){if(!j||typeof j!=='object')return false;
  const url=String(j.url||'').slice(0,500),api=String(j.api||j.slotsUrl||'').slice(0,500),tz=String(j.tz||'').slice(0,64);
- const hz=parseInt(j.horizon,10),keep=[CAL.url,CAL.api,CAL.tz,CAL.horizon].join('\u241f');
+ const ghlIdJ=String(j.ghlId||'').slice(0,40),resolver=String(j.resolver||'').slice(0,300);
+ const hz=parseInt(j.horizon,10),keep=[CAL.url,CAL.api,CAL.tz,CAL.horizon,CAL.ghlId,CAL.resolver].join('\u241f');
  CAL=Object.assign({},CALDEF,{url:calOkUrl(url)?url:'',api:calOkUrl(api)?api:'',
-  tz:/^[A-Za-z0-9+\/_-]{2,64}$/.test(tz)?tz:'',horizon:isNaN(hz)?30:Math.max(1,Math.min(120,hz))});
+  tz:/^[A-Za-z0-9+\/_-]{2,64}$/.test(tz)?tz:'',horizon:isNaN(hz)?30:Math.max(1,Math.min(120,hz)),
+  ghlId:ghlLooksId(ghlIdJ)?ghlIdJ:'',resolver:calOkUrl(resolver)?resolver:''});
  saveCal();
- if([CAL.url,CAL.api,CAL.tz,CAL.horizon].join('\u241f')!==keep)calAfterSwitch();
+ if([CAL.url,CAL.api,CAL.tz,CAL.horizon,CAL.ghlId,CAL.resolver].join('\u241f')!==keep)calAfterSwitch();
  else calRefresh('import');
  return true}
 function calFeatClick(e){const t=e.target;
  if(t.closest('#calSaveBtn')){calSave();return}
+ if(t.closest('#calResolveBtn')){calResolveNow();return}
  if(t.closest('#calTryBtn')){const v=calForm();
-  if(!calOkUrl(v.api)){calSay('Add a read-only availability source first, then Check now','bad');return}
+  if(!calOkUrl(v.api)&&!ghlLooksId(v.ghlId)&&!ghlSlug(v.url)){calSay('Add a read-only source, a Calendar ID, or a LeadConnector booking link first','bad');return}
   calSave();return}
  if(t.closest('#calForgetBtn')){calForget();return}
  if(t.closest('#calOpenBtn')){if(calOkUrl(CAL.url))window.open(CAL.url,'_blank','noopener');
   else calSay('No booking link saved yet','warn');return}}
+async function calResolveNow(){const v=calForm();
+ const slug=ghlSlug(v.url);
+ if(!slug){calSay('Paste a LeadConnector booking link first (…/widget/bookings/…)','bad');return}
+ CAL.url=v.url;CAL.resolver=v.resolver;CAL.ghlId=v.ghlId;CAL.tz=v.tz;CAL.horizon=v.horizon;saveCal();
+ calSay('Resolving the campaign calendar from the link\u2026','');
+ const res=await ghlResolve(slug);
+ if(res&&res.id){CAL.ghlId=res.id;saveCal();calPanelFill();calSay('Resolved \u2014 Calendar ID '+res.id,'');
+  toast('Calendar resolved \u2014 checking live availability\u2026','ok');calRefresh('save')}
+ else{calPanelFill();calSay('Could not resolve from this page. Start tools/cal-resolver.mjs and set the Resolver URL, or paste the Calendar ID once.','warn')}}
 function calPopClick(e){const t=e.target,pop=$('#calPop');if(!pop||pop.hidden)return;
  if(!t.closest('.pkCard')){calPopClose();return}
  if(t.closest('#pkClose')){calPopClose();return}
@@ -3012,10 +3076,10 @@ function calBind(){
  const bc=$('#btnCal');if(bc)bc.onclick=e=>{e.stopPropagation();calPanelSet(!CALST.open)};
  const f=$('#calFeature');
  if(f){f.addEventListener('click',calFeatClick);
-  f.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('#calUrlIn,#calApiIn,#calHzIn')){e.preventDefault();calSave()}
+  f.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('#calUrlIn,#calApiIn,#calHzIn,#calGhlIdIn,#calResolverIn')){e.preventDefault();calSave()}
    if(e.key==='Escape'&&CALST.open){e.stopPropagation();calPanelSet(false);const b=$('#btnCal');if(b)b.focus()}});
   f.addEventListener('input',e=>{const m=$('#calSavedTxt');
-   if(m&&e.target.closest('#calUrlIn,#calApiIn'))m.innerHTML=calSavedLine()})}
+   if(m&&e.target.closest('#calUrlIn,#calApiIn,#calGhlIdIn'))m.innerHTML=calSavedLine()})}
  const pop=$('#calPop');
  if(pop){pop.addEventListener('click',calPopClick);
   pop.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();calPopClose()}
@@ -3037,8 +3101,94 @@ function calBind(){
     calPopSync()}})}
  calRender()}
 function calInit(){calBind();
- if(CAL.api)calRefresh('boot');
+ if(CAL.api||ghlId())calRefresh('boot');
  else{CALST.state=CAL.url?'linked':'off';calRender()}}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   LeadConnector / GoHighLevel live-availability adapter (read-only).
+
+   Verified against the live provider (see docs/PROJECT_CONTEXT.md):
+     • GET https://backend.leadconnectorhq.com/calendars/{id}/free-slots
+         ?startDate=<ms>&endDate=<ms>&timezone=<IANA>&sendSeatsPerSlot=true
+       answers any origin (Access-Control-Allow-Origin: *), no key, no custom
+       headers. Body: { "YYYY-MM-DD": { "slots": { "<ISO instant>": seats } } }.
+     • The booking slug -> calendar id resolver (get-widget-data?slug=) is
+       origin-locked to LeadConnector domains, and the booking page HTML sends
+       no CORS headers. So a third-party page cannot resolve a slug by itself.
+       Two assisted paths fill the id: the optional local resolver script
+       (tools/cal-resolver.mjs) or a one-time manual Calendar ID paste.
+
+   This adapter only ever issues GETs. It never books, reserves or writes.
+   ══════════════════════════════════════════════════════════════════════════ */
+const GHL_HOST='https://backend.leadconnectorhq.com';
+function ghlSlug(u){const m=/leadconnectorhq\.com\/widget\/bookings\/([^/?#]+)/i.exec(String(u||''));return m?m[1]:''}
+function ghlId(){const v=String(CAL.ghlId||'').trim();return /^[A-Za-z0-9]{12,40}$/.test(v)?v:''}
+function ghlLooksId(k){return /^[A-Za-z0-9]{12,40}$/.test(String(k||''))}
+/* slug -> {id,tz}. Tries the optional resolver, then a direct provider call that only
+   succeeds when this page is served from a LeadConnector-permitted origin. */
+async function ghlResolve(slug){
+ if(!slug)return null;
+ if(calOkUrl(CAL.resolver)){
+  try{const u=new URL(CAL.resolver,location.href);
+   if(u.protocol!=='http:'&&u.protocol!=='https:')throw new Error('http(s) only');
+   u.pathname=u.pathname.replace(/\/+$/,'')+'/resolve';u.search='';u.searchParams.set('url',CAL.url);
+   const r=await fetch(u.href,{method:'GET',credentials:'omit',cache:'no-store',mode:'cors'});
+   if(r.ok){const j=await r.json();
+    if(j&&j.calendarId&&ghlLooksId(j.calendarId))return{id:String(j.calendarId),tz:String(j.timezone||'')}}
+  }catch(e){}
+ }
+ try{const u=GHL_HOST+'/calendars/bookings/get-widget-data?slug='+encodeURIComponent(slug)+'&eventId=';
+  const r=await fetch(u,{method:'GET',credentials:'omit',cache:'no-store',mode:'cors',
+   headers:{channel:'APP',source:'WEB_USER',version:'2021-04-15'}});
+  if(r.ok){const j=await r.json();
+   const id=j&&Object.keys(j).find(k=>ghlLooksId(k)&&j[k]&&j[k].calendar);
+   if(id)return{id,tz:String((j[id]&&j[id].timezone)||'')}}
+ }catch(e){}
+ return null}
+/* normalize the provider free-slots body into the desk's days map, labelled in Appointment TZ */
+function ghlDays(j){const zone=calZone(),clean={};
+ if(!j||typeof j!=='object')return clean;
+ Object.keys(j).forEach(k=>{
+  if(!calParts(k))return;
+  const day=j[k],slots=day&&day.slots;
+  if(!slots||typeof slots!=='object')return;
+  const seen={},out=[];
+  Object.keys(slots).forEach(inst=>{
+   const d=new Date(inst);if(isNaN(d.getTime()))return;
+   const label=String(fmtIn(zone,d,{hour:'numeric',minute:'2-digit'}));
+   const start=String(fmtIn(zone,d,{hour:'2-digit',minute:'2-digit',hour12:false}));
+   if(!label||seen[label])return;seen[label]=1;out.push({label,start})});
+  out.sort((p,q)=>(p.start>q.start?1:p.start<q.start?-1:0));
+  clean[k]=out});
+ return clean}
+async function ghlRefresh(g,why,id){
+ CALST.days={};CALST.state='checking';CALST.msg='';calRender();renderQual();
+ const ctl=new AbortController(),timer=setTimeout(()=>{try{ctl.abort()}catch(e){}},9000);CALST.ctl=ctl;
+ const days=Math.max(1,Math.min(120,+CAL.horizon||30)),from=Date.now(),to=from+days*864e5;
+ const u=GHL_HOST+'/calendars/'+encodeURIComponent(id)+'/free-slots?startDate='+from+'&endDate='+to+
+  '&timezone='+encodeURIComponent(calZone())+'&sendSeatsPerSlot=true';
+ let r=null;
+ try{r=await fetch(u,{method:'GET',credentials:'omit',cache:'no-store',mode:'cors',signal:ctl.signal})}
+ catch(err){clearTimeout(timer);if(g!==CALST.gen)return;CALST.ctl=null;CALST.days={};
+  const timed=/abort/i.test(String(err&&err.name||''));
+  CALST.state='error';CALST.msg=timed?'no reply within 9 seconds':'the browser blocked that request';
+  calRender();renderQual();if(why==='newcall')toast('Availability not refreshed \u2014 '+CALST.msg,'bad');return}
+ clearTimeout(timer);if(g!==CALST.gen)return;CALST.ctl=null;CALST.asOf=Date.now();
+ if(!r.ok){CALST.days={};CALST.state='error';CALST.msg=r.status===404?'calendar id not found':'HTTP '+r.status;
+  calRender();renderQual();if(why==='newcall')toast('Availability not refreshed \u2014 '+CALST.msg,'bad');return}
+ let j=null;try{j=await r.json()}
+ catch(err){if(g!==CALST.gen)return;CALST.days={};CALST.state='error';CALST.msg='the reply was not JSON';
+  calRender();renderQual();if(why==='newcall')toast('Availability not refreshed \u2014 the reply was not JSON','bad');return}
+ if(g!==CALST.gen)return;
+ const clean=ghlDays(j);CALST.days=clean;
+ const n=calDaysOpen();CALST.state=n?'live':'empty';CALST.msg=n?'':'checked, and nothing is open in this window';
+ calRender();renderQual();if(CALST.open)calPanelFill();
+ if(why==='newcall'||why==='save'){
+  if(n)toast('Live availability refreshed \u2014 '+n+' day'+(n===1?'':'s')+' open \u00b7 '+calClock(CALST.asOf),'ok');
+  else toast('Live availability refreshed \u2014 no open slots in this window \u00b7 '+calClock(CALST.asOf),'warn')}
+ if(n&&why==='newcall'){const k=calParseText(S.lead.date);
+  if(k&&calDayKind(k)==='full'){S.lead.date='';S.lead.time='';saveLead();renderQual();
+   toast('That date closed after the redial \u2014 cleared for this call','warn')}}}
 
 function dayFrom(d){if(!d)return'';const t=norm(d),D=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
  for(const x of D)if(t.includes(x))return cap(x);
@@ -3747,10 +3897,13 @@ function applyLayout(){
  [['#configPanel',cfgOn],['#rightCol',rightOn]].forEach(x=>{const el=$(x[0]);
   el.classList.toggle('collapsed',!x[1]);el.inert=!x[1];el.setAttribute('aria-hidden',String(!x[1]))});
  $('#rightTab').hidden=rightOn;
+ const qd=$('#qualDivider');if(qd)qd.hidden=!rightOn;
  $('#btnQual').setAttribute('aria-expanded',String(U.rightOpen&&U.qualOpen));
  document.body.classList.toggle('cfg-closed',!U.cfgOpen);
+ const ct=$('#configTab');if(ct)ct.setAttribute('aria-expanded',String(U.cfgOpen));
  $('#btnCfg').classList.toggle('on',U.cfgOpen);$('#btnQual').classList.toggle('on',U.rightOpen&&U.qualOpen);
  $('#btnCfgHide').textContent=U.cfgOpen?'◀ Hide':'▶ Show';
+ $('#btnCfgHide').classList.toggle('pulse',U.cfgOpen);
  $('#scrim').classList.toggle('show',!!U.drawer);measure()}
 function applyPanels(){$('#qualBody').hidden=!U.qualOpen;$('#qualCar').textContent=U.qualOpen?'◂':'▸';
  applyLayout();
@@ -3768,6 +3921,8 @@ function setActive(which,silent){S.active=which;store.set('deck',which);
  if(!silent)SFX.play(which?'open':'shut');measure()}
 function setDeckSize(p,silent){p=Math.max(25,Math.min(75,Math.round(p)));SET.deck=p;
  document.documentElement.style.setProperty('--deck',p+'%');$('#deckRange').value=p;$('#deckVal').textContent=p+'%';if(!silent)saveSet()}
+function setQualW(px,persist){px=Math.max(260,Math.min(680,Math.round(px)));
+ document.documentElement.style.setProperty('--rightW',px+'px');if(persist)store.set('qualW',px)}
 function resumeCall(){closeDrawer();$('#scriptScroll').scrollTo({top:0,behavior:'smooth'});
  const c=$('#stageCard');c.classList.remove('in');void c.offsetWidth;c.classList.add('in')}
 const leadHasData=()=>!!(S.lead.name||S.lead.phone||S.lead.address||S.lead.date||S.lead.bill);
@@ -3959,7 +4114,7 @@ function applySetUI(){const s=SET;
  $('#promptBox').textContent=GPT_PROMPT;
  setDeckSize(s.deck||50,true);alarmSt();SFX.vol();applyTheme()}
 
-const HIT='button,a,input,select,textarea,summary,[role="button"],[role="checkbox"],[data-copy],[data-openobj],[data-nav-cat],[data-nav-home],[data-nav-back],[data-stage],[data-nav],[data-gate],[data-yn],[data-check-q],[data-focus],[data-focus-q],[data-region],[data-cocopy],[data-sfx],[data-spiel],[data-pin],[data-concern],[data-cbq],[data-cbsel],[data-cbdone],[data-cbreopen],[data-cbload],[data-cbedit],[data-cbrearm],[data-cbdel],[data-view],[data-delview],[data-delconcern],[data-tc],[data-close],[data-qual-jump],[data-hfield],[data-hrevert],[data-pfactivate],[data-flddel],[data-addline],[data-delline],[data-addcue],[data-addbranch],[data-delbranch],[data-addsay],[data-delsay],[data-addblock],[data-delblock],[data-addstage],[data-delstage],[data-addphrase],[data-objdone],[data-addobj],[data-oaddsay],[data-odelsay],[data-odelobj],.sline,.osay,.branch-head,.obr-h,.padtile,.orow,.rchip,.pivot,.bankchip,.qcheck,.grow,.deck-rail,.viewchip,.ctxchip,.conchip,.sfxc,.cbq,.tgl,.gpath,.gdrop,.glink,.gbtn,#divider,#qualHead,#profPill,#themeSelect2';
+const HIT='button,a,input,select,textarea,summary,[role="button"],[role="checkbox"],[data-copy],[data-openobj],[data-nav-cat],[data-nav-home],[data-nav-back],[data-stage],[data-nav],[data-gate],[data-yn],[data-check-q],[data-focus],[data-focus-q],[data-region],[data-cocopy],[data-sfx],[data-spiel],[data-pin],[data-concern],[data-cbq],[data-cbsel],[data-cbdone],[data-cbreopen],[data-cbload],[data-cbedit],[data-cbrearm],[data-cbdel],[data-view],[data-delview],[data-delconcern],[data-tc],[data-close],[data-qual-jump],[data-hfield],[data-hrevert],[data-pfactivate],[data-flddel],[data-addline],[data-delline],[data-addcue],[data-addbranch],[data-delbranch],[data-addsay],[data-delsay],[data-addblock],[data-delblock],[data-addstage],[data-delstage],[data-addphrase],[data-objdone],[data-addobj],[data-oaddsay],[data-odelsay],[data-odelobj],.sline,.osay,.branch-head,.obr-h,.padtile,.orow,.rchip,.pivot,.bankchip,.qcheck,.grow,.deck-rail,.viewchip,.ctxchip,.conchip,.sfxc,.cbq,.tgl,.gpath,.gdrop,.glink,.gbtn,#divider,#qualDivider,#qualHead,#profPill,#themeSelect2';
 const BADSEL='.btn.bad,[data-cbdel],[data-delconcern],[data-delview],[data-hrevert],[data-delline],[data-delbranch],[data-delsay],[data-delblock],[data-delstage],[data-odelsay],[data-odelobj],[data-flddel],#btnClearQual,#btnCbDelSel,#btnCbClearDone,#btnCbClearSamples,#btnStopAlarm,#abStop,#btnPfDel,#edRevert';
 const CANCELSEL='[data-close],#btnDeckClose,#btnDeckCollapse,#btnLiveClose,#btnLiveCollapse,#btnCoClose,#btnPfClose,#btnCbCancel,#btnQualClose,[data-spiel="dismiss"],#btnCfgHide,#back1,#back2,#gSkip';
 const OKSEL='.btn.sun,.btn.grid,.btn.honey,.gbig,#btnCbSave,#btnViewOk,[data-cbdone],[data-spiel="done"],#abDone,#btnConfirmFilled,#btnTestAlarm,#rawApply,#edDone,#btnFieldsReset,#btnSystemAudio,#btnGateSystem';
@@ -4091,6 +4246,7 @@ function bind(){const s=SET;
  $('#btnQualCb').onclick=()=>{openDrawer('cb');openComposer(true,null)};
  $('#btnRef').onclick=()=>download('gceleste-reference.md',scriptToMd(SCRIPT)+'\n\n'+objToMd(OBJ,CATS),'text/markdown');
  $('#btnResetLayout').onclick=()=>{U.cfgOpen=true;U.rightOpen=true;U.qualOpen=true;
+  document.documentElement.style.removeProperty('--rightW');store.set('qualW',0);
   setActive('obj',true);setDeckSize(50);s.readSize=17;s.spacing='comfortable';applySetUI();applyLayout();applyPanels()};
  $('#btnFmtScript').onclick=()=>{download('gceleste-SCRIPT-FORMAT.md',SCRIPT_TEMPLATE,'text/markdown');toast('Script format downloaded — read the header first','ok')};
  $('#btnFmtObj').onclick=()=>{download('gceleste-OBJECTIONS-FORMAT.csv',OBJ_CSV_TEMPLATE,'text/csv');toast('Objection CSV format downloaded','ok')};
@@ -4229,6 +4385,15 @@ function bind(){const s=SET;
   try{dv.releasePointerCapture(e.pointerId)}catch(x){}saveSet()};
  dv.addEventListener('pointerup',end);dv.addEventListener('pointercancel',end);
  dv.addEventListener('dblclick',()=>setDeckSize(50));
+ /* qualifiers width — drag the handle left/right; double-click resets to the CSS default */
+ const qv=$('#qualDivider');let qdrag=false;
+ qv.addEventListener('pointerdown',e=>{qdrag=true;qv.classList.add('active');document.body.classList.add('dragging');try{qv.setPointerCapture(e.pointerId)}catch(x){}});
+ qv.addEventListener('pointermove',e=>{if(!qdrag)return;const rc=$('#rightCol').getBoundingClientRect();setQualW(e.clientX-rc.left,true)});
+ const qend=e=>{if(!qdrag)return;qdrag=false;qv.classList.remove('active');document.body.classList.remove('dragging');
+  try{qv.releasePointerCapture(e.pointerId)}catch(x){}};
+ qv.addEventListener('pointerup',qend);qv.addEventListener('pointercancel',qend);
+ qv.addEventListener('dblclick',()=>{document.documentElement.style.removeProperty('--rightW');store.set('qualW',0)});
+ const savedQW=store.get('qualW',0);if(savedQW)setQualW(savedQW,false);
  document.addEventListener('input',e=>{
   const ed=e.target.closest('[data-ed]');if(ed){setPath(ed.dataset.ed,ed.textContent);return}
   const oe=e.target.closest('[data-oed]');if(oe){const p=oe.dataset.oed.split('.');setOPath(p[0],p.slice(1).join('.'),oe.textContent);return}

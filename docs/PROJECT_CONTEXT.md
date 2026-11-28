@@ -2,7 +2,7 @@
 
 Orientation for users and AI agents working on [Kelestios/CallAssist](https://github.com/Kelestios/CallAssist).
 
-**Updated:** 2026-11-28. **Current `main` application blob:** `67b281fdefbcdf558054be38660a7f48b1f019ae` (work order 7, **merged** via PR #3, merge commit `f16637e`). **Prior reviewed blob:** `cacb78dd16ea896e0b4021e8b1f7f7217c73e74c` (v9 / work order 6). Use the commit containing each entry for its merge history.
+**Updated:** 2026-11-28. **Current `main` application blob:** `7d81ca0b57ee0012a9abb37fac70fb2253906ac7` (work order 7a chip fix, **merged** via PR #4, merge commit `55cac15`; includes work order 7 via PR #3). Use the commit containing each entry for its merge history.
 
 This is a snapshot, not a claim that the repository will remain unchanged. Check the current branch and source before starting a new work order.
 
@@ -55,9 +55,9 @@ An earlier November 19 console had one shared transcription/Brain URL field. **T
 
 ## 4. Verified change log
 
-### Work order 7a — placeholder chip box fix, 2026-11-28
+### Work order 7a — placeholder chip box fix, merged 2026-11-28
 
-Status: implemented locally, then merged to `main` (see commit/PR reference added on publication). Application change is CSS-only in `index.html`.
+Status: **merged to `main`**. PR [#4](https://github.com/Kelestios/CallAssist/pull/4), implementation commit `3865dbc`, merge commit [`55cac15`](https://github.com/Kelestios/CallAssist/commit/55cac15e5f9192e18bdcda9106346648954f1470). Application blob `7d81ca0b57ee0012a9abb37fac70fb2253906ac7` (verified on remote `main`); CSS-only change in `index.html`.
 
 - **Root cause:** the empty placeholder chip uses class `tok empty`, and the generic empty-state rule `.empty` (`padding:15px 8px; line-height:1.7`) leaked onto it (equal specificity, later in the sheet), bloating the chip box to ~47px around an ~8.8px word and disrupting paragraph layout.
 - **Fix:** `.tok.empty` now restates `padding:var(--tok-pad); line-height:1.1` (higher specificity beats `.empty`); base `.tok` tightened to `--tok-pad:0 3px`, `line-height:1.1`, `border-radius:3px`, `vertical-align:middle` so the small box hugs the word and centres on the line.

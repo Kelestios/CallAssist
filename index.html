@@ -346,7 +346,7 @@ body.dragging{user-select:none;cursor:col-resize}
 @keyframes sunRays{to{transform:rotate(360deg)}}
 @keyframes sunPulse{0%,100%{box-shadow:0 0 11px rgba(232,182,76,.42)}50%{box-shadow:0 0 26px rgba(232,182,76,.82)}}
 .brand b{font-family:var(--fd);font-size:16px;font-weight:600;letter-spacing:.012em;color:var(--forest);display:block;line-height:1.15}
-.brand small{display:block;color:var(--mut);font-size:9px;letter-spacing:.15em}
+.brand small{display:block;color:var(--mut);font-family:var(--fd);font-size:10px;letter-spacing:.11em}
 .brand small a{color:var(--amber);text-decoration:none;border-radius:5px;padding:0 4px;margin:0 -4px;
   border-bottom:1px solid transparent;transition:background .18s,color .18s,border-color .18s}
 .brand small a:hover{background:var(--g-sun);color:var(--on-warm);border-bottom-color:var(--honey)}
@@ -927,13 +927,13 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 #intro{position:fixed;inset:0;z-index:360;display:grid;place-items:center;padding:22px;
   background:rgba(26,21,8,.5);backdrop-filter:blur(2px);animation:inFade .2s ease}
 #intro[hidden]{display:none}
-#intro .inCard{width:min(1010px,94vw);max-height:86vh;overflow:auto;background:var(--bg1);
+#intro .inCard{width:min(1120px,95vw);max-height:86vh;overflow:auto;background:var(--bg1);
   border:1px solid var(--line2);border-radius:18px;box-shadow:var(--shadow2);padding:18px 20px 16px;
   animation:inUp .28s cubic-bezier(.2,.8,.25,1)}
 #intro .inHead{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:11px}
 #intro .inHead b{font-size:16px;letter-spacing:.02em;color:var(--forest)}
 #intro .inHead small{color:var(--mut);font-size:10.5px;letter-spacing:.05em}
-#intro .inGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;padding:13px 0 4px}
+#intro .inGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(206px,1fr));gap:12px;padding:13px 0 4px}
 #intro .inCol{border:1px solid var(--line);border-radius:13px;padding:11px 13px;background:var(--surf)}
 #intro .inCol h4{margin:0 0 7px;font-size:10px;letter-spacing:.17em;color:var(--violet);display:flex;gap:7px;align-items:center}
 #intro .inCol ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
@@ -959,6 +959,81 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;bac
 #kofiDock iframe.floatingchat-container{position:static!important;width:190px;height:65px;border:0}
 #kofiDock .floatingchat-container-wrap-mobi,#kofiDock .floating-chat-kofi-popup-iframe-mobi{display:none!important}
 #kofiDock .floating-chat-kofi-popup-iframe{position:absolute!important;left:auto!important;right:0!important;bottom:82px!important;z-index:2}
+/* ── Campaign calendar: chip, drop feature, picker ────────────────────────── */
+#btnCal{border-color:var(--teal2);color:var(--teal)}
+#btnCal.on{background:linear-gradient(135deg,var(--teal),var(--leaf));color:var(--on-accent);border-color:transparent}
+#calChipSlot{display:inline-flex;align-items:center;margin:0 1px}
+.calChip{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;font-size:11px;line-height:1;
+ border:1px solid var(--line2);background:var(--surf);cursor:default}
+.calChip.ok{border-color:var(--leaf2);background:var(--okbg)}
+.calChip.bad{border-color:var(--terra2);background:var(--badbg)}
+.calChip.warn{border-color:var(--honey);background:var(--warnbg)}
+.calChip.wait{border-color:var(--teal2);background:var(--infobg);animation:calSpin 1.15s linear infinite}
+.calChip.link{border-color:var(--violet2);background:var(--violetbg)}
+@keyframes calSpin{50%{opacity:.4}}
+/* the drop itself animates the grid row, so nothing jumps and no height is hard-coded */
+#calFeature{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .34s cubic-bezier(.2,.8,.25,1),opacity .2s ease}
+#calFeature.open{grid-template-rows:1fr;opacity:1}
+#calFeature>div{min-height:0;overflow:hidden}
+.calFrm{margin:0 10px 8px;padding:11px 12px 10px;border:1px solid var(--line2);border-radius:13px;
+ background:linear-gradient(160deg,var(--tint-teal),var(--surf))}
+.calFld{display:block;margin:0 0 9px}
+.calFld .lbl{display:block;font-size:9px;letter-spacing:.15em;color:var(--mut);margin-bottom:4px}
+.calFld small{display:block;font-size:9.5px;line-height:1.6;color:var(--faint);margin-top:4px}
+.calR1{display:flex;gap:6px;align-items:center}
+.calR1 input{flex:1;min-width:0;font-size:11.5px;padding:6px 8px}
+.calTwo{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.calHz{width:56px;font-size:11.5px;padding:5px 7px;text-align:center}
+.calTwo select{font-size:11px;padding:5px 8px}
+.calZone{font-size:9.5px;color:var(--teal);letter-spacing:.05em;font-weight:bold}
+.calActs{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:2px}
+.calSavedTxt{font-size:9.5px;color:var(--mut);letter-spacing:.03em;margin-left:auto}
+.calSavedTxt b{color:var(--forest)}
+.calBad2{color:var(--brick)}
+.calHintLine{font-size:9.5px;color:var(--faint);margin-top:7px;border-top:1px dashed var(--line2);padding-top:7px}
+.calHintLine b{color:var(--amber)}
+/* qualifier cells */
+.calQ{display:inline-flex;gap:5px;align-items:center;flex:1;min-width:0}
+.calPickBtn{padding:4px 7px;font-size:12px;line-height:1}
+.calManual{font-size:8.5px;letter-spacing:.12em;color:var(--faint);border:1px solid var(--line2);border-radius:999px;padding:1px 6px;white-space:nowrap}
+.calManual.live{color:var(--forest);border-color:var(--leaf2);background:var(--leafbg)}
+.calDate.live{border-color:var(--leaf2)}
+/* picker */
+#calPop{position:fixed;inset:0;z-index:364;display:grid;place-items:center;padding:18px;
+ background:rgba(20,17,6,.42);backdrop-filter:blur(2px);animation:inFade .16s ease}
+#calPop[hidden]{display:none}
+#calPop .pkCard{width:min(460px,94vw);max-height:88vh;overflow:auto;background:var(--bg1);border:1px solid var(--line2);
+ border-radius:16px;box-shadow:var(--shadow2);padding:12px 13px 11px;animation:inUp .22s cubic-bezier(.2,.8,.25,1)}
+.pkTop{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pkTop b{font-family:var(--fd);font-size:14px;color:var(--forest);letter-spacing:.01em}
+.pkNote{font-size:9px;color:var(--teal);letter-spacing:.06em;margin-left:auto;font-weight:bold}
+.pkBar{display:flex;gap:7px;align-items:center;font-size:9.5px;margin:7px 0 4px;padding:5px 8px;border-radius:9px;
+ border:1px solid var(--line2);color:var(--mut)}
+.pkBar.live{background:var(--leafbg);border-color:var(--leaf2);color:var(--forest)}
+.pkBar.man{background:var(--warnbg);border-color:var(--honey);color:var(--amber)}
+.pkDows{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;font-size:8px;letter-spacing:.1em;color:var(--faint);text-align:center}
+.pkGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin:4px 0 8px}
+.pkPad{height:30px}
+.pkD{position:relative;height:30px;border-radius:9px;border:1px solid var(--line);background:var(--surf);cursor:pointer;
+ font-family:inherit;font-size:11.5px;color:var(--ink2);transition:transform .14s,border-color .14s,box-shadow .18s}
+.pkD i{font-style:normal}
+.pkD:hover:not([disabled]){transform:translateY(-1px);border-color:var(--leaf);box-shadow:0 4px 12px var(--tint-leaf-h)}
+.pkD.open{border-color:var(--leaf2);background:var(--leafbg);color:var(--forest);font-weight:bold}
+.pkD.full,.pkD.gone,.pkD.manual[disabled]{opacity:.38;cursor:not-allowed}
+.pkD.gone{opacity:.22}
+.pkD.cur{border-color:var(--honey);box-shadow:0 0 0 2px var(--tint-honey)}
+.pkD.tt{font-style:italic}
+.pkD em{position:absolute;right:3px;bottom:2px;font-style:normal;font-size:7.5px;color:var(--leaf);letter-spacing:0}
+.pkTimes .lbl{display:block;font-size:8.5px;letter-spacing:.14em;color:var(--mut);margin-bottom:5px}
+.pkList{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px}
+.pkT{font-family:inherit;font-size:11px;padding:4px 9px;border-radius:999px;border:1px solid var(--line2);
+ background:var(--surf);cursor:pointer;color:var(--ink2);transition:.14s}
+.pkT:hover{border-color:var(--leaf);transform:translateY(-1px)}
+.pkT.cur{background:var(--g-leaf);color:var(--on-accent);border-color:transparent;font-weight:bold}
+.pkNone{font-size:10px;color:var(--faint);font-style:italic}
+.pkMan{display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-top:1px dashed var(--line2);padding-top:8px}
+.pkTxt{flex:1;min-width:110px;font-size:11.5px;padding:6px 8px}
+.pkFoot{font-size:9.5px;color:var(--amber);letter-spacing:.03em;margin-top:8px;line-height:1.5}
 /* The call timer and verdict describe the live desk: hidden until live transcription is on. */
 #timerMini,#verdictMini{display:none}
 body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
@@ -1305,8 +1380,9 @@ body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
   <aside id="rightCol">
     <div class="p-head" id="qualHead" style="cursor:pointer">
       <h3>🗂 QUALIFIERS <span class="badge leaf" id="qBadge">0/12</span></h3>
-      <div class="sp"><button class="btn tiny violet" id="btnFields">✎ Fields</button><button class="btn tiny ghost" id="btnQualClose">✕</button><span class="car" id="qualCar" style="font-size:10px;color:var(--leaf)">▾</span></div>
+      <div class="sp"><button class="btn tiny" id="btnCal" aria-expanded="false" aria-controls="calFeature" title="Campaign calendar — link and live availability">🗓️ Calendar</button><span id="calChipSlot" class="calChipSlot"></span><button class="btn tiny violet" id="btnFields">✎ Fields</button><button class="btn tiny ghost" id="btnQualClose">✕</button><span class="car" id="qualCar" style="font-size:10px;color:var(--leaf)">▾</span></div>
     </div>
+    <div id="calFeature" role="region" aria-label="Campaign calendar settings" aria-expanded="false"><div><div class="calFrm" id="calPanelIn"></div></div></div>
     <div class="pane" id="qualBody" style="flex:1;min-height:0">
       <div class="q-top"><div class="sub">Type as they answer · tap the circle to confirm · merged live into the script</div>
         <div class="qprog"><div class="bar"><i id="qualBar" style="width:0%"></i></div><b id="qualPct">0%</b></div></div>
@@ -1417,11 +1493,13 @@ body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
   </div>
 </div>
 
+<div id="calPop" hidden></div>
+
 <div id="intro" hidden>
   <div class="inCard" role="dialog" aria-modal="true" aria-labelledby="inTitle">
     <div class="inHead"><b id="inTitle">Quick intro — how to drive the desk</b>
       <small>Read it once, dismiss it, and it stays out of the way.</small></div>
-    <div class="inGrid">
+    <div class="inGrid inGrid5">
       <div class="inCol"><h4>🎛 Controls</h4><ul>
         <li>The header buttons decide <b>what sits on the bench</b>: ⚡ Objections, 🗂 Qualifiers, 🎙 Live, plus 🔄 New call and ⏰ Callbacks.</li>
         <li>A desk you close turns into a <b>vertical rail</b> on the right edge. Click the rail or press <kbd>O</kbd> to bring it back.</li>
@@ -1436,7 +1514,14 @@ body.ai-live #timerMini,body.ai-live #verdictMini{display:inline-flex}
       <div class="inCol"><h4>💾 Save and load</h4><ul>
         <li><b>📜 Scripts and Profiles</b> holds it all. <b>Save Work</b> downloads <b>one campaign .json</b>: script, objections, qualifiers, gates, company, sound, addresses.</li>
         <li><b>Upload Last</b> reads that file back here. <b>Start from the loader</b> rebuilds the desk from the same file on another machine.</li>
-        <li>A <b>●</b> on the 📜 pill means your file is behind your edits.</li>
+        <li>A <b>●</b> on the 📜 pill means your file is behind your edits — a calendar you just saved counts as an edit.</li>
+      </ul></div>
+      <div class="inCol"><h4>🗓 Calendar</h4><ul>
+        <li><b>Qualifiers ▸ 🗓 Calendar</b> is where you paste the campaign's booking link, and a read-only availability source if you run one.</li>
+        <li>It travels with your work file: <b>📜 → Save Work</b> keeps it, <b>Upload Last</b> brings it back. Secrets never come along — the token stays in your helper.</li>
+        <li><b>New call / F2</b> re-checks availability when it is connected. The chip by the Calendar button shows 🔗 link saved, ⚠️ no availability, 🚫 connection error or ✅ working, with the time it last refreshed.</li>
+        <li>Check the appointment timezone shown next to the times. Availability is <b>only as fresh as the last check</b>, and choosing a day or a time <b>only fills the qualifiers</b>: available when checked — not reserved.</li>
+        <li>No live availability? The chip says so, the fields stay marked <b>manual</b>, and <b>Open campaign calendar</b> takes you to the real diary so you can verify with the homeowner.</li>
       </ul></div>
       <div class="inCol"><h4>✅ Save it</h4><ul>
         <li>End of session: <b>📜 → Save Work</b>. Name the file, keep it, open it whenever you dial again.</li>
@@ -2184,7 +2269,7 @@ if(!PROFILES.some(p=>p.id===activeId))activeId=(PROFILES[0]||{}).id;
 let P=PROFILES.find(p=>p.id===activeId);
 let SCRIPT=P.script,OBJ=P.obj,CATS=P.cats,FIELDS=P.fields,GATES=P.gates,RULES=P.rules;
 const saveProfiles=()=>{store.set('profiles',PROFILES);store.set('active',activeId)};
-function activate(id){const p=PROFILES.find(x=>x.id===id);if(!p)return;
+function activate(id){if(PROFILES.some(x=>x.id===id)&&id!==activeId)calAfterSwitch();const p=PROFILES.find(x=>x.id===id);if(!p)return;
  activeId=id;P=p;SCRIPT=p.script;OBJ=p.obj;CATS=p.cats;FIELDS=p.fields;GATES=p.gates;RULES=p.rules;
  S.stage=0;S.spiel=null;S.pinned=false;lastFire={};U.nav={level:'pad',cat:null,id:null};U.q='';
  recolorCats();saveProfiles();renderAll();toast('Profile loaded — '+p.name,'ok')}
@@ -2599,6 +2684,362 @@ function objToCsv(objs,cats){const q=v=>'"'+String(v==null?'':v).replace(/"/g,'"
   rows.push([c.name,o.em,o.title,(o.cues||[]).join('|'),o.say[0]||'',o.say[1]||'',o.say[2]||'',o.next||''].map(q).join(','))});
  return rows.join('\n')}
 
+/* ══════════════════════════════════════════════════════════════════════════
+   CAMPAIGN CALENDAR · read-only availability behind the Date / Time qualifiers.
+
+   Endpoint contract (see docs/PROJECT_CONTEXT.md): the configured source answers GET with
+       { "tz": "America/Los_Angeles",
+         "days": { "2026-11-30": [ { "label": "9:30 AM", "start": "09:30" } ] } }
+   supplied by a trusted availability service. No calendar backend is bundled.
+
+   Rules this module keeps:
+     1. It only ever issues GETs. There is no POST path here, so nothing in the desk
+        can book, reserve or submit an appointment.
+     2. "Link saved" and "live availability connected" are separate states.
+     3. No verified data means no slots shown — never a guess, and never a workaround
+        around a widget that does not expose its grid (no CORS bypass, no third-party proxy).
+     4. Requests carry a generation number so a slow reply from a campaign or calendar
+        the agent already left cannot land on the current one.
+     5. Dates are calendar parts ("2026-11-30"), never instants — formatting a local
+        noon Date through the appointment zone used to shift every cell one day back.
+   ══════════════════════════════════════════════════════════════════════════ */
+const CALDEF={url:'',api:'',tz:'',horizon:30};
+let CAL=Object.assign({},CALDEF,store.get('cal',null)||{});
+const saveCal=()=>store.set('cal',CAL);
+const CALST={state:'off',days:{},asOf:0,msg:'',gen:0,open:false,pick:null,pickMonth:null,ctl:null};
+
+function calZone(){return CAL.tz||ZONES[SET.campZone]||ZONES.PT}
+function calTzTag(){return calZone()}
+function calVerified(){return calChecked()}
+function calLive(){return CALST.state==='live'&&Object.keys(CALST.days).length>0}
+/* a completed check that found nothing open is still VERIFIED, so those days get
+   locked — which is a different thing from knowing nothing at all (manual) */
+function calChecked(){return CALST.state==='live'||CALST.state==='empty'}
+function calOkUrl(u){return/^https?:\/\//i.test(String(u||''))}
+function calPadded(n){return(n<10?'0':'')+n}
+function calKey(y,mo,d){return y+'-'+calPadded(mo)+'-'+calPadded(d)}
+function calParts(k){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(k||''));return m?[+m[1],+m[2],+m[3]]:null}
+function calNoonUTC(k){const p=calParts(k);return p?new Date(Date.UTC(p[0],p[1]-1,p[2],12)):null}
+function calFmt(k,o){const i=calNoonUTC(k);return i?String(fmtIn('UTC',i,o)).replace(/,/g,''):'\u2014'}
+function calWeekdayOf(k){const i=calNoonUTC(k);return i?(i.getUTCDay()+6)%7:0}
+function calYMD(d){const s=String(fmtIn(calZone(),d,{year:'numeric',month:'2-digit',day:'2-digit'}));
+ const m=s.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+ return m?calKey(+m[3],+m[1],+m[2]):calKey(d.getFullYear(),d.getMonth()+1,d.getDate())}
+function calTodayKey(){return calYMD(new Date())}
+const CALMO=['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+function calParseText(t){/* any of the desk's spoken-date forms -> calendar key */
+ const s=String(t||'').replace(/,/g,' ').replace(/\s+/g,' ').trim().toLowerCase();if(!s)return null;
+ let m=/^(\d{4})-(\d{2})-(\d{2})/.exec(s);if(m)return calKey(+m[1],+m[2],+m[3]);
+ m=/([a-z]{3,9})\s+([a-z]{3})[a-z]*\s+(\d{1,2})(?:\s+(\d{4}))?/.exec(s);
+ if(m){const mo=CALMO.indexOf(m[2]);
+  if(mo>=0){const now=new Date(),y=m[4]?+m[4]:now.getFullYear();let k=calKey(y,mo+1,+m[3]);
+   if(!m[4]&&k<calYMD(now))k=calKey(y+1,mo+1,+m[3]);return k}}
+ if(/tomorrow/.test(s)){const d=new Date(Date.now()+864e5);return calKey(d.getFullYear(),d.getMonth()+1,d.getDate())}
+ if(/today/.test(s)){const d=new Date();return calKey(d.getFullYear(),d.getMonth()+1,d.getDate())}
+ m=/(\d{1,2})\/(\d{1,2})(?:\/(\d{4}))?/.exec(s);
+ if(m){const y=m[3]?+m[3]:new Date().getFullYear();return calKey(y,+m[1],+m[2])}
+ return null}
+function calSelKey(){const pk=CALST.pick;if(typeof pk==='string'&&calParts(pk))return pk;
+ const k=calParseText(S.lead.date);if(k)return k;
+ if(CALST.pickMonth)return calKey(CALST.pickMonth[0],CALST.pickMonth[1],1);
+ return calTodayKey()}
+function calSlots(k){const a=CALST.days[k];if(!Array.isArray(a))return[];
+ const seen={},out=[];
+ a.forEach(x=>{const lab=String(x&&typeof x==='object'?(x.label||x.time||x.start||''):x||'').trim();
+  if(!lab||seen[lab])return;seen[lab]=1;out.push({label:lab,start:(x&&typeof x==='object'&&x.start)||''})});
+ out.sort((p,q)=>((p.start||p.label)>(q.start||q.label)?1:-1));return out}
+function calDayKind(k){if(!calVerified())return'manual';return calSlots(k).length?'open':'full'}
+function calClock(ms){return new Date(ms).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}
+function calDaysOpen(){return Object.keys(CALST.days).filter(k=>calSlots(k).length).length}
+
+async function calRefresh(why){
+ CALST.gen++;const g=CALST.gen;
+ if(CALST.ctl){try{CALST.ctl.abort()}catch(e){}CALST.ctl=null}
+ if(!calOkUrl(CAL.api)){CALST.days={};CALST.state=CAL.url?'linked':'off';CALST.msg='';calRender();renderQual();
+  if(why==='newcall')toast(CAL.url?'Calendar link saved \u00b7 live availability not connected, so times stay manual'
+   :'No campaign calendar saved \u00b7 date and time stay manual','warn');return}
+ CALST.days={};CALST.state='checking';calRender();renderQual();
+ const ctl=new AbortController(),timer=setTimeout(()=>{try{ctl.abort()}catch(e){}},9000);CALST.ctl=ctl;
+ let u;
+ try{const days=Math.max(1,Math.min(120,+CAL.horizon||30)),from=new Date();
+  u=new URL(CAL.api,location.href);
+  if(u.protocol!=='http:'&&u.protocol!=='https:')throw new Error('http(s) only');
+  u.searchParams.set('from',calYMD(from));u.searchParams.set('to',calYMD(new Date(from.getTime()+days*864e5)));
+  u.searchParams.set('tz',calZone());
+  if(CAL.url)u.searchParams.set('bookingUrl',CAL.url)}
+ catch(err){clearTimeout(timer);if(g!==CALST.gen)return;CALST.ctl=null;CALST.state='error';
+  CALST.msg='that endpoint URL is not usable';calRender();renderQual();
+  if(why==='newcall')toast('Availability not refreshed \u2014 bad endpoint URL','bad');return}
+ let r=null;
+ try{r=await fetch(u.href,{method:'GET',credentials:'omit',cache:'no-store',mode:'cors',signal:ctl.signal})}
+ catch(err){clearTimeout(timer);if(g!==CALST.gen)return;CALST.ctl=null;CALST.days={};
+  const timed=/abort/i.test(String(err&&err.name||''))||/timeout/i.test(String(err&&err.message||''));
+  CALST.state='error';CALST.msg=timed?'no reply within 9 seconds':String(err&&err.message||'the browser blocked that request').slice(0,60);
+  calRender();renderQual();
+  if(why==='newcall')toast('Availability not refreshed \u2014 '+CALST.msg,'bad');return}
+ clearTimeout(timer);if(g!==CALST.gen)return;CALST.ctl=null;CALST.asOf=Date.now();
+ if(!r.ok){CALST.days={};CALST.state='error';CALST.msg='HTTP '+r.status;calRender();renderQual();
+  if(why==='newcall')toast('Availability not refreshed \u2014 HTTP '+r.status,'bad');return}
+ let j=null;try{j=await r.json()}
+ catch(err){if(g!==CALST.gen)return;CALST.days={};CALST.state='error';CALST.msg='the reply was not JSON';calRender();renderQual();
+  if(why==='newcall')toast('Availability not refreshed \u2014 the reply was not JSON','bad');return}
+ if(g!==CALST.gen)return;
+ const src=j&&j.days;
+ if(!src||typeof src!=='object'||Array.isArray(src)){CALST.days={};CALST.state='error';
+  CALST.msg='the reply carried no "days" map, so nothing could be trusted';calRender();renderQual();
+  if(why==='newcall')toast('Availability unusable \u2014 see docs/PROJECT_CONTEXT.md','bad');return}
+ const clean={};
+ try{
+  if(j.tz&&j.tz!==calZone())throw new Error('source timezone differs from Appointment TZ');
+  Object.keys(src).forEach(k=>{
+   const parts=calParts(k),date=parts&&calNoonUTC(k);
+   if(!parts||date.toISOString().slice(0,10)!==k||!Array.isArray(src[k]))throw new Error('invalid date or slot list');
+   clean[k]=src[k].map(x=>{
+    if(typeof x==='string')x={label:x};
+    if(!x||typeof x.label!=='string'||!x.label.trim()||
+       (x.start!==undefined&&typeof x.start!=='string'))throw new Error('invalid slot label');
+    return {label:x.label.trim(),start:x.start||''};
+   });
+  });
+ }catch(err){CALST.days={};CALST.state='error';CALST.msg=err.message;calRender();renderQual();return}
+ CALST.days=clean;
+ const n=calDaysOpen();CALST.state=n?'live':'empty';CALST.msg=n?'':'checked, and nothing is open in this window';
+ calRender();renderQual();if(CALST.open)calPanelFill();
+ if(why==='newcall'||why==='save'){
+  if(n)toast('Availability refreshed \u2014 '+n+' day'+(n===1?'':'s')+' open \u00b7 '+calClock(CALST.asOf),'ok');
+  else toast('Availability refreshed \u2014 no open slots in this window \u00b7 '+calClock(CALST.asOf),'warn')}
+ if(n&&why==='newcall'){const k=calParseText(S.lead.date);
+  if(k&&calDayKind(k)==='full'){S.lead.date='';S.lead.time='';saveLead();renderQual();
+   toast('That date closed after the redial \u2014 cleared for this call','warn')}}}
+function calAfterSwitch(){CALST.gen++;CALST.pick=null;CALST.pickMonth=null;
+ if(CAL.api){calRender();calRefresh('switch')}
+ else{CALST.days={};CALST.state=CAL.url?'linked':'off';calRender()}}
+function calNewCall(){CALST.gen++;CALST.pick=null;CALST.pickMonth=null;
+ S.lead.date='';S.lead.time='';delete S.autoFilled.date;delete S.autoFilled.time;calRefresh('newcall')}
+
+/* ── status chip ── */
+function calChipHTML(){const s=CALST.state;
+ /* beside the Calendar button: the status EMOJI only, as specified. The words live in the
+    panel status line and in the accessible label, so nothing is lost to a screen reader. */
+ let ic='\u00b7',cls='off',nm='no calendar';
+ if(s==='live'){ic='\u2705';cls='ok';nm='linked, working'}
+ else if(s==='error'){ic='\ud83d\udeab';cls='bad';nm='connection error'}
+ else if(s==='checking'){ic='\u27f3';cls='wait';nm='checking'}
+ else if(s==='empty'){ic='\u26a0\ufe0f';cls='warn';nm='no availability'}
+ else if(s==='stale'){ic='\u27f3';cls='wait';nm='refreshing'}
+ else if(CAL.url){ic='\ud83d\udd17';cls='link';nm='link saved'}
+ const full=s==='live'?('Live availability connected \u00b7 '+calDaysOpen()+' days open \u00b7 last refreshed '+calClock(CALST.asOf)+' \u00b7 '+calTzTag())
+  :s==='empty'?('Checked '+calClock(CALST.asOf)+' \u00b7 no open slots in this window')
+  :s==='error'?('Connection error \u2014 '+CALST.msg+'. No times were invented.')
+  :s==='checking'?'Checking live availability\u2026'
+  :s==='stale'?'Checking availability\u2026'
+  :CAL.url?'Link saved \u2014 live availability not connected':'No campaign calendar saved';
+ return '<span class="calChip '+cls+'" data-state="'+esc(s)+'" data-label="'+esc(nm)+'" role="img" aria-label="'+esc(full)+
+  '" title="'+esc(full)+'">'+ic+'</span>'}
+
+function calSavedLine(){const s=CALST.state;
+ if(s==='live')return'<b>Link saved</b> \u00b7 <b>live availability connected</b> \u00b7 last refreshed '+calClock(CALST.asOf)+' \u00b7 '+esc(calTzTag());
+ if(s==='empty')return'<b>Link saved</b> \u00b7 checked '+calClock(CALST.asOf)+' \u00b7 no open slots in this window';
+ if(s==='checking')return'checking live availability\u2026';
+ if(s==='error')return'<b>Link saved</b> \u00b7 <span class="calBad2">connection error: '+esc(CALST.msg)+'</span> \u00b7 no times invented';
+ if(CAL.url)return'<b>Link saved</b> \u00b7 <b>live availability not connected</b> \u2014 add a read-only source to check times';
+ return'Nothing saved yet'}
+function calTzSel(){const want=['America/New_York','America/Chicago','America/Denver','America/Los_Angeles','America/Phoenix','UTC'],z=calZone();
+ if(want.indexOf(z)<0)want.push(z);
+ return want.map(v=>'<option value="'+esc(v)+'"'+(v===z?' selected':'')+'>'+esc(v.replace('America/','').replace(/_/g,' '))+'</option>').join('')}
+function calPanelHTML(){
+ return'<div class="calIn"><span class="lbl">BOOKING CALENDAR LINK</span>'+
+  '<div class="calR1"><input type="url" id="calUrlIn" spellcheck="false" autocomplete="off" '+
+   'placeholder="https://api.leadconnectorhq.com/widget/bookings/\u2026" value="'+esc(CAL.url)+'">'+
+   '<button type="button" class="btn mini ghost" id="calOpenBtn"'+(calOkUrl(CAL.url)?'':' disabled')+'>Open calendar \u2197</button></div>'+
+  '<small>Paste the campaign\u2019s public booking link. Saving a link only stores where the diary lives \u2014 by itself it does not mean availability can be read.</small></div>'+
+ '<div class="calIn"><span class="lbl">READ-ONLY AVAILABILITY SOURCE <i>optional</i></span>'+
+  '<div class="calR1"><input type="url" id="calApiIn" spellcheck="false" autocomplete="off" '+
+   'placeholder="http://127.0.0.1:8787/free-slots" value="'+esc(CAL.api)+'">'+
+   '<button type="button" class="btn mini" id="calTryBtn">\u27f3 Check now</button></div>'+
+  '<small>A booking widget does not hand its grid to another webpage, and this desk will not work around that \u2014 no scraping, no third-party proxy. '+
+   'See docs/PROJECT_CONTEXT.md for setup. Connect a trusted read-only availability endpoint that answers GET '+
+   '<code>from&amp;to&amp;tz</code> with <code>{"days":{"YYYY-MM-DD":[{"label":"9:30 AM"}]}}</code>. '+
+   'Keep tokens on your server, never in these URLs, this HTML file, or your campaign .json.</small></div>'+
+ '<div class="calIn calTwo"><span class="lbl">DAYS AHEAD</span>'+
+  '<input type="number" id="calHzIn" class="calHz" min="1" max="120" step="1" value="'+esc(String(CAL.horizon||30))+'">'+
+  '<span class="lbl">APPOINTMENT TZ</span><select id="calTzIn">'+calTzSel()+'</select>'+
+  '<span class="calZone" id="calZoneLblPanel">'+esc(calTzTag())+'</span></div>'+
+ '<div class="calActs"><button type="button" class="btn sun" id="calSaveBtn">Save</button>'+
+  '<button type="button" class="btn mini ghost" id="calForgetBtn">Remove connection</button>'+
+  '<span class="calSavedTxt" id="calSavedTxt">'+calSavedLine()+'</span></div>'+
+ '<div class="calMsg" id="calChk" role="status" aria-live="polite"></div>'+
+ '<div class="calHint">A chosen day or time only fills the qualifiers \u2014 <b>available when checked, not reserved</b>.</div>'}
+function calPanelFill(){const c=$('#calPanelIn');if(c&&CALST.open)c.innerHTML=calPanelHTML()}
+function calRender(){const slot=$('#calChipSlot');if(slot)slot.innerHTML=calChipHTML();calPanelFill();
+ const b=$('#btnCal');if(b){b.setAttribute('aria-expanded',String(!!CALST.open));b.classList.toggle('on',!!CALST.open)}
+ const f=$('#calFeature');if(f)f.setAttribute('aria-expanded',String(!!CALST.open));
+ /* a picker left open from the previous state must be repainted, or an error would still
+    be wearing yesterday's "days open" banner and locked-to-availability cells */
+ const el=$('#calPop');if(el&&!el.hidden)el.innerHTML=calPopHTML()}
+function calPanelSet(open){CALST.open=!!open;const f=$('#calFeature');if(f)f.classList.toggle('open',!!open);
+ if(open)calPanelFill();calRender();
+ if(open)setTimeout(()=>{const i=$('#calUrlIn');if(i)try{i.focus()}catch(e){}},300)}
+
+/* ── the two qualifier cells (1a, 1b) ── */
+function calDateCell(){const v=calVerified();
+ return'<span class="calQ"><input type="text" id="qf_date" data-q="date" spellcheck="false" class="calDate'+(v?' live':'')+'" '+
+  'value="'+esc(S.lead.date||'')+'" placeholder="'+(v?'Pick or type a date':'Tomorrow / Tue Nov 24')+'" '+
+  'title="'+(v?'Click to open the calendar \u2014 only days with open slots are selectable':'Click to open the calendar, or keep typing')+'">'+
+  '<button type="button" class="btn mini ghost calPickBtn" aria-label="Open the date picker" title="Open the calendar picker">\ud83d\uddd3\ufe0f</button>'+
+  (v?'':'<span class="calManual">manual</span>')+'</span>'}
+function calTimeCell(){const k=calSelKey(),list=calSlots(k),cur=S.lead.time||'';
+ if(!calVerified())return'<span class="calQ"><input type="text" id="qf_time" data-q="time" spellcheck="false" value="'+esc(cur)+
+  '" placeholder="6:30 PM" title="Type it \u2014 or connect a read-only availability source"><span class="calManual">manual</span>'+
+  '<span class="calRowTz" id="calZoneLblRow">' + esc(calTzTag()) + '</span></span>';
+ const have=list.some(x=>x.label===cur);
+ return'<span class="calQ"><select id="qf_time" data-q="time" title="Verified times from your availability source">'+
+  list.map(x=>'<option value="'+esc(x.label)+'"'+(x.label===cur?' selected':'')+'>'+esc(x.label)+'</option>').join('')+
+  (!have&&cur?'<option value="'+esc(cur)+'" selected>'+esc(cur)+' (typed)</option>':'')+'</select>'+
+  '<span class="calManual '+(list.length?'live':'warn')+'">'+(cur&&!have?'manual / unverified':list.length?'not reserved':'nothing open')+'</span>'+
+  '<span class="calRowTz" id="calZoneLblRow">'+esc(calTzTag())+'</span></span>'}
+
+/* ── month picker ── */
+function calPopHTML(){const selK=calSelKey(),sp=calParts(selK)||calParts(calTodayKey());
+ let y=sp[0],mo=sp[1];if(CALST.pickMonth){y=CALST.pickMonth[0];mo=CALST.pickMonth[1]}
+ const lead=calWeekdayOf(calKey(y,mo,1)),nm=new Date(Date.UTC(y,mo,0)).getUTCDate(),
+  todayK=calTodayKey(),ver=calVerified();
+ let cells='';for(let i=0;i<lead;i++)cells+='<span class="pkPad"></span>';
+ for(let d=1;d<=nm;d++){const k=calKey(y,mo,d),n=calSlots(k).length,past=k<todayK,
+  kind=past?'gone':calDayKind(k),dis=past||(ver&&kind!=='open');
+  cells+='<button type="button" class="pkD '+kind+(k===selK?' cur':'')+'" data-pkday="'+k+'"'+(dis?' disabled ':' ')+
+   'aria-label="'+esc(calFmt(k,{weekday:'long',month:'long',day:'numeric'})+(ver?(n?' \u00b7 '+n+' open slots':' \u00b7 nothing open'):''))+'"'+
+   (k===selK?' aria-current="date"':'')+'><i>'+d+'</i>'+(ver&&n?'<em>'+n+'</em>':'')+'</button>'}
+ const list=calSlots(selK),cur=S.lead.time;
+ return'<div class="pkCard" role="dialog" aria-label="Choose an appointment date">'+
+  '<div class="pkTop"><button type="button" class="btn tiny ghost" id="pkPrev" aria-label="Previous month">\u2039</button>'+
+   '<b>'+esc(calFmt(calKey(y,mo,1),{month:'long',year:'numeric'}))+'</b>'+
+   '<button type="button" class="btn tiny ghost" id="pkNext" aria-label="Next month">\u203a</button>'+
+   '<span class="pkNote">'+esc(calTzTag())+'</span>'+
+   '<button type="button" class="btn tiny ghost" id="pkClose" aria-label="Close calendar">\u2715</button></div>'+
+  '<div class="pkBar '+(calDaysOpen()?'live':'man')+'">'+(calDaysOpen()?
+   ('\u2705 '+calDaysOpen()+' days open \u00b7 checked '+calClock(CALST.asOf)):
+   (calChecked()?'\u26a0\ufe0f No availability \u00b7 checked '+calClock(CALST.asOf)+' \u00b7 nothing open in this window'
+    :'\u26a0\ufe0f Live availability not connected \u2014 typed dates and times are never marked verified'))+
+   (CAL.url?'<button type="button" class="btn tiny ghost" id="pkOpen">Open campaign calendar \u2197</button>':'')+'</div>'+
+  '<div class="pkDows">'+['Mo','Tu','We','Th','Fr','Sa','Su'].map(x=>'<span>'+x+'</span>').join('')+'</div>'+
+  '<div class="pkGrid">'+cells+'</div>'+
+  '<div class="pkTimes"><span class="lbl">TIMES \u00b7 '+esc(calFmt(selK,{weekday:'short',month:'short',day:'numeric'}))+'</span>'+
+   '<div class="pkList">'+(ver?(list.length?list.map(x=>'<button type="button" class="pkT'+(x.label===cur?' cur':'')+'" data-pktime="'+esc(x.label)+'">'+esc(x.label)+'</button>').join(''):
+    '<span class="pkNone">Nothing open that day \u2014 try another date.</span>'):'<span class="pkNone">No verified times \u2014 connect availability, or type below.</span>')+'</div></div>'+
+  '<div class="pkMan"><input type="text" id="pkDateTxt" class="pkTxt" value="'+esc(S.lead.date||'')+'" placeholder="Date, typed: Tue Nov 24" spellcheck="false">'+
+   '<input type="text" id="pkTimeTxt" class="pkTxt" value="'+esc(cur||'')+'" placeholder="Time, typed: 6:30 PM" spellcheck="false">'+
+   '<button type="button" class="btn mini" id="pkFill">Fill by hand</button></div>'+
+  '<div class="pkFoot">Available when checked \u2014 not reserved. Choosing a day or time only fills the qualifiers.</div></div>'}
+function calPopOpen(){const el=$('#calPop');if(!el)return;CALST.pick=calParseText(S.lead.date);
+ el.innerHTML=calPopHTML();el.hidden=false;const d=$('#qf_date');if(d)d.setAttribute('aria-expanded','true');
+ SFX.play('open')}
+function calPopClose(){const el=$('#calPop');if(el)el.hidden=true;const d=$('#qf_date');if(d)d.setAttribute('aria-expanded','false')}
+function calPopSync(){const el=$('#calPop');if(el&&!el.hidden)el.innerHTML=calPopHTML()}
+function calFill(dtext,ttext){S.lead.date=dtext;S.lead.time=ttext;
+ delete S.autoFilled.date;delete S.autoFilled.time;saveLead();updateRow('datetime');flashRow('datetime');renderQual()}
+function calPickDay(k){if(!calParts(k))return;CALST.pick=k;const list=calSlots(k);
+ calFill(calFmt(k,{weekday:'short',month:'short',day:'numeric'}),calVerified()?(list.length?list[0].label:''):(S.lead.time||''));
+ calPopSync()}
+function calPickTime(lab){const k=calSelKey();if(!calParts(k))return;
+ calFill(calFmt(k,{weekday:'short',month:'short',day:'numeric'}),String(lab||''));calPopSync();
+ toast('Filled the qualifiers \u2014 nothing is booked or reserved','ok')}
+function calManualFill(){CALST.pick=null;const d=$('#pkDateTxt'),t=$('#pkTimeTxt');
+ const dv=String((d&&d.value)||'').trim(),tv=String((t&&t.value)||'').trim();
+ if(!dv&&!tv){toast('Type a date, a time, or both','warn');return}
+ const k=calParseText(dv);
+ calFill(k?calFmt(k,{weekday:'short',month:'short',day:'numeric'}):dv,tv);
+ toast('Filled by hand \u2014 marked manual, never verified','warn');calPopClose()}
+function calMonthHop(dir){const cur=CALST.pickMonth||calParts(calSelKey());
+ const nm2=new Date(Date.UTC(cur[0],cur[1]-1+dir,1));CALST.pickMonth=[nm2.getUTCFullYear(),nm2.getUTCMonth()+1];calPopSync()}
+
+/* ── form, storage, JSON, wiring ── */
+function calForm(){const u=$('#calUrlIn'),a=$('#calApiIn'),h=$('#calHzIn'),z=$('#calTzIn');
+ return{url:String((u&&u.value)||'').trim(),api:String((a&&a.value)||'').trim(),
+  horizon:Math.max(1,Math.min(120,parseInt((h&&h.value)||'30',10)||30)),tz:String((z&&z.value)||'').trim()}}
+function calValidate(v){const bad=[];
+ if(v.url&&!calOkUrl(v.url))bad.push('the booking link must start with http:// or https://');
+ if(v.api&&!calOkUrl(v.api))bad.push('the availability source must start with http:// or https://');
+ if(v.api){try{void new URL(v.api,location.href)}catch(e){bad.push('the availability source is not a readable URL')}}
+ if(!v.url&&!v.api)bad.push('paste the booking link first');
+ return bad}
+function calSay(msg,kind){const el=$('#calChk');
+ if(el){el.textContent=msg;el.className='calMsg '+(kind||'')}
+ if(msg)toast(msg,kind==='bad'?'bad':'warn')}
+function calSave(){const v=calForm(),bad=calValidate(v);
+ if(bad.length){calSay(bad[0],'bad');return}
+ CAL.url=v.url;CAL.api=v.api;CAL.horizon=v.horizon;CAL.tz=v.tz;saveCal();
+ CALST.pick=null;CALST.pickMonth=null;calSay('','');
+ calPanelSet(false);renderQual();
+ if(v.api)toast('Calendar saved \u2014 checking live availability\u2026','ok');
+ else if(v.url)toast('Link saved \u2014 that is NOT live availability. Save Work puts it in your campaign file','warn');
+ else toast('Calendar settings cleared \u2014 date and time are manual again','warn');
+ calRefresh('save')}
+function calForget(){const had=!!(CAL.url||CAL.api);CAL=Object.assign({},CALDEF);saveCal();calRefresh('remove');
+ CALST.pick=null;CALST.pickMonth=null;calSay('','');calPanelSet(false);renderQual();calPopSync();
+ toast(had?'Calendar link and availability source removed from this browser':'Nothing was connected to remove','warn')}
+function calExport(){return{url:String(CAL.url||''),api:String(CAL.api||''),tz:String(CAL.tz||''),
+  horizon:Math.max(1,Math.min(120,+CAL.horizon||30))}}
+function calApplyJ(j){if(!j||typeof j!=='object')return false;
+ const url=String(j.url||'').slice(0,500),api=String(j.api||j.slotsUrl||'').slice(0,500),tz=String(j.tz||'').slice(0,64);
+ const hz=parseInt(j.horizon,10),keep=[CAL.url,CAL.api,CAL.tz,CAL.horizon].join('\u241f');
+ CAL=Object.assign({},CALDEF,{url:calOkUrl(url)?url:'',api:calOkUrl(api)?api:'',
+  tz:/^[A-Za-z0-9+\/_-]{2,64}$/.test(tz)?tz:'',horizon:isNaN(hz)?30:Math.max(1,Math.min(120,hz))});
+ saveCal();
+ if([CAL.url,CAL.api,CAL.tz,CAL.horizon].join('\u241f')!==keep)calAfterSwitch();
+ else calRefresh('import');
+ return true}
+function calFeatClick(e){const t=e.target;
+ if(t.closest('#calSaveBtn')){calSave();return}
+ if(t.closest('#calTryBtn')){const v=calForm();
+  if(!calOkUrl(v.api)){calSay('Add a read-only availability source first, then Check now','bad');return}
+  calSave();return}
+ if(t.closest('#calForgetBtn')){calForget();return}
+ if(t.closest('#calOpenBtn')){if(calOkUrl(CAL.url))window.open(CAL.url,'_blank','noopener');
+  else calSay('No booking link saved yet','warn');return}}
+function calPopClick(e){const t=e.target,pop=$('#calPop');if(!pop||pop.hidden)return;
+ if(!t.closest('.pkCard')){calPopClose();return}
+ if(t.closest('#pkClose')){calPopClose();return}
+ if(t.closest('#pkPrev')){calMonthHop(-1);return}
+ if(t.closest('#pkNext')){calMonthHop(1);return}
+ if(t.closest('#pkOpen')){if(calOkUrl(CAL.url))window.open(CAL.url,'_blank','noopener');
+  else calSay('No booking link saved \u2014 open Qualifiers \u25b8 Calendar','warn');return}
+ if(t.closest('#pkFill')){calManualFill();return}
+ const day=t.closest('[data-pkday]');if(day&&!day.disabled){calPickDay(day.dataset.pkday);return}
+ const tm=t.closest('[data-pktime]');if(tm){calPickTime(tm.dataset.pktime);return}}
+function calBind(){
+ if(calBind.bound)return;calBind.bound=true;
+ const bc=$('#btnCal');if(bc)bc.onclick=e=>{e.stopPropagation();calPanelSet(!CALST.open)};
+ const f=$('#calFeature');
+ if(f){f.addEventListener('click',calFeatClick);
+  f.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest('#calUrlIn,#calApiIn,#calHzIn')){e.preventDefault();calSave()}
+   if(e.key==='Escape'&&CALST.open){e.stopPropagation();calPanelSet(false);const b=$('#btnCal');if(b)b.focus()}});
+  f.addEventListener('input',e=>{const m=$('#calSavedTxt');
+   if(m&&e.target.closest('#calUrlIn,#calApiIn'))m.innerHTML=calSavedLine()})}
+ const pop=$('#calPop');
+ if(pop){pop.addEventListener('click',calPopClick);
+  pop.addEventListener('keydown',e=>{if(e.key==='Escape'){e.stopPropagation();calPopClose()}
+   if(e.key==='Enter'&&e.target.closest('.pkMan')){e.preventDefault();calManualFill()}})}
+ const cl=$('#checklist');
+ if(cl){cl.addEventListener('click',e=>{if(e.target.closest('.calPickBtn')||e.target.id==='qf_date'){e.preventDefault();calPopOpen()}});
+  /* the desk already saves any [data-q] field on input/change; these only keep the
+       picker in step with what was typed, and re-resolve a verified day */
+  cl.addEventListener('change',e=>{const q=e.target;
+   if(q.id==='qf_time'&&q.tagName==='SELECT'&&q.value)
+    toast('Time filled \u00b7 available when checked, not reserved','ok');
+   if(q.id==='qf_date'){const k=calParseText(q.value);
+    if(k){CALST.pick=k;CALST.pickMonth=null;
+     if(calChecked()){S.lead.date=calFmt(k,{weekday:'short',month:'short',day:'numeric'});
+      const list=calSlots(k),cur=S.lead.time;
+      if(!list.some(x=>x.label===cur))S.lead.time=list.length?list[0].label:'';
+      saveLead();updateRow('datetime');renderQual()}
+     else flashRow('datetime')}
+    calPopSync()}})}
+ calRender()}
+function calInit(){calBind();
+ if(CAL.api)calRefresh('boot');
+ else{CALST.state=CAL.url?'linked':'off';calRender()}}
+
 function dayFrom(d){if(!d)return'';const t=norm(d),D=['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
  for(const x of D)if(t.includes(x))return cap(x);
  if(t.includes('tomorrow'))return cap(D[new Date(Date.now()+864e5).getDay()]);
@@ -2762,7 +3203,7 @@ function creditFlag(v){if(!v)return'';const n=parseInt(String(v).replace(/[^0-9]
 function billFlag(v){if(!v||!SET.threshold)return'';const n=billNum(v);if(!n)return'';
  return n>=SET.threshold?'<span class="cflag pass">$'+n+' ✓</span>':'<span class="cflag flag">$'+n+' · under</span>'}
 function inputHTML(it){const L=S.lead;
- if(it.type==='datetime')return '<input type="text" id="qf_date" data-q="date" value="'+esc(L.date||'')+'" placeholder="Tomorrow / Tue Nov 24" style="flex:1.2"><input type="text" id="qf_time" data-q="time" value="'+esc(L.time||'')+'" placeholder="6:30 PM" style="flex:1">';
+ if(it.type==='datetime')return calDateCell()+calTimeCell();
  if(it.type==='yesno')return '<div class="yn">'+['Yes','No'].map(v=>'<button type="button" data-yn="'+it.k+'" data-val="'+v+'"'+(L[it.k]===v?' class="on"':'')+'>'+v+'</button>').join('')+'</div>';
  if(it.type==='select')return '<select id="qf_'+it.k+'" data-q="'+it.k+'"><option value="">—</option>'+(it.opts||[]).map(o=>'<option value="'+esc(o)+'"'+(L[it.k]===o?' selected':'')+'>'+esc(o)+'</option>').join('')+'</select>';
  if(it.type==='textarea')return '<textarea id="qf_'+it.k+'" data-q="'+it.k+'" placeholder="'+esc(it.ph||'')+'">'+esc(L[it.k]||'')+'</textarea>';
@@ -3170,7 +3611,7 @@ function renderProfiles(){$('#profPill').title='Switch script — active: '+P.na
 function setCo(o){U.coOpen=o;document.body.classList.toggle('co-open',o);$('#btnCompany').classList.toggle('on',o);if(o){U.pfOpen=false;document.body.classList.remove('pf-open')}measure()}
 
 let DIRTY=false;
-function markDirty(k){if(DIRTY)return;if(['profiles','set','co','lead','ctx','gates','deck','views'].indexOf(String(k))<0)return;
+function markDirty(k){if(DIRTY)return;if(['profiles','set','co','lead','ctx','gates','deck','views','cal'].indexOf(String(k))<0)return;
  DIRTY=true;workBadge()}
 function clearDirty(){DIRTY=false;workBadge()}
 function armWorkTracking(){BOOTED=true;clearDirty()}
@@ -3281,15 +3722,16 @@ function saveWork(){persist();saveLead();saveCtx();saveGates();saveSet();saveCo(
 function importCampaign(text,fname){let j=null;try{j=JSON.parse(text)}catch(e){toast('That file is not valid JSON','bad');return}
  const s=sanitizeProfile(j,fname);
  if(s.err){toast(s.err,'bad');return}
- const p=s.p,prevId=activeId,stashP=clone(P),stashCO=clone(CO),stashSET=clone(SET);
+ const p=s.p,prevId=activeId,stashP=clone(P),stashCO=clone(CO),stashSET=clone(SET),stashCAL=clone(CAL);
  const prof={id:uid('p'),name:p.name,kind:'custom',em:p.em,script:p.script,obj:p.obj,cats:colorCats(p.cats),
   fields:p.fields,gates:p.gates,rules:p.rules};
- PROFILES.push(prof);saveProfiles();CO_FROM(p.company);if(p.settings)SET_FROM(p.settings);
+ PROFILES.push(prof);saveProfiles();CO_FROM(p.company);if(p.settings)SET_FROM(p.settings);calApplyJ(p.cal);
  activate(prof.id);renderAll();clearDirty();
  toast('Loaded '+p.name+(s.warn.length?' · '+s.warn.join(', '):''),'ok',
   {label:'Undo',fn:()=>{const i=PROFILES.findIndex(x=>x.id===prof.id);if(i>=0)PROFILES.splice(i,1);
    Object.keys(CO).forEach(k=>delete CO[k]);Object.assign(CO,stashCO);coSync();saveCo();
    Object.keys(SET).forEach(k=>delete SET[k]);Object.assign(SET,stashSET);saveSet();
+   Object.keys(CAL).forEach(k=>delete CAL[k]);Object.assign(CAL,stashCAL);saveCal();calAfterSwitch();
    saveProfiles();activate(PROFILES.some(x=>x.id===prevId)?prevId:'agency');renderCo();renderAll();toast('Load undone','warn')}})}
 function setPf(o){U.pfOpen=o;document.body.classList.toggle('pf-open',o);$('#profPill').classList.toggle('on',o);if(o){U.coOpen=false;document.body.classList.remove('co-open');renderProfiles()}measure()}
 function applyTheme(){const t=THEMES[SET.theme]?SET.theme:'solar';SET.theme=t;
@@ -3333,7 +3775,7 @@ function newCall(){const had=leadHasData()||S.concerns.length,wantCb=S.outcome==
  const snap=wantCb?{lead:clone(S.lead),ctx:clone(S.ctx),concerns:S.concerns.slice()}:null;
  undoCall={lead:clone(S.lead),ctx:clone(S.ctx),custom:clone(S.custom),gates:clone(S.gates),tc:S.tc,concerns:S.concerns.slice(),
   transcript:S.transcript.slice(),outcome:S.outcome,seconds:S.seconds,stage:S.stage,branchLog:S.branchLog.slice(),checked:clone(S.checked)};
- S.lead=emptyLead();S.ctx={};S.custom={};S.gates={};S.tc=0;S.checked={};S.autoFilled={};S.heard={log:[],ask:null};
+ S.lead=emptyLead();calNewCall();S.ctx={};S.custom={};S.gates={};S.tc=0;S.checked={};S.autoFilled={};S.heard={log:[],ask:null};
  S.concerns=[];S.branchLog=[];S.transcript=[];S.outcome='progress';S.seconds=0;S.stage=0;
  S.spiel=null;S.pinned=false;callStart=Date.now();pauseTimer();
  $('#outcomeSelect').value='progress';$('#dncBanner').classList.remove('show');$('#btnSetCb').hidden=true;
@@ -3382,17 +3824,17 @@ function enterDesk(){const g=$('#gate');g.classList.add('leaving');SFX.play('ent
  const f=document.createElement('div');f.id='cineflash';document.body.appendChild(f);
  setTimeout(()=>{g.hidden=true;const app=$('#app');app.classList.add('on','cine-in');
   renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
-  maybeIntro();toast('Desk ready \u2014 '+P.name,'ok');setTimeout(()=>app.classList.remove('cine-in'),1250);f.remove()},820)}
+  maybeIntro();calInit();toast('Desk ready \u2014 '+P.name,'ok');setTimeout(()=>app.classList.remove('cine-in'),1250);f.remove()},820)}
 // One campaign file, shared by the gate and the desk. Never includes API keys.
 function fullProfile(altName){return{type:'gceleste-profile',version:1,exported:new Date().toISOString(),
- name:String(altName||P.name||'Campaign').slice(0,48),kind:P.kind||'custom',em:P.em||'\U0001F4C1',
+ name:String(altName||P.name||'Campaign').slice(0,48),kind:P.kind||'custom',em:P.em||'📁',
  script:clone(P.script),obj:clone(P.obj),cats:clone(P.cats),fields:clone(P.fields),gates:clone(P.gates),rules:clone(RULES),
  company:{name:CO.name,email:CO.email,phone:CO.phone,region:CO.region,sites:clone(CO.sites)},
  settings:{theme:SET.theme,threshold:SET.threshold,agent:SET.agent,campZone:SET.campZone,clockZone:SET.clockZone,cbZone:SET.cbZone,
   alarmOn:SET.alarmOn,alarmLead:SET.alarmLead,alarmVol:SET.alarmVol,sfx:SET.sfx,sfxVol:SET.sfxVol,sfxPack:SET.sfxPack,
   hoverSfx:SET.hoverSfx,typeSfx:SET.typeSfx,ripple:SET.ripple,deck:SET.deck,coach:SET.coach,tapLog:SET.tapLog,autoLog:SET.autoLog,
   readSize:SET.readSize,spacing:SET.spacing,autoSpiel:SET.autoSpiel,autoFill:SET.autoFill,sticky:SET.sticky},
- views:clone(store.get('views',[]))}}
+ calendar:calExport(),views:clone(store.get('views',[]))}}
 function sanitizeProfile(j,fallback){const warn=[],issues=[];
  if(!j||typeof j!=='object'||Array.isArray(j))return{err:'Not a campaign file (expected one JSON object).'};
  const raw=Array.isArray(j.script)?j.script.filter(s=>s&&typeof s==='object'):[];
@@ -3408,11 +3850,11 @@ function sanitizeProfile(j,fallback){const warn=[],issues=[];
  const empty=script.filter(s=>!s.blocks.some(b=>(b.lines||[]).length||(b.branches||[]).length));
  if(empty.length)warn.push(empty.length+' empty stage'+(empty.length>1?'s':''));
  const obj=(Array.isArray(j.obj)?j.obj:[]).filter(o=>o&&typeof o==='object'&&o.title&&Array.isArray(o.say)&&o.say.filter(Boolean).length)
-  .map(o=>Object.assign({id:uid('o'),cat:'general',em:'\U0001F4AC',cues:[],kw:[],branches:[],next:''},o,{say:o.say.map(String).filter(Boolean)}));
+  .map(o=>Object.assign({id:uid('o'),cat:'general',em:'💬',cues:[],kw:[],branches:[],next:''},o,{say:o.say.map(String).filter(Boolean)}));
  if(!obj.length)warn.push('no objections');
  let cats=(j.cats&&typeof j.cats==='object'&&Object.keys(j.cats).length)?clone(j.cats):clone(SOLAR_CATS);
- Object.keys(cats).forEach(k=>{const c=cats[k];if(!c||typeof c!=='object'){delete cats[k];return}if(!c.name)c.name=String(k).toUpperCase();if(!c.em)c.em='\U0001F4CC'});
- obj.forEach(o=>{if(!cats[o.cat]){const k=o.cat||'general';cats[k]={em:'\U0001F4CC',name:String(k).toUpperCase(),sub:''};
+ Object.keys(cats).forEach(k=>{const c=cats[k];if(!c||typeof c!=='object'){delete cats[k];return}if(!c.name)c.name=String(k).toUpperCase();if(!c.em)c.em='📌'});
+ obj.forEach(o=>{if(!cats[o.cat]){const k=o.cat||'general';cats[k]={em:'📌',name:String(k).toUpperCase(),sub:''};
   issues.push({l:'w',t:'Objections referenced "'+k+'" \u2014 category created.'})}});
  const fields=(Array.isArray(j.fields)&&j.fields.filter(f=>f&&f.k&&f.l).length)?j.fields.filter(f=>f&&f.k&&f.l).map(f=>Object.assign({k:String(f.k),l:String(f.l||f.k),req:false,type:'text',ph:''},f))
   :clone(SOLAR_FIELDS);
@@ -3428,8 +3870,11 @@ function sanitizeProfile(j,fallback){const warn=[],issues=[];
  const company={name:String(src.name||CO.name||''),email:String(src.email||CO.email||''),phone:String(src.phone||CO.phone||''),
   region:String(Math.max(0,Math.min(parseInt(src.region,10)||0,sites.length-1))),sites:sites.slice(0,6)};
  const st=j.settings&&typeof j.settings==='object'?j.settings:null;
- return{p:{name:String(j.name||fallback||'Imported campaign').slice(0,48),em:String(j.em||'\U0001F4C1').slice(0,4),
-  script:script,obj:obj,cats:cats,fields:fields,gates:gates,rules:rules,company:company,settings:st,issues:issues},warn:warn}}
+ const jcal=(j.calendar&&typeof j.calendar==='object'&&!Array.isArray(j.calendar))?j.calendar:null;
+ if(j.calendar&&!jcal)issues.push({l:'w',t:'calendar in the file was not an object — ignored.'});
+ if(!j.calendar)issues.push({l:'i',t:'This file has no calendar settings — older file, nothing to restore.'});
+ return{p:{name:String(j.name||fallback||'Imported campaign').slice(0,48),em:String(j.em||'📁').slice(0,4),
+  script:script,obj:obj,cats:cats,fields:fields,gates:gates,rules:rules,company:company,settings:st,cal:jcal,issues:issues},warn:warn}}
 function CO_FROM(c){if(!c)return;
  ['name','email','phone'].forEach(k=>{if(typeof c[k]==='string')CO[k]=c[k]});
  if(Array.isArray(c.sites)&&c.sites.length){CO.sites=c.sites.map(s=>({l:String((s&&s.l)||'').slice(0,28),v:String((s&&s.v)||'')})).filter(s=>s.l||s.v);
@@ -3472,10 +3917,11 @@ function profReview(){const p=G.prof;if(!p)return;
   ((p.issues&&p.issues.length)?errHTML(p.issues):'')}
 function profCommit(){const p=G.prof;if(!p){toast('Load a campaign file first','bad');return}
  const name=$('#profName').value.trim()||p.name;
- const prof={id:uid('p'),name:name.slice(0,48),kind:'custom',em:p.em||'\U0001F4C1',
+ const prof={id:uid('p'),name:name.slice(0,48),kind:'custom',em:p.em||'📁',
   script:p.script,obj:p.obj,cats:colorCats(p.cats),fields:p.fields,gates:p.gates,rules:p.rules};
  if(p.company)CO_FROM(p.company);
  if(p.settings)SET_FROM(p.settings);
+ calApplyJ(p.cal);
  PROFILES.push(prof);saveProfiles();clearDirty();
  activate(prof.id);applySetUI();renderAll();store.set('gateSeen',true);enterDesk()}
 function readFile(file,cb){const r=new FileReader();r.onload=()=>cb(String(r.result||''));r.readAsText(file)}
@@ -3607,6 +4053,7 @@ function bind(){const s=SET;
  $('#qualHead').onclick=e=>{if(e.target.closest('button'))return;U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnQualClose').onclick=e=>{e.stopPropagation();U.rightOpen=false;U.qualOpen=false;applyPanels()};
  $('#btnFields').onclick=e=>{e.stopPropagation();openDrawer('field')};
+ calBind();
  $('#btnEdit').onclick=()=>setEdit(!U.editScript);$('#btnEdit2').onclick=()=>setEdit(!U.editScript);
  $('#edDone').onclick=()=>setEdit(false);
  $('#btnObjEdit').onclick=()=>{U.editObj=!U.editObj;$('#btnObjEdit').classList.toggle('on',U.editObj);
@@ -3920,6 +4367,7 @@ function bind(){const s=SET;
   const typing=tg==='input'||tg==='textarea'||e.target.isContentEditable;
   if(typing&&e.key.length===1)SFX.play('type');
   if(!$('#liveGuide').hidden){if(e.key==='Escape'){e.preventDefault();SFX.play('cancel');liveGuideClose()}return}
+  if(!$('#calPop').hidden){if(e.key==='Escape'){e.preventDefault();SFX.play('cancel');calPopClose()}return}
   if(!$('#intro').hidden){if(e.key==='Escape'){e.preventDefault();SFX.play('cancel');hideIntro(true)}return}
   if(e.key==='F2'){e.preventDefault();SFX.play('confirm');newCall();return}
   if(e.key==='Escape'){if(U.drawer){closeDrawer();return}if(U.pfOpen){setPf(false);return}if(U.coOpen){setCo(false);return}}
@@ -3946,7 +4394,7 @@ renderCbs();renderTimer();rebuildTranscript();renderLive();applyLayout();applyPa
 $('#rawTabScript').classList.add('on');
 setInterval(heartbeat,1000);
 if(store.get('gateSeen',false)){
- $('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();
+ $('#gate').hidden=true;$('#app').classList.add('on');renderAll();setActive(S.active||'obj',true);measure();armWorkTracking();calInit();
  if(leadHasData())toast('Draft checklist restored','ok');
  if(pending().length)toast(pending().length+' callbacks armed — alarm '+SET.alarmLead+' min before','ok');
 }else{gAct(1)}

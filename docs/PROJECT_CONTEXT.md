@@ -2,7 +2,7 @@
 
 Orientation for users and AI agents working on [Kelestios/CallAssist](https://github.com/Kelestios/CallAssist).
 
-**Prepared:** 2026-11-28. **Last verified application revision:** [`621796e`](https://github.com/Kelestios/CallAssist/commit/621796e2184fa96503cefd9cbe244e175e07fd13).
+**Updated:** 2026-11-28. **Reviewed application blob:** `cacb78dd16ea896e0b4021e8b1f7f7217c73e74c`. This revision contains the reviewed v9 / work order 6 frontend; use the commit containing this entry for its merge history.
 
 This is a snapshot, not a claim that the repository will remain unchanged. Check the current branch and source before starting a new work order.
 
@@ -24,7 +24,7 @@ CallAssist/
     └── NEXT_CHANGE_PROMPT.md  # Reusable prompt for future work
 ```
 
-At the verified application revision, the tracked repository contained only `index.html`. This documentation update adds the two files under `docs/` without changing the application.
+Keep documentation consolidated into these two files. PROJECT_CONTEXT.md owns the implementation record, change log, calendar setup, pitfalls and pending work. NEXT_CHANGE_PROMPT.md is the reusable task template. Do not create parallel copies of these records.
 
 The `docs/` directory organizes documentation; it does not automatically exclude it from Cloudflare deployment. If the deployment publishes the whole repository root, these documents may also be publicly served. The Cloudflare deployment settings have not been inspected or changed for this documentation update.
 
@@ -41,13 +41,30 @@ Use current Git source and commit history to resolve implementation questions. D
 - Browser speech recognition is a different path from local Whisper transcription. Verify the selected audio source when testing.
 - A live-transcription setup guide opens separately and has an in-app fallback when a popup cannot open.
 - The call timer and verdict header pills are gated by the live-transcription setting.
-- Bodoni Moda is used for the wordmark and campaign pill, with fallback fonts.
+- Bodoni Moda is used for the wordmark, byline and campaign pill, with fallback fonts.
+- Qualifiers now include Calendar settings, a date picker and available-time dropdown when connected to a compatible source. Link-only and error states retain manual entry.
+- Calendar configuration saves with campaign JSON. F2 clears the previous appointment and refreshes availability; boot, save/check and imports also refresh. No calendar booking is performed.
 - The support button has gold styling and a hover effect.
 - Agency Script has its own 24-entry objection deck across eight categories. Gio Script retains its separate 45-entry deck.
 
 An earlier November 19 console had one shared transcription/Brain URL field. **That diagnosis does not describe the current repository.** Do not reintroduce or re-fix the old structure without checking the current code.
 
 ## 4. Verified change log
+
+### Work order 6 / v9 — reviewed frontend merge, 2026-11-28
+
+Source: user-supplied v9.zip, plus updates.zip and the documentation branch `feat/campaign-calendar-wo6`. Before this merge, main was `2926da5`; the documentation branch still had the same old application blob `574232463219306266848332a4d38b32ccdabec1`. Its seven supplied documentation files matched updates.zip byte-for-byte. The new app code was in v9.zip, not in that branch's index.html.
+
+- Added Calendar beside Fields, animated settings panel, date picker, source-fed Time dropdown, explicit appointment timezone, refresh status, F2 refresh and JSON configuration persistence.
+- Added calendar onboarding guidance and Bodoni Moda byline styling; preserved separate Agency/Gio decks and previous work.
+- Removed an injected Qwen-hosted external executable script. After removal, the incoming HTML matched the final delivery SHA-256 `826793e636ef2fd5e3b5caa20b716bdf1bc2dbadc082f175392f8847aa9ec3dc` and blob `4140254020f7c7c8a49d6462a9fe901b215b7f42` exactly.
+- Review fixes: clearing a connection invalidates pending requests; refresh discards old slots; late JSON errors cannot overwrite newer state; an empty days map locks the picker as a checked-empty result; malformed dates/lists/labels and conflicting source timezone are rejected; identical-config imports refresh; calendar listeners bind only once; unoffered typed times say manual/unverified; the timezone label no longer adds a contradictory campaign abbreviation.
+- Consolidated the useful content from Qwen's context, changelog, setup, architecture and pitfalls documents into this file. Removed obsolete references from the app/template. Duplicate `(1)` files, screenshots, manifests and raw logs were not added. Existing remote feature branches were left intact as history.
+- **Excluded cal-proxy.py.** Review found guessed provider routes, free-slot parsing dependent on finding busy events, timezone ambiguity, and ICS fallback parsing that omits recurrence and can miss multi-day conflicts. Its working-hours subtraction is not reliable provider availability. Do not install it from the ZIP on the assumption this merge approved it. No replacement backend is included.
+
+Checks actually run on reviewed application blob `cacb78dd16ea896e0b4021e8b1f7f7217c73e74c`: JavaScript syntax plus **21 existing regression checks and 27 calendar checks, all passing**, using jsdom and mocked fetch. Coverage includes initialization, profiles/decks/routes, guide behavior, export configuration, date selection, GET-only requests, empty/error data, timezone mismatch, stale requests, removal and new-call refresh. Git whitespace checks and remote blob verification accompany publication.
+
+Verification limits: no fresh browser layout/animation/accessibility test, microphone test, live calendar-provider request, or Cloudflare deployment test. The supplied logs report 108 passing checks against the unmodified delivery blob (90 browser, 12 helper, 6 helper end-to-end); these are historical producer evidence, not checks rerun here and not proof the final reviewed build or real campaign works. Do not combine them with the 48 checks above.
 
 ### Project documentation — 2026-11-28
 
@@ -85,29 +102,60 @@ Limits: these were DOM integration checks, not a fresh run of the package's clai
 - Implementation: [`18ac987`](https://github.com/Kelestios/CallAssist/commit/18ac987).
 - Git history records desktop onboarding/campaign work-file updates and removal of delivery fragments. Inspect the commits before modifying those behaviors.
 
-## 5. Pending work — proposed, not implemented by this document
+## 5. Calendar setup, architecture and pending work
 
-The next proposed update is campaign-calendar availability, qualifier date/time selection, byline typography, and quick-intro guidance. No calendar integration has been merged as part of the verified work order 5.
+### Using the merged interface
 
-### Campaign calendar
+1. Open Qualifiers > Calendar, beside Fields.
+2. Paste the campaign's public booking URL. Save collapses the panel. This creates a **link saved** state, not a live integration; Open calendar opens that page separately.
+3. For live slots, provide a trusted **Read-only availability source**, choose Appointment TZ and Days ahead (1–120), then Save or Check now. A booking webpage is not the JSON endpoint this interface expects.
+4. Select a date and offered time. The selection fills qualifiers only: **available when checked, not reserved**. Complete any actual booking separately.
+5. F2/New Call clears the call's selected date/time, preserves settings and requests fresh availability. Save Work includes the calendar settings in campaign JSON.
 
-1. Clicking the qualifier Date field opens a calendar picker. When availability is connected, only dates with available slots should be selectable.
-2. Time becomes a dropdown of available slots for the selected date, with the appointment timezone shown explicitly.
-3. Add Calendar beside Fields at the top of Qualifiers. It expands an animated panel for a campaign booking URL, validation/status, and Save. Collapse after saving and allow editing/removal.
-4. Distinguish “Link saved” from “Live availability connected.” A URL alone is not proof of a working integration.
-5. Refresh after connection changes and on New Call/F2. Preserve the campaign configuration, clear the previous call's selected appointment, and preserve existing New Call behavior.
-6. Prevent stale responses from a previous date or campaign from overwriting current results. Show loading, no-slots, errors, and last-refresh time.
-7. Include non-secret calendar configuration in campaign JSON exports/imports; keep older files compatible. Never export credentials or treat cached slots as permanently valid.
-8. **Read availability only. Do not book, reserve, or submit an appointment.** Explain that a selected slot is available when checked, not reserved.
+### Availability endpoint contract
 
-For HighLevel/LeadConnector, assess the documented [Get Free Slots API](https://marketplace.gohighlevel.com/docs/ghl/calendars/get-slots/). The documented authenticated route requires the calendar ID and authorized read access. Verify current documentation at implementation time.
+The app sends GET with query parameters `from=YYYY-MM-DD`, `to=YYYY-MM-DD`, `tz=<IANA zone>` and optional `bookingUrl=<saved link>`. Requests omit browser credentials and disable caching. The endpoint must return HTTP success with JSON:
 
-Public booking widgets do not automatically grant another page permission to read their data. Check authentication and CORS. If necessary, use a small local helper with credentials outside the HTML and campaign JSON. If live access is unavailable, show that clearly and provide an Open campaign calendar link plus explicitly unverified manual entry. Do not invent slots or bypass access controls.
+```json
+{
+  "tz": "America/Los_Angeles",
+  "days": {
+    "2026-11-30": [{"start": "09:30", "label": "9:30 AM"}],
+    "2026-12-01": []
+  }
+}
+```
 
-### Typography and quick intro
+Dates must be valid ISO calendar dates in the appointment timezone. Values are arrays of nonempty label strings or objects with a string `label` and optional string `start` sort key. Prefer zero-padded local HH:mm sort keys. Labels are displayed as supplied, escaped for HTML; the frontend does not convert their timezone. If `tz` is returned it must match Appointment TZ exactly. Empty arrays and an empty map mean a successful check with no slots. Missing dates are not offered. The service must return genuinely available slots for the requested window, including its own capacity, duration, buffer and scheduling rules.
 
-- Keep the current Call Assist wordmark; apply Bodoni Moda to “by Kelestios” too, with a fallback font.
-- Briefly explain adding a calendar, saving it with campaign work, F2 refresh, timezone/refresh checks, and the distinction between selecting and booking.
+The calendar module makes no booking writes. An error clears availability; typed entry remains possible and is not evidence of availability. Source settings/URLs are saved and exported, so **do not put credentials in URLs**. Keep provider credentials in a separately implemented server's environment. Do not infer a calendar ID from a public booking slug or assume widget access grants API access. A future provider adapter must verify the provider's current API and a real authorized calendar.
+
+### HTML, localhost and Cloudflare
+
+The core desk, scripts, manual qualifiers and JSON work files reside in index.html. They do not need Cloudflare. A local HTTP origin is preferable for integration testing: run `python -m http.server 8080 --bind 127.0.0.1` from the repository directory, then open `http://127.0.0.1:8080/`. This only serves the page; it does not start AI or calendar services.
+
+Live calendar availability needs an external compatible endpoint. Whisper and Ollama need their own running services; browser microphone features need browser support and permission. Remote services and fonts need internet access; fonts have local fallbacks. Hosting the HTML on Cloudflare does not bundle those servers or create a calendar adapter. No Cloudflare backend/deployment configuration is added here.
+
+Cross-origin endpoints must allow the actual page origin through CORS (localhost and 127.0.0.1 are different origins). A directly opened file may send a null origin and browser behavior varies. Hosted-to-localhost requests may need additional browser permission or be blocked; test the target browser and origin. Do not assume a permissive header proves deployment compatibility. A hosted frontend needs a separately deployed backend or reachable local services. Cloudflare is optional hosting, not a requirement to test all functions locally.
+
+### State and maintenance notes
+
+- `CAL = {url, api, tz, horizon}` persists under `gceleste.v24.cal`; `CALST` holds transient status, slots, refresh time, request generation, picker and controller. Slots are not exported.
+- States distinguish off, linked, checking, live, empty and error. Never equate a saved booking link with live slots, or failed access with a fully booked calendar.
+- `calRefresh` uses a generation guard and AbortController. Check the generation on success and failure, including JSON decoding; repaint both qualifiers and any open picker after state changes.
+- `calKey`, `calParts`, `calFmt` and `calWeekdayOf` separate calendar-day labels from timezone-dependent instants. Assert actual DOM disabled properties, not just strings containing `disabled`.
+- Keep date/time fields in the existing `data-q` autosave pipeline. Preserve profiles, work files, keyboard shortcuts and separate STT/Brain configuration.
+- Test served bytes and identify the tested blob. jsdom checks do not establish animation, microphone, focus or real browser/network behavior. Producer test counts are not independent verification.
+
+### Pending work and known limits
+
+- **Real availability adapter:** implement and validate against an authorized campaign before claiming live calendar integration. Bundled ZIP helper remains excluded.
+- **Per-profile calendars:** configuration is global per browser, not per Agency/Gio profile. Switching profiles refreshes that same saved source. Confirm the calendar before using another campaign. Older JSON files without a calendar block keep local settings.
+- **Freshness:** no TTL, background refresh, retry/backoff or automatic revalidation at selection. The fetch timeout is nine seconds until response headers; streamed JSON-body timeout needs further work. Check refresh time, especially during long calls.
+- **Source trust:** no automatic proof the endpoint and booking link belong to the same calendar. Labels must already be in the correct timezone. Configure both deliberately.
+- **Date handling:** typed Today/Tomorrow and inferred years still have browser-local timezone assumptions; test near midnight/year boundaries when the agent and campaign differ. Prefer picker/ISO dates. Typed entry can represent an unavailable slot; manual labels must remain clear.
+- **UI:** browser layout/animation verification, keyboard grid navigation, focus management, refresh announcements, and edits made while asynchronous panel repaint occurs need further review.
+- **Deployment:** Cloudflare settings, public docs exposure, hosted CORS and actual live service connectivity have not been audited.
 
 ## 6. Local service context — not repository dependencies
 

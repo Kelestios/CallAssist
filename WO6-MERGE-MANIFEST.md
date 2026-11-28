@@ -1,93 +1,79 @@
-# Work order 6 — campaign calendar (merge manifest)
+# Work order 6 — merge manifest
 
-Final hashes, regenerated after the last build. Base is `main` @ 621796e2.
+Campaign-calendar availability. **Implemented and verified; NOT merged.** `main` is untouched by
+this work order: its application is still commit 621796e2 and nothing here has been deployed.
 
-| artefact | git blob | sha256 | bytes |
+## Artefacts
+
+| item | git blob | sha256 | bytes |
 |---|---|---|---|
-| `index.html` before | `574232463219306266848332a4d38b32ccdabec1` | `fa7bf51eab18bd38d040c97ce187e125d65116cf1bbae5d191e5d31f233b0bd9` | 353763 |
-| `index.html` after | `f731294d72605101a3be9a74bae4c21870203f0b` | `6c345cf6b431b77b84d5a22dd404e11d67da7a9d97527be0e9799b2f698a326b` | 388363 |
-| patch (`work-order-6-campaign-calendar.patch`) | `f0f357dee65178a2eaf7989954231158c5d446fc` | `3b5f9f95b74d6ca681d0b57640e0e3c03ca7e1f38dcc70f49c612d54f2c77d83` | 42691 |
-| helper (`cal-proxy.py`) | `1481d086ef27a570d2e62863290c881245666d7c` | `88727122779bd7094806a9ec953238d20bcac78b2b955043e768a609b0fdc186` | 17953 |
-| setup doc (`CALENDAR-SETUP.md`) | `6aad5de588dffc18d5215d3260f97030c2d3ac7f` | `70fe3c9684db1874cf7987c6aa38fd2464a72cf6f2da43f157bb0f7e03fc50d1` | 7326 |
+| `index.html` before (main) | `574232463219306266848332a4d38b32ccdabec1` | `fa7bf51eab18bd38d040c97ce187e125d65116cf1bbae5d191e5d31f233b0bd9` | 353763 |
+| `index.html` after | `4140254020f7c7c8a49d6462a9fe901b215b7f42` | `826793e636ef2fd5e3b5caa20b716bdf1bc2dbadc082f175392f8847aa9ec3dc` | 388603 |
+| `work-order-6-campaign-calendar.patch` | `552c0fc4aee9e9f46f1bb551ea8cac6ebbcb38cb` | `e448ebbf697c787cea183449e11ff79ae11ce680f4d8fb5a19369bc68d3b9d5e` | 42934 |
+| `cal-proxy.py` (helper) | `1481d086ef27a570d2e62863290c881245666d7c` | `88727122779bd7094806a9ec953238d20bcac78b2b955043e768a609b0fdc186` | 17953 |
 
-Verified: applying the zero-context patch to `main`'s `index.html` reproduces blob
-`f731294d72605101a3be9a74bae4c21870203f0b` byte-for-byte (`git apply --unidiff-zero`, then
-`cmp`). `node --check` on the extracted script is clean.
+The patch is zero-context with 28 hunks. Applying it to main's `index.html` reproduces the result
+blob byte-for-byte, and `node --check` on the extracted script is clean.
 
 ## Apply
 
-```
-git checkout -b wo6 main
-git apply --unidiff-zero work-order-6-campaign-calendar.patch
-git hash-object index.html      # → f731294d72605101a3be9a74bae4c21870203f0b
+```text
+git checkout -b wo6 maingit apply --unidiff-zero work-order-6-campaign-calendar.patch
+git hash-object index.html      # expect 4140254020f7c7c8a49d6462a9fe901b215b7f42
 mkdir -p docs tools
-cp CALENDAR-SETUP.md docs/ && cp cal-proxy.py tools/   # both ship from the delivery folder
+cp CALENDAR-SETUP.md CALENDAR-HELPER.md CALENDAR-GHL.md docs/
+cp cal-proxy.py tools/
 ```
 
-On this branch: `docs/CALENDAR-SETUP.md` and this manifest.
-In the delivery folder, because the connector cannot carry files this size dependably:
-`index.html` (388,363 B), the patch (42,691 B), `cal-proxy.py` (17,953 B) and the Playwright
-suites. The hashes above let the merge be checked byte-for-byte after copying them in.
+The application file, the patch and the helper ship from the delivery folder because the
+connector used for these documentation commits does not carry files that size dependably.
+Everything on this branch is documentation.
 
-## What changed
+## What is on this branch
 
-1. **Date** opens a calendar picker. With a connected source, only dates holding open slots
-   are selectable; typed entry still works and is then labelled `manual`.
-2. **Time** becomes a dropdown of the source's times for the chosen date, with the
-   appointment timezone shown beside it. Choosing fills the qualifiers only — nothing is
-   booked, reserved or submitted, and the desk issues GET requests only.
-3. **Calendar** button beside Fields, opening an animated drop (grid-row transition) holding
-   the booking link, an optional read-only availability source, the window in days and the
-   appointment timezone, with Save / Check now / Open calendar / Remove connection. Status is
-   the emoji alone beside the button: nothing saved `·`, link saved `🔗`, checking `⟳`,
-   working `✅`, nothing open `⚠️`, connection error `🚫` — the words stay in the panel
-   status line and the accessible label. "Link saved" and "live availability connected" are
-   never merged into one claim.
-4. Refresh on Save, Check now, boot, campaign/profile switch and **New call / F2**. F2 clears
-   the previous call's date/time, keeps the saved calendar, and pops a toast in the desk's
-   usual style. Generational guards plus an AbortController mean a slow reply from a calendar
-   or campaign you already left is dropped rather than painted.
-5. Campaign `.json` exports `calendar.{url,api,tz,horizon}` and restores it on import, then
-   refreshes. Files from before this feature import unchanged and keep the local calendar.
-   No token, key, header or cached slot is ever exported.
-6. `by @Kelestios` now uses Bodoni Moda with a Georgia fallback; the wordmark is unchanged.
-7. The quick intro gained a Calendar card (where to add it, that it saves with the work file,
-   F2 refreshes, times are advisory and unreserved, what to do when nothing could be read).
-8. Repaired six invalid `\U0001F…` escapes in shipped JS that printed as literal text instead
-   of an emoji, and the availability window now computes a real end date.
+| path | blob | bytes |
+|---|---|---|
+| `docs/PROJECT_CONTEXT.md` | `1dd2ffdd19fd1cfbfae5979d7fc1d22b1e4e7265` | 10967 |
+| `docs/CHANGELOG.md` | `1346150b51e25a56a115035f5838209aeef49386` | 11101 |
+| `docs/CALENDAR_ARCHITECTURE.md` | `34dc43f752e80a9a852642b873c300e2322beaa9` | 10343 |
+| `docs/AGENT_PITFALLS.md` | `06e55db384c8637933b6ad6298a6850dfa61aea3` | 6753 |
+| `docs/CALENDAR-SETUP.md` | `ecabdd8fe71a98b16d431ebe6de60130b5d25670` | 4487 |
+| `docs/CALENDAR-HELPER.md` | `41dcefdcb76aaf4ed90d9b841cce99e2444533e5` | 2678 |
+| `docs/CALENDAR-GHL.md` | `0fbe4dcfc1d3beacac84df12b4b23c07817f41d2` | 3985 |
+| `docs/NEXT_CHANGE_PROMPT.md` | `f524dc54e2463e58d540dc8f25d1356925f94fbd` | 3532 |
 
-## Evidence (all re-run on the final build)
+## Evidence — 108 checks, 0 failures
 
-* **87 Playwright desk assertions, 0 failures**, in three suites: 30 panel + live availability
-  (button placement, animation measured mid-flight, validation refusal, save-collapse, work-file
-  prompt, reopen shows values, remove clears, picker gating by open slots, timezone display,
-  slot dropdown, token resolution, F2 clears and re-requests, GET-only, widget never fetched);
-  31 failure and persistence states (HTTP error, non-JSON, wrong shape, checked-but-empty,
-  unreachable, 9-second timeout, manual fallback typing, export shape, import, undo, older
-  file, stale-reply guard); 26 regression plus 1366 and reduced motion (24-row Agency sheet
-  deck vs 45-response Gio deck intact, escapes repaired, intro now five cards and still
-  fitting, gold support button, gated status pills, panel/rail transitions, deletable shipped
-  scripts, network journal audit).
-* **12 helper self-checks** in one process: ICS parse, UTC→appointment-zone conversion,
-  busy-window subtraction, weekend exclusion, contract shape, window bounds, CORS plus
-  Chrome's private-network preflight header, POST refused, malformed window rejected.
-* **6 end-to-end assertions through the running helper from the browser**: live slots, the two
-  booked windows gone, unbooked times present, only GETs reached the helper, the booking
-  widget host was never contacted, no page errors.
+Re-run 2026-11-28 with one driver that owns the fixture server, the ICS feed and the helper, and
+writes each result to disk (`verify_all.json`, `verify_run1/2/3.json`, `verify_helper_unit.json`,
+`verify_e2e.json` in the delivery folder). The driver asserts the served `index.html` is the result
+blob above before running anything.
 
-## Honest split of what was verified
+| harness | pass | fail | what it covers |
+|---|---|---|---|
+| desk suite 1 | 30 | 0 | panel placement, drop measured mid-transition, validation refusal, save collapse, unsaved dot, reopen shows values, remove clears, picker gating by open slots, timezone display, slot dropdown, token resolution, new call clears and re-requests, toast, GET-only, widget never fetched |
+| desk suite 2 | 34 | 0 | HTTP error, non-JSON, wrong shape, unreachable, 9 s timeout, checked-but-empty, manual typing, open-picker repaint, export shape and secret scan, import with refresh, load undo, older file without the block, generation guard plus mid-flight campaign and profile switches |
+| desk suite 3 | 26 | 0 | work orders 1-5 intact: Agency 24-row sheet deck vs Gio 45-response deck, invalid capital-U escapes gone, five intro cards still fitting, gold support button, gated timer and verdict pills, panel and rail transitions, divider drag, deletable shipped scripts, boot at 1366 with reduced motion, wire audit |
+| helper unit | 12 | 0 | ICS parse, UTC to appointment-zone conversion, busy-window subtraction, closed days, contract shape, window bounds, CORS with the private-network header, POST refused, malformed window rejected |
+| browser end to end | 6 | 0 | real helper against a real ICS feed from the delivered file: live slots, both booked windows gone, unbooked times offered, only GETs reached the helper, widget host never contacted, no page errors |
 
-* Verified against real HTTP: same-origin JSON fixtures and my own helper reading a local
-  ICS feed — real requests, real parsing, real timeouts.
-* Not verified: a live HighLevel/LeadConnector or Google Calendar availability source. No
-  token was available here, so the helper's `--source ghl` endpoint paths, `Version` header
-  and response shape are taken from documentation, are configurable, and are called out in
-  the code as "configured by you, verified by you". The desk's behaviour in that case is the
-  tested failure path: connection error, no invented times, typed entry kept.
-* Confirmed absent by code and network journal: any POST/PUT/PATCH to any calendar endpoint.
+## Honest limits
 
-## Not done on purpose
+* Real HTTP was exercised against same-origin JSON fixtures and the local helper reading a local
+  ICS feed. **No live HighLevel/LeadConnector or Google Calendar source was tested** — no token
+  was available. The endpoint paths in `fetch_ghl` are transcribed from documentation.
+* `GHL_OPS_USER_ID` is named in the helper's header comment but read by no line of code, so
+  user-scoped calendars are unwired. See `docs/CALENDAR-GHL.md`.
+* The desk relays `label` strings verbatim and does no timezone conversion of its own; the helper
+  does that work. A source returning UTC-stamped labels would display the wrong hour.
+* Calendar configuration is stored per browser while campaigns are per profile, so switching
+  campaigns keeps the previous campaign's diary. Per-profile calendar config is the obvious next
+  work order.
+* Not inspected: Cloudflare deployment behaviour, and whether this repository's `docs/` is served
+  publicly. Treat everything here as publishable text — no secrets, and none were added.
 
-No booking, reserving, holding, rescheduling or cancelling; no widget scraping; no
-third-party CORS proxy; no credential in the HTML file or campaign JSON; no deploy and no
-change to `main`.
+## Deliberately not done
+
+No booking, reserving, holding, rescheduling or cancelling. No widget scraping, no headless
+automation of the booking page, no third-party CORS proxy. No credential in `index.html` or in a
+campaign `.json`. No cached availability exported. No merge, no deploy, no branch deletion.

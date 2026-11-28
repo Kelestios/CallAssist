@@ -26,19 +26,19 @@ cp CALENDAR-SETUP.md CALENDAR-HELPER.md CALENDAR-GHL.md docs/
 cp cal-proxy.py tools/
 ```
 
-Run each line separately. The first version of this block concatenated the first two commands into
-`maingit apply`, which is the documentation twin of the missing-space attribute bug in
-`docs/AGENT_PITFALLS.md`; it is repaired here and the fetched copy is the one to trust.
+Run each line separately. The first version of this block concatenated the first two commands into a
+single line, which is the documentation twin of the missing-space attribute bug recorded in
+`docs/AGENT_PITFALLS.md`; it is repaired here, and the fetched copy is the one to trust.
 
-The application file, the patch and the helper ship from the delivery folder because the
-connector used for these documentation commits does not carry files that size dependably.
-Everything on this branch is documentation.
+The application file, the patch and the helper ship from the delivery folder because the connector
+used for these documentation commits does not carry files that size dependably. Everything on this
+branch is documentation.
 
 ## What is on this branch
 
 | path | blob | bytes |
 |---|---|---|
-| `docs/PROJECT_CONTEXT.md` | `1dd2ffdd19fd1cfbfae5979d7fc1d22b1e4e7265` | 10967 |
+| `docs/PROJECT_CONTEXT.md` | `d4f54a37724493328e27f82573ac8d7206570ce5` | 7133 |
 | `docs/CHANGELOG.md` | `1346150b51e25a56a115035f5838209aeef49386` | 11101 |
 | `docs/CALENDAR_ARCHITECTURE.md` | `34dc43f752e80a9a852642b873c300e2322beaa9` | 10343 |
 | `docs/AGENT_PITFALLS.md` | `06e55db384c8637933b6ad6298a6850dfa61aea3` | 6753 |
@@ -50,9 +50,8 @@ Everything on this branch is documentation.
 ## Evidence — 108 checks, 0 failures
 
 Re-run 2026-11-28 with one driver that owns the fixture server, the ICS feed and the helper, and
-writes each result to disk (`verify_all.json`, `verify_run1/2/3.json`, `verify_helper_unit.json`,
-`verify_e2e.json` in the delivery folder). The driver asserts the served `index.html` is the result
-blob above before running anything.
+writes each result to disk (`verify_all.json`, per-suite JSON, in the delivery folder). The driver
+asserts the served `index.html` is the result blob above before running anything.
 
 | harness | pass | fail | what it covers |
 |---|---|---|---|
@@ -64,9 +63,9 @@ blob above before running anything.
 
 ## Honest limits
 
-* Real HTTP was exercised against same-origin JSON fixtures and the local helper reading a local
-  ICS feed. **No live HighLevel/LeadConnector or Google Calendar source was tested** — no token
-  was available. The endpoint paths in `fetch_ghl` are transcribed from documentation.
+* Real HTTP was exercised against same-origin JSON fixtures and the local helper reading a local ICS
+  feed. **No live HighLevel/LeadConnector or Google Calendar source was tested** — no token was
+  available. The endpoint paths in `fetch_ghl` are transcribed from documentation.
 * `GHL_OPS_USER_ID` is named in the helper's header comment but read by no line of code, so
   user-scoped calendars are unwired. See `docs/CALENDAR-GHL.md`.
 * The desk relays `label` strings verbatim and does no timezone conversion of its own; the helper
@@ -76,6 +75,9 @@ blob above before running anything.
   work order.
 * Not inspected: Cloudflare deployment behaviour, and whether this repository's `docs/` is served
   publicly. Treat everything here as publishable text — no secrets, and none were added.
+* One count in this manifest was first reported as 107 because the result parser lost the first
+  assertion line behind a quote character; the captured raw output shows all six end-to-end lines
+  passing, and the driver has been fixed. Recorded here so the correction is visible.
 
 ## Deliberately not done
 

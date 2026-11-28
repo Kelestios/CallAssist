@@ -2,7 +2,7 @@
 
 Orientation for users and AI agents working on [Kelestios/CallAssist](https://github.com/Kelestios/CallAssist).
 
-**Updated:** 2026-11-28. **Latest local application blob:** `67b281fdefbcdf558054be38660a7f48b1f019ae` (work order 7, implemented locally, **not yet merged**). **Last reviewed/merged blob:** `cacb78dd16ea896e0b4021e8b1f7f7217c73e74c` (v9 / work order 6). Use the commit containing each entry for its merge history.
+**Updated:** 2026-11-28. **Current `main` application blob:** `67b281fdefbcdf558054be38660a7f48b1f019ae` (work order 7, **merged** via PR #3, merge commit `f16637e`). **Prior reviewed blob:** `cacb78dd16ea896e0b4021e8b1f7f7217c73e74c` (v9 / work order 6). Use the commit containing each entry for its merge history.
 
 This is a snapshot, not a claim that the repository will remain unchanged. Check the current branch and source before starting a new work order.
 
@@ -55,9 +55,9 @@ An earlier November 19 console had one shared transcription/Brain URL field. **T
 
 ## 4. Verified change log
 
-### Work order 7 — implemented locally, awaiting review (NOT merged), 2026-11-28
+### Work order 7 — merged, 2026-11-28
 
-Status: implemented locally on a working branch off `main` (`9741e03`). Not pushed, merged or deployed. Application blob `67b281fdefbcdf558054be38660a7f48b1f019ae`; adds `tools/cal-resolver.mjs`.
+Status: **merged to `main`**. PR [#3](https://github.com/Kelestios/CallAssist/pull/3), implementation commit `3d2538f`, merge commit [`f16637e`](https://github.com/Kelestios/CallAssist/commit/f16637e1fe161443c77374a8400dc56eb4b214be). Application blob `67b281fdefbcdf558054be38660a7f48b1f019ae` (verified on remote `main`); adds `tools/cal-resolver.mjs`.
 
 What changed (only the requested items; previous merged work preserved):
 

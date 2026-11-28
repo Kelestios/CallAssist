@@ -45,7 +45,7 @@
   --g-lv:linear-gradient(180deg,#4ba3ab,#2b7a82 45%,#377a41);
   --shadow:0 12px 32px rgba(88,72,32,.16);--shadow2:0 18px 48px rgba(88,72,32,.24);
   --read:17px;--lead:1.62;--headH:66px;--deck:50%;--cfgW:300px;--rightW:372px;--rail:46px;
-   --tok:.6em;--tok-empty:.52em;--tok-pad:0 4px;
+   --tok:.6em;--tok-empty:.52em;--tok-pad:0 3px;
   --fd:'Bodoni Moda',ui-serif,Georgia,'Times New Roman',serif;   /* wordmark face; Georgia when offline */
 }
 body[data-theme="dark"]{
@@ -524,10 +524,12 @@ body.editing .rchip{cursor:grab}
 .sline:hover{background:var(--tint-leaf-h)}
 .sline .cue{display:inline-block;font-size:8.5px;letter-spacing:.15em;color:var(--on-warm);background:var(--g-sun);border-radius:5px;
   padding:2px 7px;margin-left:8px;vertical-align:middle;font-weight:bold}
-/* placeholder chips — compact inline-block so the box never overlaps the line above/below */
-.tok{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;border-radius:4px;padding:var(--tok-pad);font-size:var(--tok);font-weight:bold;white-space:nowrap;line-height:1.2;vertical-align:baseline}
+/* placeholder chips — a tight box that hugs the small word and centres on the line.
+   NOTE: .tok.empty must restate padding/line-height because the generic empty-state rule
+   (.empty) otherwise leaks padding:15px 8px / line-height:1.7 onto the chip and bloats it. */
+.tok{display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;border-radius:3px;padding:var(--tok-pad);font-size:var(--tok);font-weight:bold;white-space:nowrap;line-height:1.1;vertical-align:middle}
 .tok.filled{background:var(--tok-fill-bg);color:var(--tok-fill-ink);border:1px solid var(--tok-fill-line)}
-.tok.empty{background:var(--tok-empty-bg);color:var(--tok-empty-ink);border:1px dashed var(--honey);font-size:var(--tok-empty);letter-spacing:.04em}
+.tok.empty{background:var(--tok-empty-bg);color:var(--tok-empty-ink);border:1px dashed var(--honey);font-size:var(--tok-empty);letter-spacing:.03em;padding:var(--tok-pad);line-height:1.1}
 .tok.custom{background:var(--violetbg);color:var(--violet);border:1px dashed var(--violet2)}
 .branch{border:1px solid var(--line2);border-radius:10px;overflow:hidden}
 .branch-head{width:100%;text-align:left;font-family:inherit;font-size:11px;font-weight:bold;color:var(--ink2);

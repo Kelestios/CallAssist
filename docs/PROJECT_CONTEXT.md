@@ -2,7 +2,7 @@
 
 Orientation for users and AI agents working on [Kelestios/CallAssist](https://github.com/Kelestios/CallAssist).
 
-**Updated:** 2026-11-28. **Current `main` application blob:** `7d81ca0b57ee0012a9abb37fac70fb2253906ac7` (work order 7a chip fix, **merged** via PR #4, merge commit `55cac15`; includes work order 7 via PR #3). Use the commit containing each entry for its merge history.
+**Updated:** 2026-11-28. **Current `main` application blob:** `f827ec9c8dfc48a6aa828b31cfb45e254630e142` (work order 7b, **merged** via PR #5, merge commit `0dcd647`; includes 7a via PR #4 and 7 via PR #3). Use the commit containing each entry for its merge history.
 
 This is a snapshot, not a claim that the repository will remain unchanged. Check the current branch and source before starting a new work order.
 
@@ -55,9 +55,9 @@ An earlier November 19 console had one shared transcription/Brain URL field. **T
 
 ## 4. Verified change log
 
-### Work order 7b — larger placeholder text + dual settings hide controls, 2026-11-28
+### Work order 7b — larger placeholder text + dual settings hide controls, merged 2026-11-28
 
-Status: implemented locally, then merged to `main` (commit/PR reference added on publication). CSS + small markup/JS in `index.html`.
+Status: **merged to `main`**. PR [#5](https://github.com/Kelestios/CallAssist/pull/5), implementation commit `c7b91c3`, merge commit [`0dcd647`](https://github.com/Kelestios/CallAssist/commit/0dcd64796d771a817bc3613eebc26fdc0a8e189a). Application blob `f827ec9c8dfc48a6aa828b31cfb45e254630e142` (verified on remote `main`); CSS + small markup/JS in `index.html`.
 
 - **Placeholder font (request 1):** chip text is now the script body size **+2px** (`--tok`/`--tok-empty: calc(var(--read) + 2px)`), keeping the tight centred box from 7a. At the default 17px body the chip is 19px (box ~23px, still within the line).
 - **Settings hide controls (request 2/2a):** two ways to hide settings.

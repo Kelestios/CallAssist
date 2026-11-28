@@ -55,6 +55,17 @@ An earlier November 19 console had one shared transcription/Brain URL field. **T
 
 ## 4. Verified change log
 
+### Work order 7b — larger placeholder text + dual settings hide controls, 2026-11-28
+
+Status: implemented locally, then merged to `main` (commit/PR reference added on publication). CSS + small markup/JS in `index.html`.
+
+- **Placeholder font (request 1):** chip text is now the script body size **+2px** (`--tok`/`--tok-empty: calc(var(--read) + 2px)`), keeping the tight centred box from 7a. At the default 17px body the chip is 19px (box ~23px, still within the line).
+- **Settings hide controls (request 2/2a):** two ways to hide settings.
+  - The top **Hide** button is now **red** (`--badbg`/`--terra2`/`--brick`) and keeps its pulse while expanded.
+  - A new **left-pointing triangle** (`#cfgEdgeHide`) sits on the panel's right edge, vertically centred, bouncing left (`cfgEdgeBounce`) to invite closing. It is only visible while expanded; `body.cfg-closed .cfg-edge-hide{display:none}` hides it when collapsed.
+  - The collapsed settings **rail is 50% slimmer** (`#configTab flex-basis: calc(var(--rail) * 0.5)` = 23px); the qualifiers rail is unchanged.
+- **Checks:** 27 jsdom regression checks pass. Real Chromium verified: chip font 19px (body 17+2), red Hide (`rgb(246,224,218)`/`rgb(142,47,34)`) pulsing, edge triangle flush-right (1px) and vertically centred (0px offset) bouncing; collapsed rail 23px, edge hidden, panel 0, no pulse. Edge click closes settings.
+
 ### Work order 7a — placeholder chip box fix, merged 2026-11-28
 
 Status: **merged to `main`**. PR [#4](https://github.com/Kelestios/CallAssist/pull/4), implementation commit `3865dbc`, merge commit [`55cac15`](https://github.com/Kelestios/CallAssist/commit/55cac15e5f9192e18bdcda9106346648954f1470). Application blob `7d81ca0b57ee0012a9abb37fac70fb2253906ac7` (verified on remote `main`); CSS-only change in `index.html`.

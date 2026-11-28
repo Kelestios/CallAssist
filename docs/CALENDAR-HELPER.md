@@ -2,7 +2,8 @@
 
 Reference for the read-only helper behind [CALENDAR-SETUP.md](CALENDAR-SETUP.md) section 3.
 421 lines, stdlib-only unless you install `ics`. Source of truth is the script itself: `--help`,
-`add_argument`, and `do_GET`.
+`add_argument`, and `do_GET`. HighLevel wiring, known gaps and the symptom table live in
+[CALENDAR-GHL.md](CALENDAR-GHL.md).
 
 ## Command
 
@@ -45,5 +46,5 @@ note is stale.
   Chrome's private-network preflight with `Access-Control-Allow-Private-Network: true`, which a
   hosted page (for example a pages.dev site) needs before it may reach localhost.
 * Malformed windows (from after to, non-dates) are rejected with a JSON error rather than guessed.
-
-Part 2 covers HighLevel endpoints, known gaps and troubleshooting.
+* Availability results are returned, never stored: the helper keeps no cache on disk, so a reload
+  costs a fresh read, which is the honest behaviour for advisory data.
